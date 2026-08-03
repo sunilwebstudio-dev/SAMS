@@ -1,0 +1,161 @@
+.sams-btn{
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:10px;
+
+cursor:pointer;
+
+border:none;
+outline:none;
+
+border-radius:16px;
+
+font-weight:600;
+
+transition:.35s;
+
+font-family:inherit;
+
+}
+
+.sams-btn-full{
+
+width:100%;
+
+}
+
+.sams-btn-sm{
+
+height:42px;
+padding:0 18px;
+font-size:14px;
+
+}
+
+.sams-btn-md{
+
+height:54px;
+padding:0 24px;
+font-size:15px;
+
+}
+
+.sams-btn-lg{
+
+height:60px;
+padding:0 32px;
+font-size:17px;
+
+}
+
+/* PRIMARY */
+
+.sams-btn-primary{
+
+color:white;
+
+background:
+linear-gradient(135deg,#d6b25d,#8e6520);
+
+box-shadow:
+
+0 10px 25px rgba(214,178,93,.35);
+
+}
+
+.sams-btn-primary:hover{
+
+transform:translateY(-3px);
+
+box-shadow:
+
+0 18px 45px rgba(214,178,93,.45);
+
+}
+
+/* SECONDARY */
+
+.sams-btn-secondary{
+
+background:#101513;
+
+color:white;
+
+border:1px solid rgba(255,255,255,.08);
+
+}
+
+.sams-btn-secondary:hover{
+
+border-color:#d6b25d;
+
+}
+
+/* OUTLINE */
+
+.sams-btn-outline{
+
+background:transparent;
+
+border:1px solid #d6b25d;
+
+color:#d6b25d;
+
+}
+
+.sams-btn-outline:hover{
+
+background:#d6b25d;
+
+color:#07130e;
+
+}
+
+/* DANGER */
+
+.sams-btn-danger{
+
+background:#b52020;
+
+color:white;
+
+}
+
+/* Spinner */
+
+.sams-spinner{
+
+width:18px;
+height:18px;
+
+border-radius:50%;
+
+border:2px solid rgba(255,255,255,.3);
+
+border-top-color:white;
+
+animation:samsSpin .8s linear infinite;
+
+}
+
+@keyframes samsSpin{
+
+to{
+
+transform:rotate(360deg);
+
+}
+
+}
+
+.sams-btn:disabled{
+
+opacity:.7;
+
+cursor:not-allowed;
+
+transform:none;
+
+}
