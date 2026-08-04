@@ -1,44 +1,83 @@
 import "./../../styles/ui/input.css";
 
 function Input({
+
   label,
+
   type = "text",
+
   placeholder,
-  value,
-  onChange,
+
   icon,
+
   required = false,
+
+  error,
+
+  ...props
+
 }) {
+
   return (
+
     <div className="sams-input-group">
 
       {label && (
+
         <label className="sams-input-label">
+
           {label}
+
           {required && <span>*</span>}
+
         </label>
+
       )}
 
-      <div className="sams-input-wrapper">
+      <div
+        className={`sams-input-wrapper ${
+          error ? "input-error" : ""
+        }`}
+      >
 
         {icon && (
+
           <div className="sams-input-icon">
+
             {icon}
+
           </div>
+
         )}
 
         <input
+
           type={type}
+
           placeholder={placeholder}
-          value={value}
-          onChange={onChange}
+
           className={`sams-input ${icon ? "has-icon" : ""}`}
+
+          {...props}
+
         />
 
       </div>
 
+      {error && (
+
+        <p className="input-error-text">
+
+          {error}
+
+        </p>
+
+      )}
+
     </div>
+
   );
+
 }
 
 export default Input;

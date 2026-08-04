@@ -136,3 +136,44 @@ transition:.30s;
 color:#d6b25d;
 
 }
+.input-error{
+
+border:1px solid #ff4d4f !important;
+
+box-shadow:0 0 10px rgba(255,77,79,.20);
+
+}
+
+.input-error-text{
+
+margin-top:8px;
+
+font-size:13px;
+
+color:#ff6b6b;
+
+font-weight:500;
+
+animation:fadeError .25s ease;
+
+}
+
+@keyframes fadeError{
+
+from{
+
+opacity:0;
+
+transform:translateY(-4px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}

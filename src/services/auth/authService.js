@@ -1,5 +1,5 @@
-import { supabase } from "../config/supabase";
-import { generateApplicationId } from "../utils/generateApplicationId";
+import { supabase } from "../../config/supabase";
+import { generateApplicationId } from "../../utils/generateApplicationId";
 
 export async function signUpUser(data) {
 

@@ -1,93 +1,118 @@
-import { User, Mail, Phone, Building2, UserPlus } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
+import {
+  User,
+  Mail,
+  Phone,
+  UserPlus,
+} from "lucide-react";
+
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+import toast from "react-hot-toast";
 
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import PasswordInput from "../../components/ui/PasswordInput";
 import Checkbox from "../../components/ui/Checkbox";
 import Select from "../../components/ui/Select";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { signUpUser } from "../../services/authService";
+
+import PasswordStrength from "../../components/auth/PasswordStrength";
+
+import { signupSchema } from "../../schemas/authSchemas";
+import { signUpUser } from "../../services/auth/authService";
 
 function Signup() {
 
   const { t } = useTranslation();
-  const navigate = useNavigate();
 
-const [loading, setLoading] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: {
+      errors,
+      isSubmitting,
+    },
+  } = useForm({
+    resolver: zodResolver(signupSchema),
+    mode: "onChange",
+  });
 
-const [form, setForm] = useState({
-  fullName: "",
-  mobile: "",
-  email: "",
-  businessType: "",
-  password: "",
-  confirmPassword: "",
-  acceptTerms: false,
-});
-
-const handleChange = (field, value) => {
-  setForm((prev) => ({
-    ...prev,
-    [field]: value,
-  }));
-};
-
-const handleSignup = async (e) => {
-
-  e.preventDefault();
-
-  if (form.password !== form.confirmPassword) {
-    alert("Passwords do not match.");
-    return;
-  }
-
-  if (!form.acceptTerms) {
-    alert("Please accept Terms & Privacy Policy.");
-    return;
-  }
-
-  try {
-
-    setLoading(true);
-
-    await signUpUser(form);
-
-    alert(
-      "Account created successfully. Please verify your email."
-    );
-
-    navigate("/verify-otp");
-
-  } catch (error) {
-
-    alert(error.message);
-
-  } finally {
-
-    setLoading(false);
-
-  }
-
-};
+  const password = watch("password");
 
   const businessTypes = [
-    { value: "", label: t("selectBusinessType") },
-    { value: "individual", label: t("individual") },
-    { value: "farmer", label: t("farmer") },
-    { value: "trader", label: t("trader") },
-    { value: "supplier", label: t("supplier") },
-    { value: "company", label: t("company") },
-    { value: "other", label: t("other") },
+    {
+      value: "",
+      label: t("selectBusinessType"),
+    },
+    {
+      value: "individual",
+      label: t("individual"),
+    },
+    {
+      value: "farmer",
+      label: t("farmer"),
+    },
+    {
+      value: "trader",
+      label: t("trader"),
+    },
+    {
+      value: "supplier",
+      label: t("supplier"),
+    },
+    {
+      value: "company",
+      label: t("company"),
+    },
+    {
+      value: "other",
+      label: t("other"),
+    },
   ];
 
+
+
+  const onSubmit = async (data) => {
+     console.log("Form Submitted", data);
+
+    try {
+
+      toast.loading(
+        t("creatingAccount"),
+        {
+          id: "signup",
+        }
+      );
+
+      await signUpUser(data);
+
+      toast.success(
+        t("verificationOtpSent"),
+        {
+          id: "signup",
+        }
+      );
+
+    } catch (error) {
+
+      toast.error(
+        error.message,
+        {
+          id: "signup",
+        }
+      );
+
+    }
+
+  };
+
   return (
-
-    <>
-
-      <div className="login-header">
+    <>      
+    <div className="login-header">
 
         <span className="login-badge">
           <UserPlus size={16} />
@@ -101,94 +126,94 @@ const handleSignup = async (e) => {
       </div>
 
       <form
-  className="login-form"
-  onSubmit={handleSignup}
->
+        className="login-form"
+        onSubmit={handleSubmit(onSubmit)}
+      >
 
         <Input
-  label={t("fullName")}
-  placeholder={t("enterFullName")}
-  icon={<User size={18} />}
-  value={form.fullName}
-  onChange={(e) =>
-    handleChange("fullName", e.target.value)
-  }
-  required
-/>
+          label={t("fullName")}
+          placeholder={t("enterFullName")}
+          icon={<User size={18} />}
+          error={errors.fullName?.message}
+          required
+          {...register("fullName")}
+        />
 
         <Input
           label={t("mobileNumber")}
           placeholder={t("enterMobile")}
           icon={<Phone size={18} />}
-          value={form.mobile}
-          onChange={(e)=>handleChange("mobile",e.target.value)}
+          error={errors.mobile?.message}
           required
+          {...register("mobile")}
         />
 
         <Input
           label={t("emailAddress")}
           placeholder={t("enterEmail")}
           icon={<Mail size={18} />}
-          value={form.email}
-          onChange={(e)=>handleChange("email",e.target.value)}
+          error={errors.email?.message}
           required
+          {...register("email")}
         />
 
         <Select
           label={t("businessType")}
           options={businessTypes}
-          value={form.businessType}
-          onChange={(e)=>handleChange("businessType",e.target.value)}
+          error={errors.businessType?.message}
           required
+          {...register("businessType")}
         />
 
         <PasswordInput
           label={t("password")}
           placeholder={t("password")}
-          value={form.password}
-onChange={(e)=>handleChange("password",e.target.value)}
+          error={errors.password?.message}
           required
+          {...register("password")}
         />
+
+        {password && (
+      <PasswordStrength
+        password={password}
+      />
+)}
 
         <PasswordInput
           label={t("confirmPassword")}
           placeholder={t("confirmPassword")}
-          value={form.confirmPassword}
-onChange={(e)=>handleChange("confirmPassword",e.target.value)}
+          error={errors.confirmPassword?.message}
           required
+          {...register("confirmPassword")}
         />
 
-        checked={form.acceptTerms}
-onChange={(e)=>
-handleChange("acceptTerms",e.target.checked)
-}
+        <Checkbox
+  label={t("acceptTerms")}
+  error={errors.acceptTerms?.message}
+  {...register("acceptTerms")}
+/>
 
         <Button
+  type="submit"
   icon={<UserPlus size={18} />}
   fullWidth
-  disabled={loading}
+  disabled={isSubmitting}
 >
-  {loading
-    ? "Creating Account..."
+  {isSubmitting
+    ? t("creatingAccount")
     : t("createAccount")}
 </Button>
 
-      </form>
+              </form>
 
       <p className="signup-link">
-
         {t("alreadyAccount")}{" "}
-
         <Link to="/login">
-
           {t("login")}
-
         </Link>
-
       </p>
 
     </>
-
   );
 }
 

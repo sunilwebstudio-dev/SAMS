@@ -5,9 +5,9 @@ import "../../styles/ui/input.css";
 function PasswordInput({
   label,
   placeholder,
-  value,
-  onChange,
   required = false,
+  error,
+  ...props
 }) {
   const [showPassword, setShowPassword] = useState(false);
 
@@ -21,7 +21,11 @@ function PasswordInput({
         </label>
       )}
 
-      <div className="sams-input-wrapper">
+      <div
+        className={`sams-input-wrapper ${
+          error ? "input-error" : ""
+        }`}
+      >
 
         <div className="sams-input-icon">
           <Lock size={18} />
@@ -30,9 +34,8 @@ function PasswordInput({
         <input
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}
-          value={value}
-          onChange={onChange}
           className="sams-input has-icon has-password"
+          {...props}
         />
 
         <button
@@ -48,6 +51,12 @@ function PasswordInput({
         </button>
 
       </div>
+
+      {error && (
+        <p className="input-error-text">
+          {error}
+        </p>
+      )}
 
     </div>
   );

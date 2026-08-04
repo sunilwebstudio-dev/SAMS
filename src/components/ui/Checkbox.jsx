@@ -2,27 +2,38 @@ import "../../styles/ui/checkbox.css";
 
 function Checkbox({
   label,
-  checked,
-  onChange,
   required = false,
+  error,
+  ...props
 }) {
   return (
-    <label className="sams-checkbox">
+    <div className="sams-checkbox-group">
 
-      <input
-        type="checkbox"
-        checked={checked}
-        onChange={onChange}
-      />
+      <label className="sams-checkbox">
 
-      <span className="sams-checkmark"></span>
+        <input
+          type="checkbox"
+          {...props}
+        />
 
-      <span className="sams-checkbox-label">
-        {label}
-        {required && <span className="required">*</span>}
-      </span>
+        <span className="sams-checkmark"></span>
 
-    </label>
+        <span className="sams-checkbox-label">
+          {label}
+          {required && (
+            <span className="required">*</span>
+          )}
+        </span>
+
+      </label>
+
+      {error && (
+        <p className="input-error-text">
+          {error}
+        </p>
+      )}
+
+    </div>
   );
 }
 

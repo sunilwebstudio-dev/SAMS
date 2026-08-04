@@ -2,10 +2,10 @@ import "../../styles/ui/select.css";
 
 function Select({
   label,
-  value,
-  onChange,
   options = [],
   required = false,
+  error,
+  ...props
 }) {
   return (
     <div className="sams-select-group">
@@ -17,12 +17,15 @@ function Select({
         </label>
       )}
 
-      <div className="sams-select-wrapper">
+      <div
+        className={`sams-select-wrapper ${
+          error ? "input-error" : ""
+        }`}
+      >
 
         <select
-          value={value}
-          onChange={onChange}
           className="sams-select"
+          {...props}
         >
           {options.map((option) => (
             <option
@@ -35,6 +38,12 @@ function Select({
         </select>
 
       </div>
+
+      {error && (
+        <p className="input-error-text">
+          {error}
+        </p>
+      )}
 
     </div>
   );
