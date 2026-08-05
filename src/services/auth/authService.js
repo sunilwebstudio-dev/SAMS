@@ -42,7 +42,7 @@ export async function signUpUser(data) {
     throw error;
 
   }
-
+/*
   // Save Profile
   const { error: profileError } =
     await supabase
@@ -70,8 +70,11 @@ export async function signUpUser(data) {
     throw profileError;
 
   }
-
-  return authData;
+*/
+  return {
+  authData,
+  applicationId,
+};
 
 }
 

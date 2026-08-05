@@ -54,8 +54,18 @@ message:"Passwords do not match",
 
 export const loginSchema = z.object({
 
-email:z.string().email(),
+  email: z
+    .string()
+    .min(
+      3,
+      "Enter Email, Mobile or SAMS ID"
+    ),
 
-password:z.string().min(8),
+  password: z
+    .string()
+    .min(
+      8,
+      "Minimum 8 characters"
+    ),
 
 });

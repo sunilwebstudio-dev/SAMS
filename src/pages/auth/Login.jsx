@@ -2,13 +2,70 @@ import { Link } from "react-router-dom";
 import { Mail, ShieldCheck, LogIn } from "lucide-react";
 import { useTranslation } from "react-i18next";
 
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import toast from "react-hot-toast";
+
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import PasswordInput from "../../components/ui/PasswordInput";
 import Checkbox from "../../components/ui/Checkbox";
 
+import { loginSchema } from "../../schemas/authSchemas";
+import { loginUser } from "../../services/auth/authService";
+
+import { useNavigate } from "react-router-dom";
+
 function Login() {
+  const navigate = useNavigate();
+
   const { t } = useTranslation();
+
+const {
+  register,
+  handleSubmit,
+  formState: {
+    errors,
+    isSubmitting,
+  },
+} = useForm({
+  resolver: zodResolver(loginSchema),
+  mode: "onChange",
+});
+
+const onSubmit = async (data) => {
+  try {
+    toast.loading("Logging in...", {
+      id: "login",
+    });
+
+    await loginUser(
+      data.email,
+      data.password
+    );
+
+    toast.success(
+      "Login Successful",
+      {
+        id: "login",
+      }
+    );
+    navigate("/dashboard");
+
+  } catch (error) {
+
+    toast.error(
+      error.message,
+      {
+        id: "login",
+      }
+    );
+
+    
+
+  }
+};
+  
 
   return (
     <>
@@ -26,20 +83,27 @@ function Login() {
 
       </div>
 
-      <form className="login-form">
+      <form
+  className="login-form"
+  onSubmit={handleSubmit(onSubmit)}
+> 
 
-        <Input
-          label={t("emailAddress")}
-          placeholder={t("enterEmail")}
-          icon={<Mail size={18} />}
-          required
-        />
+<Input
+  label="Email / Mobile / SAMS ID"
+  placeholder="Enter Email, Mobile or SAMS ID"
+  icon={<Mail size={18} />}
+  error={errors.email?.message}
+  required
+  {...register("email")}
+/>
 
         <PasswordInput
-          label={t("password")}
-          placeholder={t("password")}
-          required
-        />
+  label={t("password")}
+  placeholder={t("password")}
+  error={errors.password?.message}
+  required
+  {...register("password")}
+/>
 
         <div className="login-options">
 
@@ -54,11 +118,13 @@ function Login() {
         </div>
 
         <Button
-          icon={<LogIn size={18} />}
-          fullWidth
-        >
-          {t("login")}
-        </Button>
+  type="submit"
+  icon={<LogIn size={18} />}
+  fullWidth
+  loading={isSubmitting}
+>
+  {t("login")}
+</Button>
 
       </form>
 
@@ -75,20 +141,7 @@ function Login() {
           Continue with Google
         </Button>
 
-        <Button
-          variant="secondary"
-          fullWidth
-        >
-          Continue with Microsoft
-        </Button>
-
-        <Button
-          variant="secondary"
-          fullWidth
-        >
-          Continue with Apple
-        </Button>
-
+      
       </div>
 
       <p className="signup-link">

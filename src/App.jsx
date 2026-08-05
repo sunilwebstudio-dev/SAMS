@@ -10,8 +10,9 @@ import Signup from "./pages/auth/Signup";
 import VerifyOTP from "./pages/auth/VerifyOTP";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
-
+import Dashboard from "./pages/dashboard/Dashboard";
 import AuthLayout from "./components/auth/AuthLayout";
+import "./styles/auth-premium.css";
 
 function App() {
 
@@ -59,6 +60,11 @@ function App() {
         <Route
           path="/reset-password"
           element={<ResetPassword />}
+        />
+
+        <Route
+          path="/dashboard"
+          element={<Dashboard />}
         />
 
       </Route>

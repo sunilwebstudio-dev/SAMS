@@ -23,8 +23,10 @@ import PasswordStrength from "../../components/auth/PasswordStrength";
 
 import { signupSchema } from "../../schemas/authSchemas";
 import { signUpUser } from "../../services/auth/authService";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
+  const navigate = useNavigate();
 
   const { t } = useTranslation();
 
@@ -76,39 +78,45 @@ function Signup() {
 
 
 
-  const onSubmit = async (data) => {
-     console.log("Form Submitted", data);
+ const onSubmit = async (data) => {
 
-    try {
+  try {
 
-      toast.loading(
-        t("creatingAccount"),
-        {
-          id: "signup",
-        }
-      );
+   const result = await signUpUser(data);
 
-      await signUpUser(data);
+    sessionStorage.setItem(
+  "signupData",
+  JSON.stringify({
 
-      toast.success(
-        t("verificationOtpSent"),
-        {
-          id: "signup",
-        }
-      );
+    ...data,
 
-    } catch (error) {
+    applicationId:
+      result.applicationId,
 
-      toast.error(
-        error.message,
-        {
-          id: "signup",
-        }
-      );
+  })
+);
 
-    }
+    toast.success(
+      "OTP sent successfully",
+      {
+        id: "signup",
+      }
+    );
 
-  };
+    navigate("/verify-otp");   
+
+  } catch (error) {
+
+    toast.error(
+      error.message,
+      {
+        id: "signup",
+      }
+    );
+
+  }
+
+};
 
   return (
     <>      

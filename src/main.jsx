@@ -6,6 +6,8 @@ import App from "./App.jsx";
 import "./index.css";
 import "./styles/auth.css";
 import { Toaster } from "react-hot-toast";
+import "./styles/auth-premium.css";
+
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
