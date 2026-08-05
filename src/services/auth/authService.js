@@ -17,6 +17,32 @@ export async function signUpUser(data) {
 
   } = data;
 
+  // Check if email already exists
+const { data: existingEmail } = await supabase
+  .from("profiles")
+  .select("id")
+  .eq("email", email)
+  .maybeSingle();
+
+if (existingEmail) {
+  throw new Error(
+    "This email is already registered. Please login."
+  );
+}
+
+// Check if mobile already exists
+const { data: existingMobile } = await supabase
+  .from("profiles")
+  .select("id")
+  .eq("mobile", mobile)
+  .maybeSingle();
+
+if (existingMobile) {
+  throw new Error(
+    "This mobile number is already registered."
+  );
+}
+
   // Generate Application ID
   const applicationId = generateApplicationId();
 
@@ -82,20 +108,74 @@ export async function signUpUser(data) {
 
 export async function loginUser(
 
-  email,
+  identifier,
 
   password
 
 ) {
 
-  const { data, error } =
-    await supabase.auth.signInWithPassword({
+  let email = identifier;
 
-      email,
+  // Mobile or Application ID
+  if (
 
-      password,
+    !identifier.includes("@")
 
-    });
+  ) {
+
+    const {
+
+      data: profile,
+
+      error: profileError,
+
+    } = await supabase
+
+      .from("profiles")
+
+      .select("email")
+
+      .or(
+
+        `mobile.eq.${identifier},application_id.eq.${identifier}`
+
+      )
+
+      .maybeSingle();
+
+    if (
+
+      profileError ||
+
+      !profile
+
+    ) {
+
+      throw new Error(
+
+        "Account not found"
+
+      );
+
+    }
+
+    email = profile.email;
+
+  }
+
+  const {
+
+    data,
+
+    error,
+
+  } = await supabase.auth.signInWithPassword({
+
+    email,
+
+    password,
+
+  });
 
   if (error) {
 

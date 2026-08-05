@@ -40,7 +40,7 @@ const onSubmit = async (data) => {
     });
 
     await loginUser(
-      data.email,
+      data.identifier,
       data.password
     );
 
@@ -92,9 +92,9 @@ const onSubmit = async (data) => {
   label="Email / Mobile / SAMS ID"
   placeholder="Enter Email, Mobile or SAMS ID"
   icon={<Mail size={18} />}
-  error={errors.email?.message}
+  error={errors.identifier?.message}
   required
-  {...register("email")}
+  {...register("identifier")}
 />
 
         <PasswordInput

@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import { ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
 
 import Button from "../../components/ui/Button";
@@ -12,6 +12,10 @@ function VerifyOTP() {
   const { t } = useTranslation();
 
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+const otpType =
+  searchParams.get("type") || "signup";
 
   const [otp, setOtp] = useState([
     "",
@@ -128,18 +132,24 @@ function VerifyOTP() {
 
     }
 
-    const signupData = JSON.parse(
+    const storageKey =
+  otpType === "signup"
+    ? "signupData"
+    : "resetData";
 
-      sessionStorage.getItem("signupData")
+const userData = JSON.parse(
+  sessionStorage.getItem(storageKey)
+);
 
-    );
-
-    if (!signupData) {
+    if (!userData) {
 
       toast.error("Signup session expired");
 
-      navigate("/signup");
-
+      navigate(
+  otpType === "signup"
+    ? "/signup"
+    : "/forgot-password"
+);
       return;
 
     }
@@ -152,7 +162,7 @@ function VerifyOTP() {
 
         await supabase.auth.verifyOtp({
 
-          email: signupData.email,
+          email: userData.email,
 
           token: code,
 
@@ -175,7 +185,23 @@ function VerifyOTP() {
         throw new Error("User not found");
 
       }
+      // ==============================
+// Reset Password Flow
+// ==============================
 
+if (otpType === "reset") {
+
+  toast.success("OTP verified successfully");
+
+  navigate("/reset-password");
+
+  return;
+
+}
+// ==============================
+// Signup Flow
+// Create profile after OTP verification
+// ==============================
       const {
 
         data: existingProfile,
@@ -232,19 +258,21 @@ function VerifyOTP() {
 
       }
 
-      sessionStorage.removeItem(
-
-        "signupData"
-
-      );
-
+      sessionStorage.removeItem(storageKey);
       toast.success(
 
-        "Account verified successfully"
+  otpType === "signup"
+    ? "Account verified successfully"
+    : "OTP verified successfully"
 
-      );
+);
+      navigate(
 
-      navigate("/login");
+  otpType === "signup"
+    ? "/login"
+    : "/reset-password"
+
+);
 
     } catch (error) {
 

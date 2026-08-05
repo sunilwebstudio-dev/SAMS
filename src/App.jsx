@@ -13,6 +13,8 @@ import ResetPassword from "./pages/auth/ResetPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
 import AuthLayout from "./components/auth/AuthLayout";
 import "./styles/auth-premium.css";
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+import PublicRoute from "./components/auth/PublicRoute";
 
 function App() {
 
@@ -35,39 +37,67 @@ function App() {
         element={<Home />}
       />
 
-      <Route element={<AuthLayout />}>
+    <Route element={<AuthLayout />}>
 
-        <Route
-          path="/login"
-          element={<Login />}
-        />
+  <Route
+  path="/login"
+  element={
+    <PublicRoute>
 
-        <Route
-          path="/signup"
-          element={<Signup />}
-        />
+      <Login />
 
-        <Route
-          path="/verify-otp"
-          element={<VerifyOTP />}
-        />
+    </PublicRoute>
+  }
+/>
 
-        <Route
-          path="/forgot-password"
-          element={<ForgotPassword />}
-        />
+  <Route
+  path="/signup"
+  element={
+    <PublicRoute>
 
-        <Route
-          path="/reset-password"
-          element={<ResetPassword />}
-        />
+      <Signup />
 
-        <Route
-          path="/dashboard"
-          element={<Dashboard />}
-        />
+    </PublicRoute>
+  }
+/>
 
-      </Route>
+  <Route
+    path="/verify-otp"
+    element={<VerifyOTP />}
+  />
+
+ <Route
+  path="/forgot-password"
+  element={
+    <PublicRoute>
+
+      <ForgotPassword />
+
+    </PublicRoute>
+  }
+/>
+
+  <Route
+  path="/reset-password"
+  element={
+    <PublicRoute>
+
+      <ResetPassword />
+
+    </PublicRoute>
+  }
+/>
+
+</Route>
+
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+/>
 
     </Routes>
 

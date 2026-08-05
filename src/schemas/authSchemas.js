@@ -15,7 +15,7 @@ export const signupSchema = z.object({
 
   email: z
     .string()
-    .email("Invalid email"),
+    .email("Enter valid email address"),
 
   businessType: z
     .string()
@@ -54,10 +54,10 @@ message:"Passwords do not match",
 
 export const loginSchema = z.object({
 
-  email: z
+  identifier: z
     .string()
     .min(
-      3,
+      1,
       "Enter Email, Mobile or SAMS ID"
     ),
 
@@ -69,3 +69,34 @@ export const loginSchema = z.object({
     ),
 
 });
+
+// --------------------------------
+
+export const resetPasswordSchema = z.object({
+
+  password: z
+    .string()
+    .min(8, "Minimum 8 characters")
+    .regex(/[A-Z]/, "One uppercase required")
+    .regex(/[a-z]/, "One lowercase required")
+    .regex(/[0-9]/, "One number required")
+    .regex(
+      /[^A-Za-z0-9]/,
+      "One special character required"
+    ),
+
+  confirmPassword: z.string(),
+
+}).refine(
+
+  (data) => data.password === data.confirmPassword,
+
+  {
+
+    path: ["confirmPassword"],
+
+    message: "Passwords do not match",
+
+  }
+
+);
