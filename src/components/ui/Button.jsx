@@ -11,11 +11,14 @@ function Button({
   fullWidth = false,
   onClick,
 }) {
+
   return (
+
     <button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
+      aria-busy={loading}
       className={[
         "sams-btn",
         `sams-btn-${variant}`,
@@ -24,6 +27,7 @@ function Button({
         loading ? "sams-btn-loading" : "",
       ].join(" ")}
     >
+
       {loading ? (
         <>
           <span className="sams-spinner"></span>
@@ -31,12 +35,22 @@ function Button({
         </>
       ) : (
         <>
-          {icon && <span className="sams-btn-icon">{icon}</span>}
-          <span>{children}</span>
+          {icon && (
+            <span className="sams-btn-icon">
+              {icon}
+            </span>
+          )}
+
+          <span>
+            {children}
+          </span>
         </>
       )}
+
     </button>
+
   );
+
 }
 
 export default Button;

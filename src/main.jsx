@@ -6,7 +6,6 @@ import App from "./App.jsx";
 import "./index.css";
 import "./styles/auth.css";
 import { Toaster } from "react-hot-toast";
-import "./styles/auth-premium.css";
 import { AuthProvider } from "./context/AuthContext";
 
 

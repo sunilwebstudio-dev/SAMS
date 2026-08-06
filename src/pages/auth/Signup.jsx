@@ -120,9 +120,9 @@ function Signup() {
 
   return (
     <>      
-    <div className="login-header">
+    <div className="signup-header">
 
-        <span className="login-badge">
+        <span className="signup-badge">
           <UserPlus size={16} />
           {t("createAccount")}
         </span>
@@ -214,12 +214,17 @@ function Signup() {
 
               </form>
 
-      <p className="signup-link">
-        {t("alreadyAccount")}{" "}
-        <Link to="/login">
-          {t("login")}
-        </Link>
-      </p>
+      <div className="signup-footer">
+
+  <span>
+    Already have an account?
+  </span>
+
+  <Link to="/login">
+    Login
+  </Link>
+
+</div>
 
     </>
   );

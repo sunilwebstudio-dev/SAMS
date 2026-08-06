@@ -7,11 +7,14 @@ function PasswordInput({
   placeholder,
   required = false,
   error,
+  disabled = false,
   ...props
 }) {
+
   const [showPassword, setShowPassword] = useState(false);
 
   return (
+
     <div className="sams-input-group">
 
       {label && (
@@ -35,13 +38,20 @@ function PasswordInput({
           type={showPassword ? "text" : "password"}
           placeholder={placeholder}
           className="sams-input has-icon has-password"
+          autoComplete="current-password"
+          disabled={disabled}
           {...props}
         />
 
         <button
           type="button"
           className="password-toggle"
-          onClick={() => setShowPassword(!showPassword)}
+          onClick={() => setShowPassword((prev) => !prev)}
+          aria-label={
+            showPassword
+              ? "Hide password"
+              : "Show password"
+          }
         >
           {showPassword ? (
             <EyeOff size={18} />
@@ -59,7 +69,9 @@ function PasswordInput({
       )}
 
     </div>
+
   );
+
 }
 
 export default PasswordInput;

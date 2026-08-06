@@ -68,96 +68,123 @@ const onSubmit = async (data) => {
   
 
   return (
-    <>
+  <>
 
-      <div className="login-header">
+    {/* Header */}
 
-        <span className="login-badge">
-          <ShieldCheck size={16} />
-          {t("secure")}
-        </span>
+    <div className="login-header">
 
-        <h2>{t("login")}</h2>
-
-        <p>{t("loginDescription")}</p>
-
+      <div className="login-logo">
+        <ShieldCheck size={30}/>
       </div>
 
-      <form
-  className="login-form"
-  onSubmit={handleSubmit(onSubmit)}
-> 
+      <h2>{t("login")}</h2>
 
-<Input
-  label="Email / Mobile / SAMS ID"
-  placeholder="Enter Email, Mobile or SAMS ID"
-  icon={<Mail size={18} />}
-  error={errors.identifier?.message}
-  required
-  {...register("identifier")}
-/>
-
-        <PasswordInput
-  label={t("password")}
-  placeholder={t("password")}
-  error={errors.password?.message}
-  required
-  {...register("password")}
-/>
-
-        <div className="login-options">
-
-          <Checkbox
-            label={t("rememberMe")}
-          />
-
-          <Link to="/forgot-password">
-            {t("forgotPassword")}
-          </Link>
-
-        </div>
-
-        <Button
-  type="submit"
-  icon={<LogIn size={18} />}
-  fullWidth
-  loading={isSubmitting}
->
-  {t("login")}
-</Button>
-
-      </form>
-
-      <div className="login-divider">
-        <span>{t("or")}</span>
-      </div>
-
-      <div className="social-login">
-
-        <Button
-          variant="secondary"
-          fullWidth
-        >
-          Continue with Google
-        </Button>
-
-      
-      </div>
-
-      <p className="signup-link">
-
-        {t("dontHaveAccount")}{" "}
-
-        <Link to="/signup">
-
-          {t("signup")}
-
-        </Link>
-
+      <p>
+        Login to your SAMS account using
+        Email, Mobile Number or SAMS ID.
       </p>
 
-    </>
-  );
+    </div>
+
+    {/* Tabs */}
+
+    <div className="auth-tabs">
+
+      <button
+        className="active"
+        type="button"
+      >
+        Login
+      </button>
+
+      <button
+        type="button"
+        onClick={() => navigate("/signup")}
+      >
+        Create Account
+      </button>
+
+    </div>
+
+    <form
+      className="login-form"
+      onSubmit={handleSubmit(onSubmit)}
+    >
+
+      <div className="full-width">
+
+        <Input
+          label="Email / Mobile / SAMS ID"
+          placeholder="Enter Email, Mobile or SAMS ID"
+          icon={<Mail size={18} />}
+          error={errors.identifier?.message}
+          required
+          {...register("identifier")}
+        />
+
+      </div>
+
+      <div className="full-width">
+
+        <PasswordInput
+          label={t("password")}
+          placeholder="Enter Password"
+          error={errors.password?.message}
+          required
+          {...register("password")}
+        />
+
+      </div>
+
+      <div className="login-options">
+
+        <Checkbox
+          label={t("rememberMe")}
+        />
+
+        <Link to="/forgot-password">
+          {t("forgotPassword")}
+        </Link>
+
+      </div>
+
+      <Button
+        type="submit"
+        variant="primary"
+        icon={<LogIn size={18} />}
+        loading={isSubmitting}
+        fullWidth
+      >
+        {t("login")}
+      </Button>
+
+    </form>
+
+    <div className="login-divider">
+      <span>OR CONTINUE WITH</span>
+    </div>
+
+    <div className="social-login">
+
+      <Button
+        variant="secondary"
+        fullWidth
+      >
+        Continue with Google
+      </Button>
+
+      <Button
+        variant="secondary"
+        fullWidth
+      >
+        Continue with Passkey
+      </Button>
+
+    </div>
+
+  </>
+);
 }
 
 export default Login;
