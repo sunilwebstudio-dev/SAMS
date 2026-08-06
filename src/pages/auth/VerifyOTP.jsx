@@ -3,7 +3,7 @@ import { ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-
+import samsLogo from "../../assets/logo/sams-logo.png";
 import Button from "../../components/ui/Button";
 import { supabase } from "../../config/supabase";
 
@@ -288,16 +288,24 @@ if (otpType === "reset") {
     return (
     <>
       <div className="login-header">
-        <span className="login-badge">
-          <ShieldCheck size={16} />
-          {t("emailVerification")}
-        </span>
 
-        <h2>{t("verifyOtp")}</h2>
+  <div className="login-logo">
+    <img
+      src={samsLogo}
+      alt="SAMS Logo"
+    />
+  </div>
 
-        <p>{t("otpDescription")}</p>
-      </div>
+  <span className="login-badge">
+    <ShieldCheck size={16} />
+    {t("emailVerification")}
+  </span>
 
+  <h2>{t("verifyOtp")}</h2>
+
+  <p>{t("otpDescription")}</p>
+
+</div>
       <div className="otp-container">
         {otp.map((digit, index) => (
           <input

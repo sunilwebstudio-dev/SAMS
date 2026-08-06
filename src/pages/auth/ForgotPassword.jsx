@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-
+import samsLogo from "../../assets/logo/sams-logo.png";
 import { loginSchema } from "../../schemas/authSchemas";
 import { supabase } from "../../config/supabase";
 
@@ -70,16 +70,23 @@ const onSubmit = async (data) => {
     <>
       <div className="login-header">
 
-        <span className="login-badge">
-          <KeyRound size={16} />
-          {t("forgotPassword")}
-        </span>
+  <div className="login-logo">
+    <img
+      src={samsLogo}
+      alt="SAMS Logo"
+    />
+  </div>
 
-        <h2>{t("forgotPassword")}</h2>
+  <span className="login-badge">
+    <KeyRound size={16} />
+    {t("forgotPassword")}
+  </span>
 
-        <p>{t("forgotPasswordDescription")}</p>
+  <h2>{t("forgotPassword")}</h2>
 
-      </div>
+  <p>{t("forgotPasswordDescription")}</p>
+
+</div>
 <form
   className="login-form"
   onSubmit={handleSubmit(onSubmit)}

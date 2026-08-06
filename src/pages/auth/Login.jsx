@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
-
+import samsLogo from "../../assets/logo/sams-logo.png";
 import Button from "../../components/ui/Button";
 import Input from "../../components/ui/Input";
 import PasswordInput from "../../components/ui/PasswordInput";
@@ -75,8 +75,11 @@ const onSubmit = async (data) => {
     <div className="login-header">
 
       <div className="login-logo">
-        <ShieldCheck size={30}/>
-      </div>
+  <img
+    src={samsLogo}
+    alt="SAMS"
+  />
+</div>
 
       <h2>{t("login")}</h2>
 

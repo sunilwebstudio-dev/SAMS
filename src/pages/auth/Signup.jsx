@@ -10,7 +10,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-
+import samsLogo from "../../assets/logo/sams-logo.png";
 import toast from "react-hot-toast";
 
 import Button from "../../components/ui/Button";
@@ -122,17 +122,23 @@ function Signup() {
     <>      
     <div className="signup-header">
 
-        <span className="signup-badge">
-          <UserPlus size={16} />
-          {t("createAccount")}
-        </span>
+  <div className="login-logo">
+    <img
+      src={samsLogo}
+      alt="SAMS Logo"
+    />
+  </div>
 
-        <h2>{t("signup")}</h2>
+  <span className="signup-badge">
+    <UserPlus size={16} />
+    {t("createAccount")}
+  </span>
 
-        <p>{t("signupDescription")}</p>
+  <h2>{t("signup")}</h2>
 
-      </div>
+  <p>{t("signupDescription")}</p>
 
+</div>
       <form
         className="login-form"
         onSubmit={handleSubmit(onSubmit)}
