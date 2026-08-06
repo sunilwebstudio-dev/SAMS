@@ -3,7 +3,7 @@ import { ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import toast from "react-hot-toast";
-import samsLogo from "../../assets/logo/sams-logo.png";
+import samsLogo from "../../assets/images/sams-logo.png";
 import Button from "../../components/ui/Button";
 import { supabase } from "../../config/supabase";
 

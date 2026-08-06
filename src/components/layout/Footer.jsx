@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ShieldCheck } from "lucide-react";
+import samsLogo from "../../assets/images/sams-logo.png";
+
 
 function Footer({ scrollToSection }) {
   const { t } = useTranslation();
@@ -14,9 +16,10 @@ function Footer({ scrollToSection }) {
           {/* BRAND */}
           <div className="footer-brand">
             <div className="footer-logo-row">
-              <div className="footer-logo">
-                S
-              </div>
+               <img
+    src={samsLogo}
+    alt="SAMS"
+  />
 
               <div>
                 <strong>SAMS</strong>

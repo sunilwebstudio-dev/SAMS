@@ -7,7 +7,7 @@ import Security from "../components/home/Security";
 import Install from "../components/home/Install";
 import Contact from "../components/home/Contact";
 import Footer from "../components/layout/Footer";
-
+import samsLogo from "../assets/images/sams-logo.png";
 import "../styles/home.css";
 
 function Home() {

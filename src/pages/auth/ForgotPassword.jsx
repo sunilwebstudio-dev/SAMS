@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import toast from "react-hot-toast";
 import { useNavigate } from "react-router-dom";
-import samsLogo from "../../assets/logo/sams-logo.png";
+import samsLogo from "../../assets/images/sams-logo.png";
 import { loginSchema } from "../../schemas/authSchemas";
 import { supabase } from "../../config/supabase";
 

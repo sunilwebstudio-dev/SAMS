@@ -10,7 +10,7 @@ import {
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import samsLogo from "../../assets/logo/sams-logo.png";
+import samsLogo from "../../assets/images/sams-logo.png";
 import toast from "react-hot-toast";
 
 import Button from "../../components/ui/Button";

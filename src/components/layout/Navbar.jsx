@@ -8,6 +8,8 @@ import {
   Menu,
   X,
 } from "lucide-react";
+import samsLogo from "../../assets/images/sams-logo.png";
+
 
 function Navbar({ scrollToSection }) {
   const { t, i18n } = useTranslation();
@@ -35,16 +37,28 @@ function Navbar({ scrollToSection }) {
         <div className="navbar-inner">
 
           <button
-            className="brand"
-            onClick={() => scrollToSection("home")}
-          >
-            <div className="brand-logo">S</div>
+  className="brand"
+  onClick={() => scrollToSection("home")}
+>
 
-            <div className="brand-text">
-              <strong>SAMS</strong>
-              <span>{t("agreementSystem")}</span>
-            </div>
-          </button>
+  <div className="brand-logo">
+
+    <img
+      src={samsLogo}
+      alt="SAMS Logo"
+    />
+
+  </div>
+
+  <div className="brand-text">
+
+    <strong>SAMS</strong>
+
+    <span>{t("agreementSystem")}</span>
+
+  </div>
+
+</button>
 
 
             <nav className="nav-links">

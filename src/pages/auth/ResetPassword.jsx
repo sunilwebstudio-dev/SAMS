@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import samsLogo from "../../assets/logo/sams-logo.png";
+import samsLogo from "../../assets/images/sams-logo.png";
 import PasswordInput from "../../components/ui/PasswordInput";
 import PasswordStrength from "../../components/auth/PasswordStrength";
 import Button from "../../components/ui/Button";
