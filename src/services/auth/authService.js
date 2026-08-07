@@ -137,7 +137,7 @@ export async function loginUser(
 
       .or(
 
-        `mobile.eq.${identifier},application_id.eq.${identifier}`
+        `mobile.eq.${identifier},sams_id.eq.${identifier}`
 
       )
 
