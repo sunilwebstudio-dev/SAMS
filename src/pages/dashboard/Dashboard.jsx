@@ -1,22 +1,14 @@
+import DashboardLayout from "../../layouts/DashboardLayout";
+
 function Dashboard() {
 
   return (
 
-    <div
-      style={{
-        padding: "40px",
-      }}
-    >
+    <DashboardLayout>
 
-      <h1>
-        🎉 Welcome to SAMS Dashboard
-      </h1>
+      <h1>Dashboard</h1>
 
-      <p>
-        Authentication Successful
-      </p>
-
-    </div>
+    </DashboardLayout>
 
   );
 

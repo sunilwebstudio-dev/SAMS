@@ -1,0 +1,13 @@
+.floating-ai {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: #16a34a;
+  color: white;
+  font-size: 24px;
+}

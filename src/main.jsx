@@ -6,8 +6,9 @@ import App from "./App.jsx";
 import "./index.css";
 import "./styles/auth.css";
 import { Toaster } from "react-hot-toast";
-import { AuthProvider } from "./context/AuthContext";
-
+import { AuthProvider } from "./contexts/AuthContext.jsx";
+import React from "react";
+import ReactDOM from "react-dom/client";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

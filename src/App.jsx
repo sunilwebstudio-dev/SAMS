@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Preloader from "./components/layout/Preloader.jsx";
 
 import Home from "./pages/Home.jsx";
-
+import { AuthProvider } from "./contexts/AuthContext";
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import VerifyOTP from "./pages/auth/VerifyOTP";
@@ -12,7 +12,7 @@ import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
 import Dashboard from "./pages/dashboard/Dashboard";
 import AuthLayout from "./components/auth/AuthLayout";
-import ProtectedRoute from "./components/auth/ProtectedRoute";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import PublicRoute from "./components/auth/PublicRoute";
 
 function App() {
@@ -28,6 +28,7 @@ function App() {
   }
 
   return (
+    <AuthProvider>
 
     <Routes>
 
@@ -97,8 +98,8 @@ function App() {
     </ProtectedRoute>
   }
 />
-
     </Routes>
+    </AuthProvider>
 
   );
 
