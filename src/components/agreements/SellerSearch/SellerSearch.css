@@ -1,0 +1,71 @@
+.seller-search-card{
+
+background:#ffffff;
+
+border-radius:14px;
+
+padding:24px;
+
+box-shadow:0 5px 20px rgba(0,0,0,.08);
+
+margin-bottom:24px;
+
+}
+
+.seller-search-title{
+
+font-size:22px;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+color:#111827;
+
+}
+
+.seller-search-group{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.seller-search-group label{
+
+font-size:15px;
+
+font-weight:600;
+
+color:#374151;
+
+}
+
+.seller-search-group input{
+
+height:48px;
+
+border:1px solid #d1d5db;
+
+border-radius:10px;
+
+padding:0 16px;
+
+font-size:15px;
+
+outline:none;
+
+transition:.25s;
+
+}
+
+.seller-search-group input:focus{
+
+border-color:#c69b43;
+
+box-shadow:0 0 0 3px rgba(198,155,67,.15);
+
+}

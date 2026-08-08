@@ -1,6 +1,6 @@
 import Sidebar from "../../components/dashboard/Sidebar";
 import Topbar from "../../components/dashboard/Topbar";
-import FloatingAIAssistant from "../../components/dashboard/FloatingAIAssistant";
+import FloatingAI from "../../components/ai/FloatingAI";
 
 import "./DashboardLayout.css";
 
@@ -15,14 +15,12 @@ function DashboardLayout({ children }) {
         <Topbar />
 
         <main className="dashboard-content">
-
           {children}
-
         </main>
 
       </div>
 
-      <FloatingAIAssistant />
+      <FloatingAI />
 
     </div>
   );

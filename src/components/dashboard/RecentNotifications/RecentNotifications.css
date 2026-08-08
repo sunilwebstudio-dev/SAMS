@@ -1,0 +1,103 @@
+.notification-card{
+
+background:#fff;
+
+padding:22px;
+
+border-radius:12px;
+
+box-shadow:0 4px 14px rgba(0,0,0,.05);
+
+}
+
+.notification-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:18px;
+
+}
+
+.notification-header h3{
+
+margin:0;
+
+font-size:18px;
+
+}
+
+.notification-header button{
+
+border:none;
+
+background:#16A34A;
+
+color:#fff;
+
+padding:8px 14px;
+
+border-radius:8px;
+
+cursor:pointer;
+
+}
+
+.notification-item{
+
+display:flex;
+
+gap:14px;
+
+padding:16px 0;
+
+border-bottom:1px solid #EEF2F7;
+
+}
+
+.notification-item:last-child{
+
+border:none;
+
+}
+
+.notification-dot{
+
+width:12px;
+
+height:12px;
+
+background:#16A34A;
+
+border-radius:50%;
+
+margin-top:8px;
+
+}
+
+.notification-content h4{
+
+margin:0;
+
+font-size:15px;
+
+}
+
+.notification-content p{
+
+margin:6px 0;
+
+color:#64748B;
+
+font-size:14px;
+
+}
+
+.notification-content small{
+
+color:#94A3B8;
+
+}
