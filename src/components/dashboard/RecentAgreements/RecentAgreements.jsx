@@ -1,97 +1,65 @@
+import { agreements } from "../../../data/agreements";
 import "./RecentAgreements.css";
 
 function RecentAgreements() {
+  return (
+    <div className="recent-agreements-card">
 
-    const agreements = [
+      <div className="recent-agreements-header">
+        <h2>Recent Agreements</h2>
 
-        {
-            id: "AGR-000124",
-            seller: "Ram Bahadur",
-            amount: "₹2,00,000",
-            year: "2029",
-            status: "Active"
-        },
+        <button type="button">
+          View All
+        </button>
+      </div>
 
-        {
-            id: "AGR-000123",
-            seller: "Hari Oraon",
-            amount: "₹1,80,000",
-            year: "2028",
-            status: "Pending"
-        }
+      <div className="agreement-table">
 
-    ];
-
-    return (
-
-        <div className="agreement-card">
-
-            <div className="card-header">
-
-                <h3>Recent Agreements</h3>
-
-                <button>
-                    View All
-                </button>
-
-            </div>
-
-            <table>
-
-                <thead>
-
-                    <tr>
-
-                        <th>ID</th>
-
-                        <th>Seller</th>
-
-                        <th>Amount</th>
-
-                        <th>Till Year</th>
-
-                        <th>Status</th>
-
-                    </tr>
-
-                </thead>
-
-                <tbody>
-
-                    {agreements.map((item)=>(
-
-                        <tr key={item.id}>
-
-                            <td>{item.id}</td>
-
-                            <td>{item.seller}</td>
-
-                            <td>{item.amount}</td>
-
-                            <td>{item.year}</td>
-
-                            <td>
-
-                                <span className="status">
-
-                                    {item.status}
-
-                                </span>
-
-                            </td>
-
-                        </tr>
-
-                    ))}
-
-                </tbody>
-
-            </table>
-
+        <div className="agreement-table-header">
+          <span>ID</span>
+          <span>Seller</span>
+          <span>Amount</span>
+          <span>Till Year</span>
+          <span>Status</span>
         </div>
 
-    );
+        {agreements.map((agreement) => (
+          <div
+            className="agreement-table-row"
+            key={agreement.id}
+          >
 
+            <span>
+              {agreement.id}
+            </span>
+
+            <span>
+              {agreement.sellerName}
+            </span>
+
+            <span>
+              ₹{agreement.amount.toLocaleString("en-IN")}
+            </span>
+
+            <span>
+              {agreement.tillYear}
+            </span>
+
+            <span>
+              <strong
+                className={`status-badge ${agreement.status.toLowerCase()}`}
+              >
+                {agreement.status}
+              </strong>
+            </span>
+
+          </div>
+        ))}
+
+      </div>
+
+    </div>
+  );
 }
 
 export default RecentAgreements;

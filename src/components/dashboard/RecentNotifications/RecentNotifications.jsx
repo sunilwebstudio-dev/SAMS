@@ -1,72 +1,69 @@
+import { notifications } from "../../../data/notifications";
 import "./RecentNotifications.css";
 
 function RecentNotifications() {
+  return (
+    <div className="recent-notifications-card">
 
-    const notifications = [
+      <div className="recent-notifications-header">
 
-        {
-            title: "Agreement Created",
-            message: "AGR-000124 created successfully.",
-            time: "2 min ago"
-        },
+        <div>
+          <h2>Recent Notifications</h2>
 
-        {
-            title: "Agreement Extended",
-            message: "AGR-000110 extended till 2029.",
-            time: "15 min ago"
-        },
+          <p>
+            Latest updates and reminders
+          </p>
+        </div>
 
-        {
-            title: "Backup Completed",
-            message: "Today's backup completed.",
-            time: "1 hour ago"
-        }
+        <button type="button">
+          View All
+        </button>
 
-    ];
+      </div>
 
-    return (
+      <div className="notification-list">
 
-        <div className="notification-card">
+        {notifications.map((notification) => (
+          <div
+            className={`notification-item ${
+              notification.unread ? "unread" : ""
+            }`}
+            key={notification.id}
+          >
 
-            <div className="notification-header">
+            <div className="notification-icon">
+              {notification.type === "agreement"
+                ? "📄"
+                : "🔔"}
+            </div>
 
-                <h3>Recent Notifications</h3>
+            <div className="notification-content">
 
-                <button>View All</button>
+              <strong>
+                {notification.title}
+              </strong>
+
+              <p>
+                {notification.message}
+              </p>
+
+              <small>
+                {notification.time}
+              </small>
 
             </div>
 
-            {
+            {notification.unread && (
+              <span className="unread-dot"></span>
+            )}
 
-                notifications.map((item,index)=>(
+          </div>
+        ))}
 
-                    <div
-                        className="notification-item"
-                        key={index}
-                    >
+      </div>
 
-                        <div className="notification-dot"/>
-
-                        <div className="notification-content">
-
-                            <h4>{item.title}</h4>
-
-                            <p>{item.message}</p>
-
-                            <small>{item.time}</small>
-
-                        </div>
-
-                    </div>
-
-                ))
-
-            }
-
-        </div>
-
-    );
-
+    </div>
+  );
 }
 
 export default RecentNotifications;

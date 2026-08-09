@@ -1,72 +1,49 @@
 import { useState } from "react";
 import "./SellerSearch.css";
-
-const sampleSellers = [
-  {
-    id: "SEL-000001",
-    name: "Ram Rai",
-    fatherName: "Shyam Rai",
-    village: "Ambari Bagan",
-    address: "Upper Line, Ambari Bagan",
-    activeAgreement: true,
-    agreementNo: "SUP-2027-000001",
-    agreementEnd: "2028",
-  },
-  {
-    id: "SEL-000002",
-    name: "Ramesh Oraon",
-    fatherName: "Mohan Oraon",
-    village: "Banarhat",
-    address: "Main Road, Banarhat",
-    activeAgreement: false,
-    agreementNo: null,
-    agreementEnd: null,
-  },
-  {
-    id: "SEL-000003",
-    name: "Bimal Sahu",
-    fatherName: "Dilip Sahu",
-    village: "Ambari Bagan",
-    address: "Lower Line, Ambari Bagan",
-    activeAgreement: false,
-    agreementNo: null,
-    agreementEnd: null,
-  },
-];
+import { sellers } from "../../../data/sellers";
 
 function SellerSearch() {
   const [search, setSearch] = useState("");
-  const [searched, setSearched] = useState(false);
   const [results, setResults] = useState([]);
   const [selectedSeller, setSelectedSeller] = useState(null);
 
-  const handleSearch = () => {
-    const keyword = search.trim().toLowerCase();
+  const searchSeller = (value) => {
+    const keyword = value.trim().toLowerCase();
 
     if (!keyword) {
       setResults([]);
-      setSearched(false);
       setSelectedSeller(null);
       return;
     }
 
-    const matchedSellers = sampleSellers.filter((seller) =>
+    const matched = sellers.filter((seller) =>
       seller.name.toLowerCase().includes(keyword)
     );
 
-    setResults(matchedSellers);
-    setSearched(true);
+    setResults(matched);
     setSelectedSeller(null);
+  };
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+
+    setSearch(value);
+    searchSeller(value);
+  };
+
+  const handleSearch = () => {
+    searchSeller(search);
   };
 
   const handleSelectSeller = (seller) => {
     setSelectedSeller(seller);
+    setSearch(seller.name);
+    setResults([]);
   };
 
   const handleClear = () => {
     setSearch("");
     setResults([]);
-    setSearched(false);
     setSelectedSeller(null);
   };
 
@@ -87,26 +64,27 @@ function SellerSearch() {
           Seller Name
         </label>
 
-        <form
-          className="seller-search-row"
-          onSubmit={(event) => {
-            event.preventDefault();
-            handleSearch();
-          }}
-        >
+        <div className="seller-search-row">
 
           <input
             id="seller-search-input"
             type="text"
             value={search}
-            onChange={(event) => setSearch(event.target.value)}
+            onChange={handleChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                event.preventDefault();
+                handleSearch();
+              }
+            }}
             placeholder="Enter seller name..."
             autoComplete="off"
           />
 
           <button
-            type="submit"
+            type="button"
             className="seller-search-button"
+            onClick={handleSearch}
           >
             Search
           </button>
@@ -121,11 +99,13 @@ function SellerSearch() {
             </button>
           )}
 
-        </form>
+        </div>
 
       </div>
 
-      {searched && (
+      {/* SEARCH RESULTS */}
+
+      {search.trim() && results.length > 0 && (
         <div className="seller-results">
 
           <div className="seller-results-header">
@@ -139,63 +119,67 @@ function SellerSearch() {
 
           </div>
 
-          {results.length > 0 ? (
+          {results.map((seller) => (
+            <button
+              type="button"
+              className="seller-result-card"
+              key={seller.id}
+              onClick={() => handleSelectSeller(seller)}
+            >
 
-            results.map((seller) => (
-              <button
-                type="button"
-                className="seller-result-card"
-                key={seller.id}
-                onClick={() => handleSelectSeller(seller)}
-              >
+              <div className="seller-avatar">
+                {seller.name.charAt(0)}
+              </div>
 
-                <div className="seller-avatar">
-                  {seller.name.charAt(0)}
-                </div>
+              <div className="seller-result-info">
 
-                <div className="seller-result-info">
+                <strong>
+                  {seller.name}
+                </strong>
 
-                  <strong>
-                    {seller.name}
-                  </strong>
+                <span>
+                  Father / Guardian: {seller.fatherName}
+                </span>
 
-                  <span>
-                    Father / Guardian: {seller.fatherName}
-                  </span>
+                <small>
+                  {seller.village}
+                </small>
 
-                  <small>
-                    {seller.village}
-                  </small>
+              </div>
 
-                </div>
+              {seller.activeAgreement && (
+                <span className="active-badge">
+                  Active Agreement
+                </span>
+              )}
 
-                {seller.activeAgreement && (
-                  <span className="active-badge">
-                    Active Agreement
-                  </span>
-                )}
-
-              </button>
-            ))
-
-          ) : (
-
-            <div className="no-seller">
-
-              <strong>
-                No seller found
-              </strong>
-
-              <p>
-                No seller matched your search.
-              </p>
-
-            </div>
-
-          )}
+            </button>
+          ))}
 
         </div>
       )}
+
+      {/* NO RESULT */}
+
+      {search.trim() && results.length === 0 && !selectedSeller && (
+        <div className="seller-results">
+
+          <div className="no-seller">
+
+            <strong>
+              No seller found
+            </strong>
+
+            <p>
+              No seller matched "{search}".
+            </p>
+
+          </div>
+
+        </div>
+      )}
+
+      {/* SELECTED SELLER */}
 
       {selectedSeller && (
         <div className="selected-seller-card">

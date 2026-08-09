@@ -14,6 +14,11 @@ function Sidebar() {
       icon: "📄",
     },
     {
+      title: "Create Agreement",
+      path: "/agreements/create",
+      icon: "➕",
+    },
+    {
       title: "Notifications",
       path: "/notifications",
       icon: "🔔",
@@ -31,25 +36,24 @@ function Sidebar() {
     {
       title: "Security",
       path: "/security",
-      icon: "🛡",
+      icon: "🛡️",
     },
     {
       title: "Settings",
       path: "/settings",
-      icon: "⚙",
+      icon: "⚙️",
     },
     {
       title: "Help",
       path: "/help",
       icon: "❓",
     },
-
-
   ];
 
   return (
     <aside className="sidebar">
 
+      {/* LOGO */}
       <div className="sidebar-logo">
 
         <div className="logo-circle">
@@ -63,6 +67,7 @@ function Sidebar() {
 
       </div>
 
+      {/* USER */}
       <div className="sidebar-user">
 
         <div className="user-avatar">
@@ -70,39 +75,45 @@ function Sidebar() {
         </div>
 
         <div>
-
           <h4>Sunil Sahu</h4>
-
           <span>Buyer</span>
-
           <small>SAMS-000001</small>
-
         </div>
 
       </div>
 
+      {/* MENU */}
       <nav className="sidebar-menu">
 
         {menuItems.map((item) => (
-
           <NavLink
-            key={item.title}
+            key={item.path}
             to={item.path}
-            className="menu-item"
+            className={({ isActive }) =>
+              `menu-item ${isActive ? "active" : ""}`
+            }
           >
-            <span>{item.icon}</span>
 
-            <span>{item.title}</span>
+            <span className="menu-icon">
+              {item.icon}
+            </span>
+
+            <span>
+              {item.title}
+            </span>
 
           </NavLink>
-
         ))}
 
       </nav>
 
+      {/* FOOTER */}
       <div className="sidebar-footer">
 
-        <button className="logout-btn">
+        <button
+          type="button"
+          className="logout-btn"
+        >
           🚪 Logout
         </button>
 
