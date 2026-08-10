@@ -1,186 +1,339 @@
-.topbar{
+/* =========================================
+   TOPBAR
+========================================= */
 
-    height:64px;
+.topbar {
+  width: 100%;
+  height: 64px;
 
-    background:white;
+  flex-shrink: 0;
 
-    display:flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 
-    justify-content:space-between;
+  padding: 0 clamp(16px, 2vw, 28px);
 
-    align-items:center;
+  background: #ffffff;
 
-    padding:0 28px;
+  border-bottom: 1px solid #e5e7eb;
 
-    border-bottom:1px solid #e5e7eb;
+  box-sizing: border-box;
 
+  z-index: 500;
 }
 
-.topbar-left{
+/* =========================================
+   LEFT
+========================================= */
 
-    flex:1;
+.topbar-left {
+  flex: 1;
+  min-width: 0;
 
+  display: flex;
+  align-items: center;
 }
 
-.search-box{
+/* =========================================
+   SEARCH
+========================================= */
 
-    width:420px;
+.search-box {
+  width: min(420px, 100%);
+  height: 40px;
 
-    height:40px;
+  display: flex;
+  align-items: center;
 
-    background:#f8fafc;
+  padding: 0 14px;
 
-    border-radius:14px;
+  gap: 10px;
 
-    display:flex;
+  background: #f8fafc;
 
-    align-items:center;
+  border: 1px solid #eef2f7;
 
-    padding:0 18px;
+  border-radius: 12px;
 
-    gap:12px;
-
+  box-sizing: border-box;
 }
 
-.search-box input{
+.search-icon {
+  flex-shrink: 0;
 
-    flex:1;
-
-    border:none;
-
-    background:none;
-
-    outline:none;
-
-    font-size:15px;
-
+  font-size: 15px;
 }
 
-.search-box kbd{
+.search-box input {
+  flex: 1;
 
-    background:white;
+  min-width: 0;
 
-    border-radius:6px;
+  border: none;
+  outline: none;
 
-    padding:4px 8px;
+  background: transparent;
 
-    border:1px solid #e5e7eb;
+  color: #1e293b;
 
-    font-size:12px;
-
+  font-size: 14px;
 }
 
-.topbar-right{
-
-    display:flex;
-
-    align-items:center;
-
-    gap:16px;
-
+.search-box input::placeholder {
+  color: #94a3b8;
 }
 
-.icon-btn{
+.search-box kbd {
+  flex-shrink: 0;
 
-    width:40px;
+  background: #ffffff;
 
-    height:40px;
+  border-radius: 6px;
 
-    border:none;
+  padding: 4px 7px;
 
-    border-radius:50%;
+  border: 1px solid #e5e7eb;
 
-    cursor:pointer;
+  color: #64748b;
 
-    background:#f8fafc;
+  font-size: 11px;
 
-    transition:.25s;
-
-    font-size:18px;
-
+  white-space: nowrap;
 }
 
-.icon-btn:hover{
+/* =========================================
+   RIGHT
+========================================= */
 
-    background:#16a34a;
+.topbar-right {
+  display: flex;
+  align-items: center;
 
-    color:white;
+  gap: clamp(8px, 1vw, 16px);
 
+  flex-shrink: 0;
 }
 
-.profile-box{
+/* =========================================
+   ICON BUTTON
+========================================= */
 
-    display:flex;
+.icon-btn {
+  width: 40px;
+  height: 40px;
 
-    align-items:center;
+  flex-shrink: 0;
 
-    gap:12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
+  border: none;
+
+  border-radius: 50%;
+
+  cursor: pointer;
+
+  background: #f8fafc;
+
+  transition: 0.25s;
+
+  font-size: 17px;
 }
 
-.profile-avatar{
+.icon-btn:hover {
+  background: #16a34a;
 
-    width:38px;
-
-    height:38px;
-    font-size:16px;
-
-    border-radius:50%;
-
-    background:#22c55e;
-
-    color:white;
-
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
-
-    font-weight:700;
-
+  color: #ffffff;
 }
 
-.profile-box h4{
+/* =========================================
+   PROFILE
+========================================= */
 
-    margin:0;
+.profile-box {
+  display: flex;
+  align-items: center;
 
+  gap: 10px;
+
+  flex-shrink: 0;
 }
 
-.profile-box small{
+.profile-avatar {
+  width: 38px;
+  height: 38px;
 
-    color:#64748b;
+  min-width: 38px;
 
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  color: #ffffff;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 16px;
+  font-weight: 700;
 }
 
-@media (max-width:768px){
+.profile-info h4 {
+  margin: 0;
 
-.sidebar{
+  color: #111827;
 
-width:75px;
-min-width:75px;
-
+  font-size: 13px;
 }
 
-.sidebar-logo p,
-.sidebar-user div,
-.menu-item span:last-child,
-.sidebar-footer small{
+.profile-info small {
+  color: #64748b;
 
-display:none;
-
+  font-size: 11px;
 }
 
-.logo-circle{
+/* =========================================
+   TABLET
+========================================= */
 
-margin:auto;
+@media (max-width: 1024px) {
 
+  .topbar {
+    padding: 0 18px;
+  }
+
+  .search-box {
+    width: min(360px, 100%);
+  }
+
+  .topbar-right {
+    gap: 8px;
+  }
+
+  .profile-info {
+    display: none;
+  }
 }
 
-.search-box{
+/* =========================================
+   MOBILE
+========================================= */
 
-width:100%;
+@media (max-width: 768px) {
 
+  .topbar {
+    height: 60px;
+
+    /*
+      Space for the fixed hamburger button
+    */
+    padding-left: 66px;
+
+    padding-right: 10px;
+
+    gap: 8px;
+  }
+
+  .topbar-left {
+    min-width: 0;
+
+    flex: 1;
+  }
+
+  .search-box {
+    width: 100%;
+
+    height: 38px;
+
+    padding: 0 10px;
+
+    gap: 7px;
+
+    border-radius: 10px;
+  }
+
+  .search-box input {
+    font-size: 12px;
+  }
+
+  .search-box kbd {
+    display: none;
+  }
+
+  .topbar-right {
+    gap: 5px;
+  }
+
+  .icon-btn {
+    width: 36px;
+    height: 36px;
+
+    font-size: 15px;
+  }
+
+  /*
+    Mobile par profile text hide
+  */
+
+  .profile-info {
+    display: none;
+  }
+
+  .profile-avatar {
+    width: 36px;
+    height: 36px;
+
+    min-width: 36px;
+  }
+
+  /*
+    Mobile me extra connection icon hide
+    so header crowded na ho
+  */
+
+  .sync-icon {
+    display: none;
+  }
 }
 
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .topbar {
+    padding-left: 62px;
+
+    padding-right: 8px;
+  }
+
+  .search-box {
+    height: 36px;
+  }
+
+  .search-box input {
+    font-size: 11px;
+  }
+
+  .topbar-right {
+    gap: 4px;
+  }
+
+  .icon-btn {
+    width: 34px;
+    height: 34px;
+
+    font-size: 14px;
+  }
+
+  .profile-avatar {
+    width: 34px;
+    height: 34px;
+
+    min-width: 34px;
+  }
 }

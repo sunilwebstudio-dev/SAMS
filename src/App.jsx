@@ -3,9 +3,9 @@ import { Routes, Route } from "react-router-dom";
 
 import Preloader from "./components/layout/Preloader.jsx";
 import Home from "./pages/Home.jsx";
-
+import AgreementList from "./pages/agreements/AgreementList";
 import { AuthProvider } from "./contexts/AuthContext";
-
+import AgreementDetails from "./pages/agreements/AgreementDetails"; 
 import Login from "./pages/auth/Login";
 import Signup from "./pages/auth/Signup";
 import VerifyOTP from "./pages/auth/VerifyOTP";
@@ -24,7 +24,9 @@ function App() {
 
   if (loading) {
     return (
-      <Preloader onComplete={() => setLoading(false)} />
+      <Preloader
+        onComplete={() => setLoading(false)}
+      />
     );
   }
 
@@ -33,11 +35,13 @@ function App() {
 
       <Routes>
 
+        {/* HOME */}
         <Route
           path="/"
           element={<Home />}
         />
 
+        {/* AUTH */}
         <Route element={<AuthLayout />}>
 
           <Route
@@ -83,6 +87,7 @@ function App() {
 
         </Route>
 
+        {/* DASHBOARD */}
         <Route
           path="/dashboard"
           element={
@@ -93,6 +98,16 @@ function App() {
         />
 
         <Route
+  path="/agreements"
+  element={
+    <ProtectedRoute>
+      <AgreementList />
+    </ProtectedRoute>
+  }
+/>
+
+        {/* CREATE AGREEMENT */}
+        <Route
           path="/agreements/create"
           element={
             <ProtectedRoute>
@@ -100,6 +115,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/agreements/:agreementId"
+  element={
+    <ProtectedRoute>
+      <AgreementDetails />
+    </ProtectedRoute>
+  }
+/>
 
       </Routes>
 

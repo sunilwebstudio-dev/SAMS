@@ -1,7 +1,10 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import "./Sidebar.css";
 
 function Sidebar() {
+  const [mobileOpen, setMobileOpen] = useState(false);
+
   const menuItems = [
     {
       title: "Dashboard",
@@ -50,80 +53,142 @@ function Sidebar() {
     },
   ];
 
+  const closeMobileSidebar = () => {
+    setMobileOpen(false);
+  };
+
   return (
-    <aside className="sidebar">
+    <>
+      {/* MOBILE MENU BUTTON */}
 
-      {/* LOGO */}
-      <div className="sidebar-logo">
+      <button
+        type="button"
+        className="mobile-menu-button"
+        onClick={() => setMobileOpen(true)}
+        aria-label="Open menu"
+      >
+        ☰
+      </button>
 
-        <div className="logo-circle">
-          S
-        </div>
+      {/* MOBILE OVERLAY */}
 
-        <div>
-          <h2>SAMS</h2>
-          <p>Smart Agreement Management System</p>
-        </div>
+      {mobileOpen && (
+        <div
+          className="sidebar-overlay"
+          onClick={closeMobileSidebar}
+        />
+      )}
 
-      </div>
+      {/* SIDEBAR */}
 
-      {/* USER */}
-      <div className="sidebar-user">
+      <aside
+        className={`sidebar ${
+          mobileOpen ? "mobile-open" : ""
+        }`}
+      >
 
-        <div className="user-avatar">
-          S
-        </div>
-
-        <div>
-          <h4>Sunil Sahu</h4>
-          <span>Buyer</span>
-          <small>SAMS-000001</small>
-        </div>
-
-      </div>
-
-      {/* MENU */}
-      <nav className="sidebar-menu">
-
-        {menuItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) =>
-              `menu-item ${isActive ? "active" : ""}`
-            }
-          >
-
-            <span className="menu-icon">
-              {item.icon}
-            </span>
-
-            <span>
-              {item.title}
-            </span>
-
-          </NavLink>
-        ))}
-
-      </nav>
-
-      {/* FOOTER */}
-      <div className="sidebar-footer">
+        {/* MOBILE CLOSE BUTTON */}
 
         <button
           type="button"
-          className="logout-btn"
+          className="mobile-close-button"
+          onClick={closeMobileSidebar}
+          aria-label="Close menu"
         >
-          🚪 Logout
+          ×
         </button>
 
-        <small>
-          Version 1.0.1
-        </small>
+        {/* LOGO */}
 
-      </div>
+        <div className="sidebar-logo">
 
-    </aside>
+          <div className="logo-circle">
+            S
+          </div>
+
+          <div>
+            <h2>SAMS</h2>
+            <p>
+              Smart Agreement Management System
+            </p>
+          </div>
+
+        </div>
+
+        {/* USER */}
+
+        <div className="sidebar-user">
+
+          <div className="user-avatar">
+            S
+          </div>
+
+          <div>
+
+            <h4>Sunil Sahu</h4>
+
+            <span>
+              Buyer
+            </span>
+
+            <small>
+              SAMS-000001
+            </small>
+
+          </div>
+
+        </div>
+
+        {/* MENU */}
+
+        <nav className="sidebar-menu">
+
+          {menuItems.map((item) => (
+
+            <NavLink
+              key={item.path}
+              to={item.path}
+              className={({ isActive }) =>
+                `menu-item ${
+                  isActive ? "active" : ""
+                }`
+              }
+              onClick={closeMobileSidebar}
+            >
+
+              <span className="menu-icon">
+                {item.icon}
+              </span>
+
+              <span>
+                {item.title}
+              </span>
+
+            </NavLink>
+
+          ))}
+
+        </nav>
+
+        {/* FOOTER */}
+
+        <div className="sidebar-footer">
+
+          <button
+            type="button"
+            className="logout-btn"
+          >
+            🚪 Logout
+          </button>
+
+          <small>
+            Version 1.0.1
+          </small>
+
+        </div>
+
+      </aside>
+    </>
   );
 }
 

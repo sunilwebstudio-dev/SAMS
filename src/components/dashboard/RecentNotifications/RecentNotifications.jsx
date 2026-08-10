@@ -1,9 +1,12 @@
+import { NavLink } from "react-router-dom";
 import { notifications } from "../../../data/notifications";
 import "./RecentNotifications.css";
 
 function RecentNotifications() {
   return (
     <div className="recent-notifications-card">
+
+      {/* HEADER */}
 
       <div className="recent-notifications-header">
 
@@ -15,50 +18,82 @@ function RecentNotifications() {
           </p>
         </div>
 
-        <button type="button">
+        <NavLink
+          to="/notifications"
+          className="recent-notifications-view-all"
+        >
           View All
-        </button>
+        </NavLink>
 
       </div>
 
+      {/* NOTIFICATION LIST */}
+
       <div className="notification-list">
 
-        {notifications.map((notification) => (
-          <div
-            className={`notification-item ${
-              notification.unread ? "unread" : ""
-            }`}
-            key={notification.id}
-          >
+        {notifications.length > 0 ? (
 
-            <div className="notification-icon">
-              {notification.type === "agreement"
-                ? "📄"
-                : "🔔"}
+          notifications.map((notification) => (
+
+            <div
+              className={`notification-item ${
+                notification.unread ? "unread" : ""
+              }`}
+              key={notification.id}
+            >
+
+              <div className="notification-icon">
+                {notification.type === "agreement"
+                  ? "📄"
+                  : "🔔"}
+              </div>
+
+              <div className="notification-content">
+
+                <strong>
+                  {notification.title}
+                </strong>
+
+                <p>
+                  {notification.message}
+                </p>
+
+                <small>
+                  {notification.time}
+                </small>
+
+              </div>
+
+              {notification.unread && (
+                <span
+                  className="unread-dot"
+                  aria-label="Unread notification"
+                />
+              )}
+
             </div>
 
-            <div className="notification-content">
+          ))
 
-              <strong>
-                {notification.title}
-              </strong>
+        ) : (
 
-              <p>
-                {notification.message}
-              </p>
+          <div className="notifications-empty-state">
 
-              <small>
-                {notification.time}
-              </small>
-
+            <div className="notification-empty-icon">
+              🔔
             </div>
 
-            {notification.unread && (
-              <span className="unread-dot"></span>
-            )}
+            <strong>
+              No notifications
+            </strong>
+
+            <p>
+              You're all caught up.
+            </p>
 
           </div>
-        ))}
+
+        )}
 
       </div>
 

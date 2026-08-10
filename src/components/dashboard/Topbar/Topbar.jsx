@@ -4,34 +4,52 @@ function Topbar() {
   return (
     <header className="topbar">
 
+      {/* LEFT */}
       <div className="topbar-left">
 
         <div className="search-box">
 
-          <span className="search-icon">🔍</span>
+          <span className="search-icon">
+            🔍
+          </span>
 
           <input
             type="text"
             placeholder="Search agreements, users, reports..."
           />
 
-          <kbd>Ctrl + K</kbd>
+          <kbd>
+            Ctrl + K
+          </kbd>
 
         </div>
 
       </div>
 
+      {/* RIGHT */}
       <div className="topbar-right">
 
-        <button className="icon-btn">
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label="Notifications"
+        >
           🔔
         </button>
 
-        <button className="icon-btn">
+        <button
+          type="button"
+          className="icon-btn"
+          aria-label="Language"
+        >
           🌐
         </button>
 
-        <button className="icon-btn">
+        <button
+          type="button"
+          className="icon-btn sync-icon"
+          aria-label="Connection status"
+        >
           📶
         </button>
 
@@ -41,11 +59,15 @@ function Topbar() {
             S
           </div>
 
-          <div>
+          <div className="profile-info">
 
-            <h4>Sunil Sahu</h4>
+            <h4>
+              Sunil Sahu
+            </h4>
 
-            <small>Buyer</small>
+            <small>
+              Buyer
+            </small>
 
           </div>
 
