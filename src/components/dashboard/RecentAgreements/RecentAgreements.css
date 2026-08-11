@@ -450,3 +450,36 @@
     min-width: 600px;
   }
 }
+
+/* =========================================
+   CLICKABLE AGREEMENT
+========================================= */
+
+.agreement-clickable {
+  text-decoration: none;
+
+  cursor: pointer;
+
+  transition:
+    color 0.2s ease,
+    background 0.2s ease;
+}
+
+.agreement-id.agreement-clickable {
+  color: #15803d;
+
+  font-weight: 700;
+}
+
+.agreement-seller.agreement-clickable {
+  color: #334155;
+
+  font-weight: 600;
+}
+
+.agreement-id.agreement-clickable:hover,
+.agreement-seller.agreement-clickable:hover {
+  color: #16a34a;
+
+  text-decoration: underline;
+}

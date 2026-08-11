@@ -145,15 +145,14 @@ function Sidebar() {
 
           {menuItems.map((item) => (
 
-            <NavLink
-              key={item.path}
-              to={item.path}
-              className={({ isActive }) =>
-                `menu-item ${
-                  isActive ? "active" : ""
-                }`
-              }
-              onClick={closeMobileSidebar}
+             <NavLink
+  key={item.path}
+  to={item.path}
+  end={item.path === "/agreements"}
+  className={({ isActive }) =>
+    `menu-item ${isActive ? "active" : ""}`
+  }
+
             >
 
               <span className="menu-icon">

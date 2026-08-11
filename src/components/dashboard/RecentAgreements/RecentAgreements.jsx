@@ -6,7 +6,9 @@ function RecentAgreements() {
   return (
     <div className="recent-agreements-card">
 
-      {/* HEADER */}
+      {/* =====================================
+          HEADER
+      ===================================== */}
 
       <div className="recent-agreements-header">
 
@@ -27,7 +29,10 @@ function RecentAgreements() {
 
       </div>
 
-      {/* TABLE */}
+
+      {/* =====================================
+          TABLE
+      ===================================== */}
 
       <div className="agreement-table-wrapper">
 
@@ -41,13 +46,14 @@ function RecentAgreements() {
 
             <span>Seller Name</span>
 
-            <span>Amount</span>
+            <span> TotalAmount</span>
 
             <span>Till Year</span>
 
             <span>Status</span>
 
           </div>
+
 
           {/* TABLE DATA */}
 
@@ -60,28 +66,55 @@ function RecentAgreements() {
                 key={agreement.id}
               >
 
-                <span className="agreement-id">
-                  {agreement.id}
-                </span>
+                {/* AGREEMENT ID */}
 
-                <span className="agreement-seller">
+                <NavLink
+                  to={`/agreements/${agreement.id}`}
+                  className="agreement-id agreement-clickable"
+                >
+                  {agreement.id}
+                </NavLink>
+
+
+                {/* SELLER NAME */}
+
+                <NavLink
+                  to={`/agreements/${agreement.id}`}
+                  className="agreement-seller agreement-clickable"
+                >
                   {agreement.sellerName}
-                </span>
+                </NavLink>
+
+
+                {/* AMOUNT */}
 
                 <span className="agreement-amount">
-                  ₹{Number(agreement.amount).toLocaleString("en-IN")}
+
+                  ₹
+                  {Number(
+                    agreement.amount
+                  ).toLocaleString("en-IN")}
+
                 </span>
+
+
+                {/* YEAR */}
 
                 <span className="agreement-year">
                   {agreement.tillYear}
                 </span>
 
+
+                {/* STATUS */}
+
                 <span>
+
                   <strong
                     className={`status-badge ${agreement.status.toLowerCase()}`}
                   >
                     {agreement.status}
                   </strong>
+
                 </span>
 
               </div>

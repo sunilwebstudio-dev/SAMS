@@ -68,9 +68,6 @@ function AgreementList() {
 
          <div className="agreement-list-page">
 
-         
-    <div className="agreement-list-page">
-
       {/* =====================================
           PAGE HEADER
       ===================================== */}
@@ -383,9 +380,6 @@ function AgreementList() {
       </div>
 
     </div>
-
-    </div>
-    
      </DashboardLayout>
   );
 }

@@ -1,0 +1,402 @@
+/* =========================================
+   AGREEMENT FORM
+========================================= */
+
+.agreement-form {
+  width: 100%;
+
+  min-width: 0;
+}
+
+
+/* =========================================
+   FORM SECTION
+========================================= */
+
+.agreement-form-section {
+  width: 100%;
+
+  margin-bottom: 22px;
+
+  padding: 22px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 14px;
+
+  box-shadow:
+    0 4px 14px rgba(0, 0, 0, 0.04);
+}
+
+
+/* =========================================
+   SECTION HEADER
+========================================= */
+
+.agreement-form-section-header {
+  margin-bottom: 20px;
+}
+
+.agreement-form-section-header h3 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 17px;
+
+  font-weight: 700;
+}
+
+.agreement-form-section-header p {
+  margin: 5px 0 0;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   FORM GRID
+========================================= */
+
+.agreement-form-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 18px;
+}
+
+
+/* =========================================
+   FIELD
+========================================= */
+
+.agreement-form-field {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 7px;
+
+  min-width: 0;
+
+  margin-bottom: 16px;
+}
+
+.agreement-form-field:last-child {
+  margin-bottom: 0;
+}
+
+.agreement-form-field label {
+  color: #334155;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.agreement-form-field label span {
+  margin-left: 3px;
+
+  color: #dc2626;
+}
+
+
+/* =========================================
+   INPUT / SELECT / TEXTAREA
+========================================= */
+
+.agreement-form-field input,
+.agreement-form-field select,
+.agreement-form-field textarea {
+  width: 100%;
+
+  box-sizing: border-box;
+
+  border: 1px solid #dbe3ec;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #f8fafc;
+
+  color: #1e293b;
+
+  font-family: inherit;
+
+  font-size: 13px;
+
+  transition:
+    border-color 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.agreement-form-field input,
+.agreement-form-field select {
+  height: 42px;
+
+  padding: 0 12px;
+}
+
+.agreement-form-field textarea {
+  min-height: 100px;
+
+  padding: 12px;
+
+  resize: vertical;
+
+  line-height: 1.5;
+}
+
+.agreement-form-field input::placeholder,
+.agreement-form-field textarea::placeholder {
+  color: #94a3b8;
+}
+
+.agreement-form-field input:focus,
+.agreement-form-field select:focus,
+.agreement-form-field textarea:focus {
+  border-color: #22c55e;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 0 0 3px rgba(34, 197, 94, 0.1);
+}
+
+.agreement-form-field input:disabled,
+.agreement-form-field select:disabled,
+.agreement-form-field textarea:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.65;
+}
+
+
+/* =========================================
+   AMOUNT INPUT
+========================================= */
+
+.amount-input-wrapper {
+  position: relative;
+
+  width: 100%;
+}
+
+.amount-input-wrapper > span {
+  position: absolute;
+
+  left: 13px;
+
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #64748b;
+
+  font-size: 13px;
+
+  font-weight: 600;
+
+  pointer-events: none;
+}
+
+.amount-input-wrapper input {
+  padding-left: 30px;
+}
+
+
+/* =========================================
+   ERROR
+========================================= */
+
+.form-error {
+  color: #dc2626;
+
+  font-size: 10px;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================
+   FORM ACTIONS
+========================================= */
+
+.agreement-form-actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  align-items: center;
+
+  gap: 10px;
+
+  padding-top: 2px;
+}
+
+.agreement-form-cancel,
+.agreement-form-submit {
+  min-height: 42px;
+
+  padding: 0 18px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
+}
+
+.agreement-form-cancel {
+  border: 1px solid #dbe3ec;
+
+  background: #ffffff;
+
+  color: #475569;
+}
+
+.agreement-form-cancel:hover {
+  border-color: #cbd5e1;
+
+  background: #f8fafc;
+}
+
+.agreement-form-submit {
+  border: 1px solid #16a34a;
+
+  background: #16a34a;
+
+  color: #ffffff;
+}
+
+.agreement-form-submit:hover {
+  background: #15803d;
+
+  border-color: #15803d;
+
+  transform: translateY(-1px);
+}
+
+.agreement-form-cancel:disabled,
+.agreement-form-submit:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 1024px) {
+
+  .agreement-form-section {
+    padding: 18px;
+  }
+
+  .agreement-form-grid {
+    gap: 14px;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 768px) {
+
+  .agreement-form-section {
+    padding: 16px;
+
+    border-radius: 12px;
+  }
+
+  .agreement-form-grid {
+    grid-template-columns: 1fr;
+
+    gap: 0;
+  }
+
+  .agreement-form-section-header h3 {
+    font-size: 16px;
+  }
+
+  .agreement-form-field {
+    margin-bottom: 14px;
+  }
+
+  .agreement-form-actions {
+    flex-direction: column-reverse;
+
+    align-items: stretch;
+
+    width: 100%;
+  }
+
+  .agreement-form-cancel,
+  .agreement-form-submit {
+    width: 100%;
+  }
+}
+
+
+/* =========================================
+   SMALL MOBILE
+========================================= */
+
+@media (max-width: 480px) {
+
+  .agreement-form-section {
+    padding: 13px;
+  }
+
+  .agreement-form-section-header {
+    margin-bottom: 16px;
+  }
+
+  .agreement-form-section-header p {
+    font-size: 10px;
+  }
+
+  .agreement-form-field input,
+  .agreement-form-field select {
+    height: 40px;
+
+    font-size: 12px;
+  }
+
+  .agreement-form-field textarea {
+    font-size: 12px;
+  }
+}
+
+.form-helper {
+  color: #64748b;
+  font-size: 10px;
+  line-height: 1.3;
+}

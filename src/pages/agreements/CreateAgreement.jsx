@@ -2,6 +2,8 @@ import { useState } from "react";
 import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 import SellerSearch from "../../components/agreements/SellerSearch";
 import "./CreateAgreement.css";
+import AgreementForm from "../../components/agreements/AgreementForm/AgreementForm";
+
 
 function CreateAgreement() {
   const [agreementType, setAgreementType] = useState("");
@@ -155,6 +157,34 @@ function CreateAgreement() {
         </div>
 
       </div>
+
+      {/* STEP 3 */}
+{agreementType && (
+  <div className="create-agreement-card">
+
+    <div className="agreement-step-header">
+
+      <span className="step-number">
+        3
+      </span>
+
+      <div>
+        <h2>Agreement Information</h2>
+
+        <p>
+          Enter the details of the selected agreement.
+        </p>
+      </div>
+
+    </div>
+
+    <AgreementForm
+      agreementType={agreementType}
+      submitLabel="Continue"
+    />
+
+  </div>
+)}
 
     </DashboardLayout>
   );
