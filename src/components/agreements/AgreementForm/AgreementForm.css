@@ -4,8 +4,97 @@
 
 .agreement-form {
   width: 100%;
+  min-width: 0;
+}
+
+
+/* =========================================
+   TYPE BANNER
+========================================= */
+
+.agreement-form-type-banner {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+
+  width: 100%;
+  min-height: 68px;
+
+  padding: 12px 16px;
+  margin-bottom: 20px;
+
+  box-sizing: border-box;
+
+  background: linear-gradient(
+    135deg,
+    #f8fafc,
+    #ffffff
+  );
+
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.04);
+
+  animation: agreementBannerIn 0.45s ease both;
+}
+
+.agreement-form-type-icon {
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 11px;
+
+  background: #f0fdf4;
+
+  font-size: 21px;
+
+  animation: iconPop 0.5s ease 0.1s both;
+}
+
+.agreement-form-type-banner > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 
   min-width: 0;
+}
+
+.agreement-form-type-banner > div:nth-child(2) span {
+  color: #64748b;
+
+  font-size: 10px;
+  font-weight: 500;
+}
+
+.agreement-form-type-banner > div:nth-child(2) strong {
+  color: #0f172a;
+
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.agreement-form-type-status {
+  margin-left: auto;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #dcfce7;
+  color: #15803d;
+
+  font-size: 10px;
+  font-weight: 700;
+
+  white-space: nowrap;
 }
 
 
@@ -16,8 +105,7 @@
 .agreement-form-section {
   width: 100%;
 
-  margin-bottom: 22px;
-
+  margin-bottom: 18px;
   padding: 22px;
 
   box-sizing: border-box;
@@ -25,7 +113,6 @@
   background: #ffffff;
 
   border: 1px solid #e5e7eb;
-
   border-radius: 14px;
 
   box-shadow:
@@ -34,10 +121,37 @@
 
 
 /* =========================================
+   PREMIUM SECTION ENTRANCE
+========================================= */
+
+.form-section-animate {
+  opacity: 0;
+
+  transform: translateY(12px) scale(0.99);
+
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+.form-section-animate.visible {
+  opacity: 1;
+
+  transform: translateY(0) scale(1);
+}
+
+
+/* =========================================
    SECTION HEADER
 ========================================= */
 
 .agreement-form-section-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 15px;
+
   margin-bottom: 20px;
 }
 
@@ -47,7 +161,6 @@
   color: #111827;
 
   font-size: 17px;
-
   font-weight: 700;
 }
 
@@ -57,8 +170,28 @@
   color: #64748b;
 
   font-size: 11px;
-
   line-height: 1.5;
+}
+
+.section-badge {
+  flex-shrink: 0;
+
+  padding: 5px 9px;
+
+  border-radius: 999px;
+
+  background: #f1f5f9;
+  color: #475569;
+
+  font-size: 9px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+.section-badge.success {
+  background: #dcfce7;
+  color: #15803d;
 }
 
 
@@ -82,25 +215,19 @@
 
 .agreement-form-field {
   display: flex;
-
   flex-direction: column;
 
   gap: 7px;
 
   min-width: 0;
 
-  margin-bottom: 16px;
-}
-
-.agreement-form-field:last-child {
-  margin-bottom: 0;
+  margin-bottom: 2px;
 }
 
 .agreement-form-field label {
   color: #334155;
 
   font-size: 12px;
-
   font-weight: 600;
 }
 
@@ -112,18 +239,18 @@
 
 
 /* =========================================
-   INPUT / SELECT / TEXTAREA
+   INPUT
 ========================================= */
 
-.agreement-form-field input,
-.agreement-form-field select,
-.agreement-form-field textarea {
+.agreement-form-field input {
   width: 100%;
+  height: 43px;
+
+  padding: 0 12px;
 
   box-sizing: border-box;
 
   border: 1px solid #dbe3ec;
-
   border-radius: 9px;
 
   outline: none;
@@ -133,54 +260,123 @@
   color: #1e293b;
 
   font-family: inherit;
-
   font-size: 13px;
 
   transition:
     border-color 0.2s ease,
     background 0.2s ease,
-    box-shadow 0.2s ease;
+    box-shadow 0.2s ease,
+    transform 0.2s ease;
 }
 
-.agreement-form-field input,
-.agreement-form-field select {
-  height: 42px;
-
-  padding: 0 12px;
-}
-
-.agreement-form-field textarea {
-  min-height: 100px;
-
-  padding: 12px;
-
-  resize: vertical;
-
-  line-height: 1.5;
-}
-
-.agreement-form-field input::placeholder,
-.agreement-form-field textarea::placeholder {
+.agreement-form-field input::placeholder {
   color: #94a3b8;
 }
 
-.agreement-form-field input:focus,
-.agreement-form-field select:focus,
-.agreement-form-field textarea:focus {
+.agreement-form-field input:focus {
   border-color: #22c55e;
 
   background: #ffffff;
 
   box-shadow:
     0 0 0 3px rgba(34, 197, 94, 0.1);
+
+  transform: translateY(-1px);
 }
 
-.agreement-form-field input:disabled,
-.agreement-form-field select:disabled,
-.agreement-form-field textarea:disabled {
+.agreement-form-field input:disabled {
   cursor: not-allowed;
 
-  opacity: 0.65;
+  opacity: 0.68;
+}
+
+
+/* =========================================
+   ERROR INPUT
+========================================= */
+
+.agreement-form-field input.has-error {
+  border-color: #ef4444;
+
+  background: #fffafa;
+
+  animation: inputShake 0.28s ease;
+}
+
+.agreement-form-field input.has-error:focus {
+  box-shadow:
+    0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+
+/* =========================================
+   AUTOMATIC FIELD
+========================================= */
+
+.automatic-field {
+  position: relative;
+
+  width: 100%;
+}
+
+.automatic-field input {
+  padding-right: 88px;
+
+  background: #f8fafc;
+
+  color: #475569;
+}
+
+.automatic-badge {
+  position: absolute;
+
+  top: 50%;
+  right: 9px;
+
+  transform: translateY(-50%);
+
+  padding: 4px 7px;
+
+  border-radius: 6px;
+
+  background: #e2e8f0;
+  color: #475569;
+
+  font-size: 8px;
+  font-weight: 700;
+
+  pointer-events: none;
+}
+
+
+/* =========================================
+   INPUT SUFFIX
+========================================= */
+
+.input-with-suffix {
+  position: relative;
+
+  width: 100%;
+}
+
+.input-with-suffix input {
+  padding-right: 65px;
+}
+
+.input-with-suffix > span {
+  position: absolute;
+
+  right: 12px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 600;
+
+  pointer-events: none;
 }
 
 
@@ -198,7 +394,6 @@
   position: absolute;
 
   left: 13px;
-
   top: 50%;
 
   transform: translateY(-50%);
@@ -206,7 +401,6 @@
   color: #64748b;
 
   font-size: 13px;
-
   font-weight: 600;
 
   pointer-events: none;
@@ -218,8 +412,16 @@
 
 
 /* =========================================
-   ERROR
+   HELPER / ERROR
 ========================================= */
+
+.form-helper {
+  color: #64748b;
+
+  font-size: 10px;
+
+  line-height: 1.4;
+}
 
 .form-error {
   color: #dc2626;
@@ -227,18 +429,139 @@
   font-size: 10px;
 
   line-height: 1.3;
+
+  animation: errorIn 0.22s ease both;
 }
 
 
 /* =========================================
-   FORM ACTIONS
+   AUTOMATIC INFORMATION
+========================================= */
+
+.automatic-info-section {
+  background:
+    linear-gradient(
+      135deg,
+      #f8fffa,
+      #ffffff
+    );
+
+  border-color: #d1fae5;
+}
+
+.automatic-info-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(2, minmax(0, 1fr));
+
+  gap: 10px;
+}
+
+.automatic-info-item {
+  padding: 13px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+
+  background: rgba(255, 255, 255, 0.8);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.automatic-info-item:hover {
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 5px 14px rgba(15, 23, 42, 0.05);
+}
+
+.automatic-info-item span {
+  display: block;
+
+  margin-bottom: 5px;
+
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+.automatic-info-item strong {
+  display: block;
+
+  color: #334155;
+
+  font-size: 11px;
+}
+
+
+/* =========================================
+   MASTER NOTE
+========================================= */
+
+.agreement-master-note {
+  display: flex;
+  align-items: flex-start;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+  padding: 14px 16px;
+
+  border: 1px solid #bbf7d0;
+  border-radius: 12px;
+
+  background: #f0fdf4;
+}
+
+.master-note-icon {
+  width: 27px;
+  height: 27px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  flex-shrink: 0;
+
+  border-radius: 50%;
+
+  background: #16a34a;
+  color: #ffffff;
+
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.agreement-master-note strong {
+  display: block;
+
+  color: #166534;
+
+  font-size: 12px;
+}
+
+.agreement-master-note p {
+  margin: 4px 0 0;
+
+  color: #4d7c5c;
+
+  font-size: 10px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   ACTIONS
 ========================================= */
 
 .agreement-form-actions {
   display: flex;
 
   justify-content: flex-end;
-
   align-items: center;
 
   gap: 10px;
@@ -248,7 +571,7 @@
 
 .agreement-form-cancel,
 .agreement-form-submit {
-  min-height: 42px;
+  min-height: 43px;
 
   padding: 0 18px;
 
@@ -257,7 +580,6 @@
   font-family: inherit;
 
   font-size: 12px;
-
   font-weight: 600;
 
   cursor: pointer;
@@ -265,7 +587,8 @@
   transition:
     background 0.2s ease,
     border-color 0.2s ease,
-    transform 0.2s ease;
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
 }
 
 .agreement-form-cancel {
@@ -280,14 +603,25 @@
   border-color: #cbd5e1;
 
   background: #f8fafc;
+
+  transform: translateY(-1px);
 }
 
 .agreement-form-submit {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 8px;
+
   border: 1px solid #16a34a;
 
   background: #16a34a;
 
   color: #ffffff;
+
+  box-shadow:
+    0 5px 14px rgba(22, 163, 74, 0.16);
 }
 
 .agreement-form-submit:hover {
@@ -295,7 +629,15 @@
 
   border-color: #15803d;
 
-  transform: translateY(-1px);
+  transform: translateY(-2px);
+
+  box-shadow:
+    0 8px 18px rgba(22, 163, 74, 0.2);
+}
+
+.agreement-form-cancel:active,
+.agreement-form-submit:active {
+  transform: translateY(0) scale(0.98);
 }
 
 .agreement-form-cancel:disabled,
@@ -305,6 +647,50 @@
   opacity: 0.6;
 
   transform: none;
+
+  box-shadow: none;
+}
+
+.button-arrow {
+  font-size: 15px;
+
+  transition:
+    transform 0.2s ease;
+}
+
+.agreement-form-submit:hover .button-arrow {
+  transform: translateX(3px);
+}
+
+
+/* =========================================
+   BUTTON SPINNER
+========================================= */
+
+.button-spinner {
+  width: 13px;
+  height: 13px;
+
+  border: 2px solid rgba(255, 255, 255, 0.35);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation: buttonSpin 0.7s linear infinite;
+}
+
+
+/* =========================================
+   OTHER AGREEMENT
+========================================= */
+
+.agreement-form-section:has(
+  #otherAgreementName
+) {
+  animation:
+    otherAgreementIn
+    0.45s ease both;
 }
 
 
@@ -330,6 +716,10 @@
 
 @media (max-width: 768px) {
 
+  .agreement-form-type-banner {
+    padding: 11px 13px;
+  }
+
   .agreement-form-section {
     padding: 16px;
 
@@ -339,15 +729,19 @@
   .agreement-form-grid {
     grid-template-columns: 1fr;
 
-    gap: 0;
+    gap: 14px;
+  }
+
+  .automatic-info-grid {
+    grid-template-columns: 1fr;
   }
 
   .agreement-form-section-header h3 {
     font-size: 16px;
   }
 
-  .agreement-form-field {
-    margin-bottom: 14px;
+  .agreement-form-section-header p {
+    font-size: 10px;
   }
 
   .agreement-form-actions {
@@ -371,6 +765,29 @@
 
 @media (max-width: 480px) {
 
+  .agreement-form-type-banner {
+    gap: 10px;
+
+    min-height: 60px;
+  }
+
+  .agreement-form-type-icon {
+    width: 36px;
+    height: 36px;
+
+    font-size: 18px;
+  }
+
+  .agreement-form-type-banner > div:nth-child(2) strong {
+    font-size: 12px;
+  }
+
+  .agreement-form-type-status {
+    padding: 5px 7px;
+
+    font-size: 8px;
+  }
+
   .agreement-form-section {
     padding: 13px;
   }
@@ -379,24 +796,127 @@
     margin-bottom: 16px;
   }
 
-  .agreement-form-section-header p {
-    font-size: 10px;
-  }
-
-  .agreement-form-field input,
-  .agreement-form-field select {
+  .agreement-form-field input {
     height: 40px;
 
     font-size: 12px;
   }
 
-  .agreement-form-field textarea {
-    font-size: 12px;
+  .automatic-info-item {
+    padding: 11px;
+  }
+
+  .agreement-master-note {
+    padding: 12px;
   }
 }
 
-.form-helper {
-  color: #64748b;
-  font-size: 10px;
-  line-height: 1.3;
+
+/* =========================================
+   ANIMATIONS
+========================================= */
+
+@keyframes agreementBannerIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(-8px)
+      scale(0.98);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+@keyframes iconPop {
+  0% {
+    opacity: 0;
+
+    transform: scale(0.7);
+  }
+
+  70% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform: scale(1);
+  }
+}
+
+@keyframes errorIn {
+  from {
+    opacity: 0;
+
+    transform: translateY(-3px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform: translateY(0);
+  }
+}
+
+@keyframes inputShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-3px);
+  }
+
+  75% {
+    transform: translateX(3px);
+  }
+}
+
+@keyframes buttonSpin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes otherAgreementIn {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
 }

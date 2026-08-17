@@ -1,0 +1,2247 @@
+/* =========================================
+   AGREEMENT PREVIEW PAGE
+========================================= */
+
+.agreement-preview-page {
+  width: 100%;
+  min-width: 0;
+}
+
+
+/* =========================================
+   PREVIEW TOP BAR
+========================================= */
+
+.agreement-preview-topbar {
+  width: 100%;
+  max-width: 1200px;
+
+  margin: 0 auto 24px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 20px;
+}
+
+.agreement-preview-eyebrow {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #64748b;
+
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.agreement-preview-topbar h2 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 26px;
+
+  line-height: 1.2;
+
+  font-weight: 700;
+}
+
+.agreement-preview-topbar p {
+  margin: 7px 0 0;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   PREVIEW ACTIONS
+========================================= */
+
+.agreement-preview-actions {
+  display: flex;
+
+  align-items: center;
+
+  gap: 10px;
+
+  flex-shrink: 0;
+}
+
+.preview-edit-button,
+.preview-submit-button {
+  min-height: 43px;
+
+  padding: 0 18px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 12px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+
+.preview-edit-button {
+  border: 1px solid #dbe3ec;
+
+  background: #ffffff;
+
+  color: #475569;
+}
+
+.preview-edit-button:hover {
+  background: #f8fafc;
+
+  transform: translateY(-1px);
+}
+
+.preview-submit-button {
+  border: 1px solid #16a34a;
+
+  background: #16a34a;
+
+  color: #ffffff;
+}
+
+.preview-submit-button:hover {
+  background: #15803d;
+
+  border-color: #15803d;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 6px 16px rgba(22, 163, 74, 0.18);
+}
+
+.preview-edit-button:disabled,
+.preview-submit-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+}
+
+
+/* =========================================
+   A4 WRAPPER
+========================================= */
+
+.agreement-preview-wrapper {
+  width: 100%;
+
+  display: flex;
+
+  justify-content: center;
+
+  padding: 10px 0 35px;
+
+  box-sizing: border-box;
+}
+
+
+/* =========================================
+   A4 DOCUMENT
+========================================= */
+
+.agreement-a4-page {
+  width: 210mm;
+
+  min-height: 297mm;
+
+  box-sizing: border-box;
+
+  padding: 10mm 12mm 8mm;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  border: 1px solid #e2e8f0;
+
+  box-shadow:
+    0 10px 35px rgba(15, 23, 42, 0.12);
+
+  display: flex;
+
+  flex-direction: column;
+
+  font-family:
+    "Noto Sans Devanagari",
+    "Nirmala UI",
+    Arial,
+    sans-serif;
+}
+
+
+/* =========================================
+   DOCUMENT HEADER
+========================================= */
+
+.agreement-document-header {
+  width: 100%;
+
+  padding-bottom: 7px;
+
+  text-align: center;
+
+  border-bottom: 1.2px solid #334155;
+}
+
+.agreement-document-header h1 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 18px;
+
+  line-height: 1.45;
+
+  font-weight: 700;
+}
+
+
+/* =========================================
+   TOP INFORMATION BOX — FINAL
+========================================= */
+
+.agreement-document-meta {
+  width: 100%;
+
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  margin-top: 10px;
+
+  border: 1px solid #64748b;
+
+  border-radius: 2px;
+
+  overflow: hidden;
+
+  box-sizing: border-box;
+
+  min-height: 70px;
+}
+
+
+.agreement-meta-column {
+  min-width: 0;
+
+  padding: 9px 11px;
+
+  box-sizing: border-box;
+
+  display: flex;
+
+  flex-direction: column;
+
+  justify-content: center;
+}
+
+
+.agreement-meta-column + .agreement-meta-column {
+  border-left: 1px solid #64748b;
+}
+
+
+.agreement-meta-row {
+  display: flex;
+
+  align-items: flex-start;
+
+  gap: 7px;
+
+  margin-bottom: 6px;
+
+  color: #1e293b;
+
+  font-size: 9.8px;
+
+  line-height: 1.45;
+}
+
+
+.agreement-meta-row:last-child {
+  margin-bottom: 0;
+}
+
+
+.agreement-meta-row span {
+  flex-shrink: 0;
+
+  color: #334155;
+
+  font-weight: 600;
+}
+
+
+.agreement-meta-row strong {
+  min-width: 0;
+
+  color: #111827;
+
+  font-weight: 500;
+
+  overflow-wrap: anywhere;
+}
+
+
+.agreement-meta-status {
+  color: #15803d !important;
+
+  font-weight: 700 !important;
+}
+
+
+/* =========================================
+   DOCUMENT BODY
+========================================= */
+
+.agreement-document-body {
+  flex: 1;
+
+  min-height: 0;
+
+  padding-top: 12px;
+
+  color: #111827;
+}
+
+
+/* =========================================
+   MAIN AGREEMENT TEXT
+========================================= */
+
+.agreement-document-body > p {
+  margin: 0 0 11px;
+
+  color: #111827;
+
+  font-size: 13px;
+
+  line-height: 1.7;
+
+  font-weight: 400;
+
+  text-align: left;
+}
+
+.agreement-filled-value {
+  color: #111827;
+
+  font-weight: 600;
+
+  text-decoration: underline;
+
+  text-decoration-thickness: 0.6px;
+
+  text-underline-offset: 2px;
+}
+
+
+/* =========================================
+   TERMS & CONDITIONS
+========================================= */
+
+.agreement-terms-section {
+  margin-top: 12px;
+
+  padding-top: 9px;
+
+  border-top: 1px solid #94a3b8;
+}
+
+.agreement-terms-section h3 {
+  margin: 0 0 6px;
+
+  color: #111827;
+
+  font-size: 12.5px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+}
+
+.agreement-terms-section p {
+  margin: 0 0 5px;
+
+  color: #1e293b;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   WITNESSES
+========================================= */
+
+.agreement-witness-section {
+  margin-top: 13px;
+}
+
+.agreement-witness-section h3 {
+  margin: 0 0 7px;
+
+  color: #111827;
+
+  font-size: 12.5px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+}
+
+.agreement-witness-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 4px;
+}
+
+.agreement-witness-list p {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 11.5px;
+
+  line-height: 1.45;
+}
+
+
+/* =========================================
+   SIGNATURE SECTION
+========================================= */
+
+.agreement-signature-section {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1fr)
+    minmax(0, 1fr);
+
+  gap: 70px;
+
+  margin-top: 14px;
+
+  padding-top: 9px;
+
+  border-top: 1px solid #94a3b8;
+}
+
+.agreement-signature-box {
+  min-width: 0;
+}
+
+.agreement-signature-box h3 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 12.5px;
+
+  line-height: 1.4;
+
+  font-weight: 700;
+}
+
+.signature-space {
+  height: 38px;
+}
+
+.agreement-signature-box p {
+  margin: 3px 0;
+
+  color: #111827;
+
+  font-size: 11px;
+
+  line-height: 1.5;
+}
+
+.signature-line {
+  white-space: nowrap;
+}
+
+.agreement-signature-box strong {
+  font-weight: 600;
+}
+
+
+/* =========================================
+   DOCUMENT FOOTER — FINAL
+========================================= */
+
+.agreement-document-footer {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 18px;
+
+  margin-top: 14px;
+  padding-top: 8px;
+
+  border-top: 1px solid #cbd5e1;
+}
+
+
+/* =========================================
+   SAMS FOOTER BRANDING
+========================================= */
+
+.agreement-footer-info {
+  min-width: 0;
+
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.agreement-footer-info strong {
+  color: #15803d;
+
+  font-size: 14px;
+
+  line-height: 1.1;
+
+  font-weight: 800;
+}
+
+.agreement-footer-info span {
+  color: #334155;
+
+  font-size: 9.5px;
+
+  line-height: 1.3;
+
+  font-weight: 600;
+}
+
+.agreement-footer-info small {
+  color: #64748b;
+
+  font-size: 8px;
+
+  line-height: 1.3;
+}
+
+
+/* =========================================
+   QR VERIFICATION
+========================================= */
+
+.agreement-qr-placeholder {
+  width: 25mm;
+  height: 25mm;
+
+  flex-shrink: 0;
+
+  display: flex;
+
+  flex-direction: column;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  box-sizing: border-box;
+
+  border: 1px dashed #64748b;
+
+  background: #ffffff;
+
+  border-radius: 2px;
+}
+
+.agreement-qr-placeholder div {
+  color: #334155;
+
+  font-size: 10px;
+
+  font-weight: 700;
+}
+
+.agreement-qr-placeholder span {
+  color: #64748b;
+
+  font-size: 7px;
+
+  font-weight: 500;
+}
+
+
+/* =========================================
+   SPINNER
+========================================= */
+
+.preview-spinner {
+  width: 12px;
+
+  height: 12px;
+
+  display: inline-block;
+
+  margin-right: 6px;
+
+  border: 2px solid rgba(255, 255, 255, 0.45);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    preview-spin 0.7s linear infinite;
+}
+
+@keyframes preview-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================
+   PRINT / A4 PDF
+========================================= */
+
+@media print {
+
+  @page {
+    size: A4;
+
+    margin: 0;
+  }
+
+  html,
+  body {
+    margin: 0;
+
+    padding: 0;
+
+    background: #ffffff;
+  }
+
+  .agreement-preview-topbar {
+    display: none;
+  }
+
+  .agreement-preview-wrapper {
+    padding: 0;
+  }
+
+  .agreement-a4-page {
+    width: 210mm;
+
+    min-height: 297mm;
+
+    margin: 0;
+
+    border: none;
+
+    box-shadow: none;
+
+    padding: 10mm 12mm 8mm;
+  }
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+  .agreement-preview-topbar {
+    flex-direction: column;
+
+    align-items: flex-start;
+  }
+
+  .agreement-preview-actions {
+    width: 100%;
+  }
+
+  .preview-edit-button,
+  .preview-submit-button {
+    flex: 1;
+  }
+
+  .agreement-preview-wrapper {
+    overflow-x: auto;
+
+    justify-content: flex-start;
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 600px) {
+
+  .agreement-preview-actions {
+    width: 100%;
+
+    flex-direction: column;
+  }
+
+  .preview-edit-button,
+  .preview-submit-button {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   SUBMIT CONFIRMATION MODAL
+========================================= */
+
+.agreement-submit-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 9999;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: rgba(15, 23, 42, 0.48);
+
+  backdrop-filter: blur(5px);
+
+  animation:
+    submit-overlay-in 0.22s ease forwards;
+}
+
+
+.agreement-submit-modal {
+  width: 100%;
+
+  max-width: 470px;
+
+  padding: 28px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 18px;
+
+  box-shadow:
+    0 25px 70px rgba(15, 23, 42, 0.22);
+
+  animation:
+    submit-modal-in 0.28s ease forwards;
+}
+
+
+/* =========================================
+   MODAL ICON
+========================================= */
+
+.agreement-submit-icon {
+  width: 48px;
+  height: 48px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 16px;
+
+  border-radius: 14px;
+
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  color: #16a34a;
+
+  font-size: 20px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================
+   MODAL TEXT
+========================================= */
+
+.agreement-submit-modal h3 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 20px;
+
+  line-height: 1.3;
+
+  font-weight: 700;
+}
+
+
+.agreement-submit-modal > p {
+  margin: 8px 0 18px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================
+   SUMMARY
+========================================= */
+
+.agreement-submit-summary {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 9px;
+
+  margin-bottom: 22px;
+
+  padding: 14px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 12px;
+}
+
+
+.agreement-submit-summary > div {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.agreement-submit-summary span {
+  color: #64748b;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+.agreement-submit-summary strong {
+  color: #1e293b;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-align: right;
+
+  overflow-wrap: anywhere;
+}
+
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.agreement-submit-modal-actions {
+  display: flex;
+
+  gap: 10px;
+}
+
+
+.agreement-modal-edit,
+.agreement-modal-confirm {
+  flex: 1;
+
+  min-height: 43px;
+
+  padding: 0 14px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.agreement-modal-edit {
+  border: 1px solid #dbe3ec;
+
+  background: #ffffff;
+
+  color: #475569;
+}
+
+
+.agreement-modal-edit:hover {
+  background: #f8fafc;
+
+  transform: translateY(-1px);
+}
+
+
+.agreement-modal-confirm {
+  border: 1px solid #16a34a;
+
+  background: #16a34a;
+
+  color: #ffffff;
+}
+
+
+.agreement-modal-confirm:hover {
+  background: #15803d;
+
+  border-color: #15803d;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(22, 163, 74, 0.18);
+}
+
+
+.agreement-modal-edit:disabled,
+.agreement-modal-confirm:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.6;
+
+  transform: none;
+}
+
+
+/* =========================================
+   SPINNER
+========================================= */
+
+.modal-spinner {
+  width: 12px;
+  height: 12px;
+
+  display: inline-block;
+
+  margin-right: 6px;
+
+  vertical-align: -2px;
+
+  border: 2px solid rgba(255, 255, 255, 0.4);
+
+  border-top-color: #ffffff;
+
+  border-radius: 50%;
+
+  animation:
+    modal-spin 0.7s linear infinite;
+}
+
+
+@keyframes modal-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes submit-overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes submit-modal-in {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(12px)
+      scale(0.97);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+  .agreement-submit-modal {
+    padding: 22px;
+
+    border-radius: 15px;
+  }
+
+  .agreement-submit-modal-actions {
+    flex-direction: column;
+  }
+
+  .agreement-modal-edit,
+  .agreement-modal-confirm {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   FORM READABILITY UPGRADE
+========================================= */
+
+.agreement-form-section-header h3 {
+  font-size: 18px;
+  font-weight: 750;
+  color: #0f172a;
+  line-height: 1.35;
+}
+
+.agreement-form-section-header p {
+  font-size: 12px;
+  font-weight: 500;
+  color: #52637a;
+  line-height: 1.55;
+}
+
+.agreement-form-field label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #263449;
+  line-height: 1.4;
+}
+
+.agreement-form-field input,
+.agreement-form-field select,
+.agreement-form-field textarea {
+  font-size: 14px;
+  font-weight: 500;
+  color: #172033;
+}
+
+.agreement-form-field input::placeholder,
+.agreement-form-field textarea::placeholder {
+  font-size: 13px;
+  font-weight: 400;
+  color: #8a9ab0;
+}
+
+.form-helper {
+  font-size: 11px;
+  font-weight: 500;
+  color: #607089;
+  line-height: 1.45;
+}
+
+.form-error {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.agreement-form-type-banner {
+  font-size: 13px;
+}
+
+.agreement-form-type-banner strong {
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.agreement-form-type-banner span {
+  font-size: 11px;
+  font-weight: 600;
+}
+
+.section-badge {
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.agreement-form-submit,
+.agreement-form-cancel {
+  font-size: 13px;
+  font-weight: 700;
+}
+
+/* =========================================
+   AGREEMENT SUCCESS SCREEN
+========================================= */
+
+.agreement-success-overlay {
+  position: fixed;
+
+  inset: 0;
+
+  z-index: 10000;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  box-sizing: border-box;
+
+  background: rgba(15, 23, 42, 0.52);
+
+  backdrop-filter: blur(7px);
+
+  animation: success-overlay-in 0.25s ease forwards;
+}
+
+
+.agreement-success-card {
+  width: 100%;
+
+  max-width: 500px;
+
+  padding: 32px;
+
+  box-sizing: border-box;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 20px;
+
+  text-align: center;
+
+  box-shadow:
+    0 25px 80px rgba(15, 23, 42, 0.22);
+
+  animation: success-card-in 0.35s ease forwards;
+}
+
+
+/* =========================================
+   SUCCESS ICON
+========================================= */
+
+.agreement-success-icon {
+  width: 64px;
+  height: 64px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 15px;
+
+  border-radius: 50%;
+
+  background: #dcfce7;
+
+  border: 6px solid #f0fdf4;
+
+  color: #16a34a;
+
+  font-size: 27px;
+
+  font-weight: 800;
+
+  animation: success-icon-pop 0.45s ease forwards;
+}
+
+
+.agreement-success-label {
+  display: block;
+
+  margin-bottom: 6px;
+
+  color: #16a34a;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 1.2px;
+}
+
+
+.agreement-success-card h2 {
+  margin: 0;
+
+  color: #111827;
+
+  font-size: 21px;
+
+  line-height: 1.35;
+
+  font-weight: 750;
+}
+
+
+.agreement-success-card > p {
+  margin: 8px 0 22px;
+
+  color: #64748b;
+
+  font-size: 12px;
+
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   SUCCESS DETAILS
+========================================= */
+
+.agreement-success-details {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+
+  padding: 15px;
+
+  margin-bottom: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 13px;
+
+  text-align: left;
+}
+
+
+.agreement-success-details > div {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 15px;
+}
+
+
+.agreement-success-details span {
+  color: #64748b;
+
+  font-size: 10px;
+
+  font-weight: 600;
+}
+
+
+.agreement-success-details strong {
+  color: #1e293b;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  text-align: right;
+}
+
+
+.agreement-success-details .success-status {
+  color: #16a34a;
+}
+
+
+/* =========================================
+   SUCCESS ACTIONS
+========================================= */
+
+.agreement-success-actions {
+  display: flex;
+
+  gap: 10px;
+
+  margin-bottom: 10px;
+}
+
+
+.success-secondary-button,
+.success-primary-button {
+  flex: 1;
+
+  min-height: 43px;
+
+  padding: 0 14px;
+
+  border-radius: 9px;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.2s ease,
+    background 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+
+.success-secondary-button {
+  border: 1px solid #dbe3ec;
+
+  background: #ffffff;
+
+  color: #475569;
+}
+
+
+.success-secondary-button:hover {
+  background: #f8fafc;
+
+  transform: translateY(-1px);
+}
+
+
+.success-primary-button {
+  border: 1px solid #16a34a;
+
+  background: #16a34a;
+
+  color: #ffffff;
+}
+
+
+.success-primary-button:hover {
+  background: #15803d;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(22, 163, 74, 0.18);
+}
+
+
+.success-done-button {
+  width: 100%;
+
+  min-height: 38px;
+
+  border: none;
+
+  background: transparent;
+
+  color: #64748b;
+
+  font-family: inherit;
+
+  font-size: 11px;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+
+.success-done-button:hover {
+  color: #16a34a;
+}
+
+
+/* =========================================
+   SUCCESS ANIMATIONS
+========================================= */
+
+@keyframes success-overlay-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+
+@keyframes success-card-in {
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(18px)
+      scale(0.96);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+}
+
+
+@keyframes success-icon-pop {
+  0% {
+    opacity: 0;
+
+    transform: scale(0.4);
+  }
+
+  70% {
+    transform: scale(1.08);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform: scale(1);
+  }
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 520px) {
+
+  .agreement-success-card {
+    padding: 24px;
+
+    border-radius: 17px;
+  }
+
+  .agreement-success-actions {
+    flex-direction: column;
+  }
+
+  .success-secondary-button,
+  .success-primary-button {
+    width: 100%;
+  }
+}
+
+/* =========================================
+   PREMIUM SAMS SUBMISSION ANIMATION
+========================================= */
+
+.agreement-submit-overlay,
+.agreement-success-overlay {
+  background:
+    radial-gradient(
+      circle at 50% 45%,
+      rgba(34, 197, 94, 0.10),
+      transparent 34%
+    ),
+    rgba(2, 6, 23, 0.68);
+
+  backdrop-filter: blur(14px);
+
+  animation: samsPremiumOverlay 0.45s ease forwards;
+}
+
+
+/* =========================================
+   PREMIUM MODAL
+========================================= */
+
+.agreement-submit-modal,
+.agreement-success-card {
+
+  position: relative;
+
+  overflow: hidden;
+
+  box-shadow:
+    0 35px 100px rgba(2, 6, 23, 0.28),
+    0 0 0 1px rgba(255, 255, 255, 0.55);
+
+  animation:
+    samsPremiumCard
+    0.55s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
+}
+
+
+/* subtle light sweep */
+
+.agreement-submit-modal::before,
+.agreement-success-card::before {
+
+  content: "";
+
+  position: absolute;
+
+  top: -80%;
+
+  left: -35%;
+
+  width: 45%;
+
+  height: 260%;
+
+  pointer-events: none;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.45),
+      transparent
+    );
+
+  transform: rotate(18deg);
+
+  animation:
+    samsLightSweep
+    4s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================
+   SUBMISSION ICON
+========================================= */
+
+.agreement-submit-icon {
+
+  position: relative;
+
+  width: 70px;
+  height: 70px;
+
+  margin: 0 auto 18px;
+
+  border-radius: 50%;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle,
+      #fff7d6 0%,
+      #fef3c7 55%,
+      #fffbeb 100%
+    );
+
+  border: 6px solid #fffaf0;
+
+  color: #d97706;
+
+  font-size: 25px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 10px 30px rgba(217, 119, 6, 0.13);
+
+  animation:
+    samsQuestionPulse
+    2.2s
+    ease-in-out
+    infinite;
+}
+
+
+/* =========================================
+   CREATING STATE
+========================================= */
+
+.agreement-creating-state {
+
+  position: relative;
+
+  padding: 12px 0 4px;
+
+  text-align: center;
+
+  animation:
+    samsCreatingAppear
+    0.45s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
+}
+
+
+/* =========================================
+   PREMIUM VERIFICATION RING
+========================================= */
+
+.creating-spinner {
+
+  position: relative;
+
+  width: 92px;
+  height: 92px;
+
+  margin: 0 auto 22px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+}
+
+
+/* outer ring */
+
+.creating-spinner::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: -7px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(34, 197, 94, 0.12);
+
+  animation:
+    samsOuterPulse
+    2s
+    ease-in-out
+    infinite;
+}
+
+
+/* rotating ring */
+
+.creating-spinner-ring {
+
+  position: absolute;
+
+  inset: 0;
+
+  border-radius: 50%;
+
+  border: 3px solid #e2f7e8;
+
+  border-top-color: #16a34a;
+
+  border-right-color: #22c55e;
+
+  box-shadow:
+    0 0 0 5px rgba(34, 197, 94, 0.045),
+    0 8px 28px rgba(22, 163, 74, 0.12);
+
+  animation:
+    samsPremiumSpin
+    1.05s
+    cubic-bezier(0.65, 0, 0.35, 1)
+    infinite;
+}
+
+
+/* second subtle rotating ring */
+
+.creating-spinner::after {
+
+  content: "";
+
+  position: absolute;
+
+  inset: 8px;
+
+  border-radius: 50%;
+
+  border: 1px dashed rgba(34, 197, 94, 0.25);
+
+  animation:
+    samsReverseSpin
+    3.2s
+    linear
+    infinite;
+}
+
+
+/* center */
+
+.creating-spinner span {
+
+  position: relative;
+
+  z-index: 2;
+
+  width: 42px;
+  height: 42px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 50%;
+
+  background: #ffffff;
+
+  color: #16a34a;
+
+  font-size: 17px;
+
+  font-weight: 800;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================
+   PROCESSING TEXT
+========================================= */
+
+.creating-label {
+
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 6px;
+
+  margin-bottom: 7px;
+
+  color: #16a34a;
+
+  font-size: 9px;
+
+  font-weight: 800;
+
+  letter-spacing: 2.2px;
+}
+
+
+.creating-label::after {
+
+  content: "";
+
+  width: 4px;
+  height: 4px;
+
+  border-radius: 50%;
+
+  background: #22c55e;
+
+  box-shadow:
+    0 0 0 0 rgba(34, 197, 94, 0.5);
+
+  animation:
+    samsDotPulse
+    1.3s
+    infinite;
+}
+
+
+/* =========================================
+   PREMIUM PROGRESS
+========================================= */
+
+.creating-progress {
+
+  position: relative;
+
+  width: 100%;
+
+  height: 5px;
+
+  overflow: hidden;
+
+  margin:
+    20px
+    auto
+    11px;
+
+  border-radius: 999px;
+
+  background: #edf2f7;
+}
+
+
+.creating-progress span {
+
+  position: absolute;
+
+  left: 0;
+
+  top: 0;
+
+  width: 35%;
+
+  height: 100%;
+
+  border-radius: inherit;
+
+  background:
+    linear-gradient(
+      90deg,
+      #16a34a,
+      #22c55e,
+      #86efac
+    );
+
+  box-shadow:
+    0 0 12px rgba(34, 197, 94, 0.35);
+
+  animation:
+    samsPremiumProgress
+    1.5s
+    cubic-bezier(0.4, 0, 0.2, 1)
+    infinite;
+}
+
+
+/* =========================================
+   SUCCESS ICON
+========================================= */
+
+.agreement-success-icon {
+
+  position: relative;
+
+  width: 74px;
+  height: 74px;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  margin: 0 auto 16px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle,
+      #ffffff 20%,
+      #dcfce7 100%
+    );
+
+  border: 5px solid #f0fdf4;
+
+  color: #16a34a;
+
+  font-size: 29px;
+
+  font-weight: 900;
+
+  box-shadow:
+    0 12px 35px rgba(22, 163, 74, 0.15);
+
+  animation:
+    samsSuccessIcon
+    0.75s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
+}
+
+
+/* success outer glow */
+
+.agreement-success-icon::before {
+
+  content: "";
+
+  position: absolute;
+
+  inset: -10px;
+
+  border-radius: 50%;
+
+  border: 1px solid rgba(34, 197, 94, 0.20);
+
+  animation:
+    samsSuccessGlow
+    1.8s
+    ease-out
+    infinite;
+}
+
+
+/* =========================================
+   SUCCESS CARD
+========================================= */
+
+.agreement-success-card {
+
+  animation:
+    samsSuccessCard
+    0.65s
+    cubic-bezier(0.16, 1, 0.3, 1)
+    forwards;
+}
+
+
+/* =========================================
+   KEYFRAMES
+========================================= */
+
+@keyframes samsPremiumOverlay {
+
+  from {
+    opacity: 0;
+    backdrop-filter: blur(0);
+  }
+
+  to {
+    opacity: 1;
+    backdrop-filter: blur(14px);
+  }
+
+}
+
+
+@keyframes samsPremiumCard {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(28px)
+      scale(0.92);
+
+    filter: blur(3px);
+  }
+
+  70% {
+    transform:
+      translateY(-3px)
+      scale(1.015);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+
+    filter: blur(0);
+  }
+
+}
+
+
+@keyframes samsCreatingAppear {
+
+  from {
+    opacity: 0;
+
+    transform:
+      translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+
+    transform:
+      translateY(0);
+  }
+
+}
+
+
+@keyframes samsPremiumSpin {
+
+  to {
+    transform: rotate(360deg);
+  }
+
+}
+
+
+@keyframes samsReverseSpin {
+
+  to {
+    transform: rotate(-360deg);
+  }
+
+}
+
+
+@keyframes samsOuterPulse {
+
+  0%,
+  100% {
+    transform: scale(0.96);
+
+    opacity: 0.35;
+  }
+
+  50% {
+    transform: scale(1.08);
+
+    opacity: 0.8;
+  }
+
+}
+
+
+@keyframes samsQuestionPulse {
+
+  0%,
+  100% {
+    transform: scale(1);
+
+    box-shadow:
+      0 10px 30px rgba(217, 119, 6, 0.13);
+  }
+
+  50% {
+    transform: scale(1.045);
+
+    box-shadow:
+      0 14px 38px rgba(217, 119, 6, 0.20);
+  }
+
+}
+
+
+@keyframes samsPremiumProgress {
+
+  0% {
+    left: -35%;
+  }
+
+  50% {
+    left: 45%;
+  }
+
+  100% {
+    left: 105%;
+  }
+
+}
+
+
+@keyframes samsDotPulse {
+
+  0% {
+    opacity: 0.35;
+
+    box-shadow:
+      0 0 0 0 rgba(34, 197, 94, 0.45);
+  }
+
+  50% {
+    opacity: 1;
+
+    box-shadow:
+      0 0 0 5px rgba(34, 197, 94, 0);
+  }
+
+  100% {
+    opacity: 0.35;
+
+    box-shadow:
+      0 0 0 0 rgba(34, 197, 94, 0);
+  }
+
+}
+
+
+@keyframes samsLightSweep {
+
+  0% {
+    transform:
+      translateX(-180%)
+      rotate(18deg);
+
+    opacity: 0;
+  }
+
+  25% {
+    opacity: 0.7;
+  }
+
+  55% {
+    opacity: 0;
+  }
+
+  100% {
+    transform:
+      translateX(430%)
+      rotate(18deg);
+
+    opacity: 0;
+  }
+
+}
+
+
+@keyframes samsSuccessCard {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      translateY(30px)
+      scale(0.90);
+  }
+
+  65% {
+    transform:
+      translateY(-5px)
+      scale(1.025);
+  }
+
+  100% {
+    opacity: 1;
+
+    transform:
+      translateY(0)
+      scale(1);
+  }
+
+}
+
+
+@keyframes samsSuccessIcon {
+
+  0% {
+    opacity: 0;
+
+    transform:
+      scale(0.25)
+      rotate(-25deg);
+  }
+
+  55% {
+    opacity: 1;
+
+    transform:
+      scale(1.18)
+      rotate(4deg);
+  }
+
+  75% {
+    transform:
+      scale(0.94)
+      rotate(0deg);
+  }
+
+  100% {
+    transform:
+      scale(1)
+      rotate(0deg);
+  }
+
+}
+
+
+@keyframes samsSuccessGlow {
+
+  0% {
+    opacity: 0;
+
+    transform: scale(0.7);
+  }
+
+  45% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform: scale(1.35);
+  }
+
+}
+
+
+/* =========================================
+   REDUCED MOTION
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+
+  .agreement-submit-overlay,
+  .agreement-success-overlay,
+  .agreement-submit-modal,
+  .agreement-success-card,
+  .agreement-submit-icon,
+  .creating-spinner-ring,
+  .creating-spinner::after,
+  .creating-spinner::before,
+  .creating-progress span,
+  .agreement-success-icon,
+  .agreement-success-icon::before {
+
+    animation: none !important;
+
+  }
+
+}
