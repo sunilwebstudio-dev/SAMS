@@ -2,13 +2,14 @@ import { useEffect, useState } from "react";
 import DashboardLayout from "../../layouts/DashboardLayout/DashboardLayout";
 import AgreementForm from "../../components/agreements/AgreementForm/AgreementForm";
 import AgreementPreview from "../../components/agreements/AgreementPreview/AgreementPreview";
+import AgreementDetails from "./AgreementDetails";
 import "./CreateAgreement.css";
 
 function CreateAgreement() {
-  const [agreementType, setAgreementType] = useState("");
-  const [previewData, setPreviewData] = useState(null);
-  const [isSelecting, setIsSelecting] = useState(false);
-
+const [agreementType, setAgreementType] = useState("");
+const [previewData, setPreviewData] = useState(null);
+const [viewingAgreement, setViewingAgreement] = useState(null);
+const [isSelecting, setIsSelecting] = useState(false);
   const agreementTypes = [
     {
       code: "SUP",
@@ -50,6 +51,10 @@ function CreateAgreement() {
     if (isSelecting) {
       return;
     }
+
+    const handleViewAgreement = (agreement) => {
+  setViewingAgreement(agreement);
+};
 
     setIsSelecting(true);
 
@@ -123,6 +128,14 @@ function CreateAgreement() {
     }, 100);
   };
 
+  /* =========================================
+   VIEW AGREEMENT
+========================================= */
+
+const handleViewAgreement = (agreement) => {
+  setViewingAgreement(agreement);
+};
+
 
   /* =========================================
      FINAL SUBMISSION
@@ -178,32 +191,77 @@ function CreateAgreement() {
 
 
   return (
-    <DashboardLayout>
+  <DashboardLayout>
 
-      {!previewData ? (
+    {viewingAgreement ? (
 
-        <div className="create-agreement-page">
+      <AgreementDetails
+        agreement={viewingAgreement}
+        onBack={() => setViewingAgreement(null)}
+      />
 
-          {/* ===================================
-              PAGE HEADER
-          =================================== */}
+    ) : previewData ? (
 
-          <div className="create-agreement-header">
+      <AgreementPreview
+        agreement={previewData}
+        buyerName={previewData.buyer_name}
+        onEdit={handleEditPreview}
+        onSubmit={handleSubmitAgreement}
+        onViewAgreement={handleViewAgreement}
+      />
+
+    ) : (
+
+      <div className="create-agreement-page">
+
+        {/* ===================================
+            PAGE HEADER
+        =================================== */}
+
+        <div className="create-agreement-header">
+
+          <div>
+
+            <span className="create-agreement-eyebrow">
+              SAMS • Agreement Management
+            </span>
+
+            <h1>
+              Create Agreement
+            </h1>
+
+            <p>
+              Choose an agreement format and
+              enter only the information required
+              for your agreement.
+            </p>
+
+          </div>
+
+        </div>
+
+
+        {/* ===================================
+            STEP 1
+        =================================== */}
+
+        <div className="create-agreement-card agreement-type-card">
+
+          <div className="agreement-step-header">
+
+            <span className="step-number">
+              1
+            </span>
 
             <div>
 
-              <span className="create-agreement-eyebrow">
-                SAMS • Agreement Management
-              </span>
-
-              <h1>
-                Create Agreement
-              </h1>
+              <h2>
+                Choose Agreement Type
+              </h2>
 
               <p>
-                Choose an agreement format and
-                enter only the information required
-                for your agreement.
+                Select the agreement you want to
+                create.
               </p>
 
             </div>
@@ -211,202 +269,100 @@ function CreateAgreement() {
           </div>
 
 
-          {/* ===================================
-              STEP 1
-          =================================== */}
+          <div className="agreement-type-grid">
 
-          <div className="create-agreement-card agreement-type-card">
+            {agreementTypes.map(
+              (type, index) => {
 
-            <div className="agreement-step-header">
+                const isSelected =
+                  agreementType === type.code;
 
-              <span className="step-number">
-                1
-              </span>
-
-              <div>
-
-                <h2>
-                  Choose Agreement Type
-                </h2>
-
-                <p>
-                  Select the agreement you want to
-                  create.
-                </p>
-
-              </div>
-
-            </div>
-
-
-            <div className="agreement-type-grid">
-
-              {agreementTypes.map(
-                (type, index) => {
-
-                  const isSelected =
-                    agreementType === type.code;
-
-                  return (
-                    <button
-                      type="button"
-                      key={type.code}
-                      className={`
-                        agreement-type-option
-                        ${
-                          isSelected
-                            ? "selected"
-                            : ""
-                        }
-                        ${
-                          isSelecting
-                            ? "selecting"
-                            : ""
-                        }
-                      `}
-                      style={{
-                        "--agreement-index":
-                          index,
-                      }}
-                      onClick={() =>
-                        handleAgreementTypeSelect(
-                          type.code
-                        )
+                return (
+                  <button
+                    type="button"
+                    key={type.code}
+                    className={`
+                      agreement-type-option
+                      ${
+                        isSelected
+                          ? "selected"
+                          : ""
                       }
-                      disabled={isSelecting}
-                    >
+                      ${
+                        isSelecting
+                          ? "selecting"
+                          : ""
+                      }
+                    `}
+                    style={{
+                      "--agreement-index":
+                        index,
+                    }}
+                    onClick={() =>
+                      handleAgreementTypeSelect(
+                        type.code
+                      )
+                    }
+                    disabled={isSelecting}
+                  >
 
-                      <div className="agreement-type-icon">
-                        {type.icon}
-                      </div>
+                    <div className="agreement-type-icon">
+                      {type.icon}
+                    </div>
 
+                    <div className="agreement-type-content">
 
-                      <div className="agreement-type-content">
+                      <h3>
+                        {type.title}
+                      </h3>
 
-                        <h3>
-                          {type.title}
-                        </h3>
+                      <p>
+                        {type.description}
+                      </p>
 
-                        <p>
-                          {type.description}
-                        </p>
+                    </div>
 
-                      </div>
+                    <div className="agreement-type-check">
 
+                      {isSelected && (
+                        <span>
+                          ✓
+                        </span>
+                      )}
 
-                      <div className="agreement-type-check">
+                    </div>
 
-                        {isSelected && (
-                          <span>
-                            ✓
-                          </span>
-                        )}
-
-                      </div>
-
-                    </button>
-                  );
-                }
-              )}
-
-            </div>
-
-
-            {selectedAgreement && (
-
-              <div className="selected-agreement-type">
-
-                <div className="selected-agreement-icon">
-                  {selectedAgreement.icon}
-                </div>
-
-                <div className="selected-agreement-content">
-
-                  <span>
-                    Selected Agreement
-                  </span>
-
-                  <strong>
-                    {selectedAgreement.title}
-                  </strong>
-
-                </div>
-
-                <div className="selected-agreement-status">
-                  Ready
-                </div>
-
-              </div>
-
+                  </button>
+                );
+              }
             )}
 
           </div>
 
 
-          {/* ===================================
-              STEP 2
-          =================================== */}
+          {selectedAgreement && (
 
-          {agreementType && (
+            <div className="selected-agreement-type">
 
-            <div
-              id="agreement-information"
-              className="
-                create-agreement-card
-                agreement-information-card
-                agreement-form-card-enter
-              "
-            >
+              <div className="selected-agreement-icon">
+                {selectedAgreement.icon}
+              </div>
 
-              <div className="agreement-step-header">
+              <div className="selected-agreement-content">
 
-                <span className="step-number">
-                  2
+                <span>
+                  Selected Agreement
                 </span>
 
-                <div>
-
-                  <h2>
-                    Agreement Information
-                  </h2>
-
-                  <p>
-                    Fill in the required information.
-                    The master agreement format will
-                    remain protected.
-                  </p>
-
-                </div>
+                <strong>
+                  {selectedAgreement.title}
+                </strong>
 
               </div>
 
-
-              <div className="agreement-form-selected-header">
-
-                <div className="agreement-form-selected-icon">
-                  {selectedAgreement?.icon}
-                </div>
-
-                <div>
-
-                  <span>
-                    Creating
-                  </span>
-
-                  <strong>
-                    {selectedAgreement?.title}
-                  </strong>
-
-                </div>
-
+              <div className="selected-agreement-status">
+                Ready
               </div>
-
-
-              <AgreementForm
-                agreementType={agreementType}
-                submitLabel="Preview Agreement"
-                onPreview={handlePreview}
-              />
 
             </div>
 
@@ -414,19 +370,82 @@ function CreateAgreement() {
 
         </div>
 
-      ) : (
 
-        <AgreementPreview
-          agreement={previewData}
-          buyerName={previewData.buyer_name}
-          onEdit={handleEditPreview}
-          onSubmit={handleSubmitAgreement}
-        />
+        {/* ===================================
+            STEP 2
+        =================================== */}
 
-      )}
+        {agreementType && (
 
-    </DashboardLayout>
-  );
+          <div
+            id="agreement-information"
+            className="
+              create-agreement-card
+              agreement-information-card
+              agreement-form-card-enter
+            "
+          >
+
+            <div className="agreement-step-header">
+
+              <span className="step-number">
+                2
+              </span>
+
+              <div>
+
+                <h2>
+                  Agreement Information
+                </h2>
+
+                <p>
+                  Fill in the required information.
+                  The master agreement format will
+                  remain protected.
+                </p>
+
+              </div>
+
+            </div>
+
+
+            <div className="agreement-form-selected-header">
+
+              <div className="agreement-form-selected-icon">
+                {selectedAgreement?.icon}
+              </div>
+
+              <div>
+
+                <span>
+                  Creating
+                </span>
+
+                <strong>
+                  {selectedAgreement?.title}
+                </strong>
+
+              </div>
+
+            </div>
+
+
+            <AgreementForm
+              agreementType={agreementType}
+              submitLabel="Preview Agreement"
+              onPreview={handlePreview}
+            />
+
+          </div>
+
+        )}
+
+      </div>
+
+    )}
+
+  </DashboardLayout>
+);
 }
 
 export default CreateAgreement;

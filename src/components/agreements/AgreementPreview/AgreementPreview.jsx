@@ -6,6 +6,7 @@ function AgreementPreview({
   buyerName = "",
   onEdit,
   onSubmit,
+  onViewAgreement,
   submitting = false,
 }) {
   const [showSubmitConfirm, setShowSubmitConfirm] =
@@ -958,17 +959,14 @@ function AgreementPreview({
             <div className="agreement-success-actions">
 
               <button
-                type="button"
-                className="success-secondary-button"
-                onClick={() => {
-                  console.log(
-                    "View Agreement:",
-                    agreement
-                  );
-                }}
-              >
-                View Agreement
-              </button>
+  type="button"
+  className="success-secondary-button"
+  onClick={() => {
+    onViewAgreement?.(agreement);
+  }}
+>
+  View Agreement
+</button>
 
 
               <button
