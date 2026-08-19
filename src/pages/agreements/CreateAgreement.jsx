@@ -141,53 +141,48 @@ const handleViewAgreement = (agreement) => {
      FINAL SUBMISSION
   ========================================= */
 
-  const handleSubmitAgreement = () => {
-    console.log(
-      "Agreement successfully submitted:",
-      previewData
+const handleSubmitAgreement = () => {
+  console.log(
+    "Agreement successfully submitted:",
+    previewData
+  );
+
+  /*
+   * Remove the submitted agreement draft
+   * before the form can mount again.
+   */
+  try {
+    const type =
+      previewData?.agreement_type ||
+      agreementType ||
+      "new";
+
+    sessionStorage.removeItem(
+      `sams_agreement_draft_${type}`
     );
+  } catch (error) {
+    console.warn(
+      "Unable to clear agreement draft:",
+      error
+    );
+  }
 
-    /*
-      IMPORTANT:
+  /*
+   * IMPORTANT:
+   * Reset BOTH states immediately.
+   *
+   * This prevents AgreementForm from rendering
+   * again with the old agreement type and saving
+   * the old seller name back to sessionStorage.
+   */
+  setAgreementType("");
+  setPreviewData(null);
 
-      Successful submission ke baad old draft ko
-      sessionStorage se remove kar rahe hain.
-
-      Isliye next time form completely blank
-      open hoga.
-    */
-
-    try {
-      const type =
-        previewData?.agreement_type ||
-        agreementType ||
-        "new";
-
-      sessionStorage.removeItem(
-        `sams_agreement_draft_${type}`
-      );
-    } catch (error) {
-      console.warn(
-        "Unable to clear agreement draft:",
-        error
-      );
-    }
-
-    /*
-      Preview ko close karo
-      aur agreement type reset karo.
-    */
-
-    setPreviewData(null);
-
-    setTimeout(() => {
-      setAgreementType("");
-      window.scrollTo({
-        top: 0,
-        behavior: "smooth",
-      });
-    }, 0);
-  };
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+};
 
 
   return (

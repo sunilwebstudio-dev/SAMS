@@ -11,7 +11,7 @@ import Signup from "./pages/auth/Signup";
 import VerifyOTP from "./pages/auth/VerifyOTP";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
-
+import VerifyAgreement from "./pages/agreements/VerifyAgreement";
 import Dashboard from "./pages/dashboard/Dashboard";
 import CreateAgreement from "./pages/agreements/CreateAgreement";
 
@@ -102,6 +102,15 @@ function App() {
   element={
     <ProtectedRoute>
       <AgreementList />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/verify-agreement"
+  element={
+    <ProtectedRoute>
+      <VerifyAgreement />
     </ProtectedRoute>
   }
 />

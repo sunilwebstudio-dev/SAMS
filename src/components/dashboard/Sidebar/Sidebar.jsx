@@ -16,6 +16,13 @@ function Sidebar() {
       path: "/agreements",
       icon: "📄",
     },
+
+    {
+  title: "Verify Agreement",
+  path: "/verify-agreement",
+  icon: "✓",
+},
+
     {
       title: "Create Agreement",
       path: "/agreements/create",
@@ -51,6 +58,8 @@ function Sidebar() {
       path: "/help",
       icon: "❓",
     },
+
+    
   ];
 
   const closeMobileSidebar = () => {

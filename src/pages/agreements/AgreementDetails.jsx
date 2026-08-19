@@ -2,6 +2,7 @@ import "./AgreementDetails.css";
 import { useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import VerifyAgreement from "../../pages/agreements/VerifyAgreement";
 
 function AgreementDetails({
   agreement,
@@ -17,10 +18,24 @@ function AgreementDetails({
   const [pdfSuccess, setPdfSuccess] =
     useState(false);
 
+    const [showVerification, setShowVerification] =
+  useState(false);
+
 
   /* =========================================
      SAFETY CHECK
   ========================================= */
+
+  if (showVerification) {
+  return (
+    <VerifyAgreement
+      agreement={agreement}
+      onBack={() => {
+        setShowVerification(false);
+      }}
+    />
+  );
+}
 
   if (!agreement) {
     return null;
@@ -966,24 +981,19 @@ function AgreementDetails({
                 VERIFY
             =============================== */}
 
-            <button
-              type="button"
-              className="agreement-action-button primary"
-              onClick={() => {
-                console.log(
-                  "Verify Agreement:",
-                  agreement
-                );
-              }}
-            >
+           <button
+  type="button"
+  className="agreement-action-button primary"
+  onClick={() => {
+    setShowVerification(true);
+  }}
+>
+  <span>
+    ✓
+  </span>
 
-              <span>
-                ✓
-              </span>
-
-              Verify Agreement
-
-            </button>
+  Verify Agreement
+</button>
 
 
           </div>
