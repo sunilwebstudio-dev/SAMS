@@ -1,12 +1,31 @@
 import "./AgreementDetails.css";
+import { useState } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 function AgreementDetails({
   agreement,
   onBack,
 }) {
+  /* =========================================
+     STATES
+  ========================================= */
+
+  const [isGeneratingPdf, setIsGeneratingPdf] =
+    useState(false);
+
+  const [pdfSuccess, setPdfSuccess] =
+    useState(false);
+
+
+  /* =========================================
+     SAFETY CHECK
+  ========================================= */
+
   if (!agreement) {
     return null;
   }
+
 
   /* =========================================
      BASIC INFORMATION
@@ -56,7 +75,7 @@ function AgreementDetails({
 
 
   /* =========================================
-     TYPE
+     AGREEMENT TYPE
   ========================================= */
 
   const agreementType =
@@ -72,7 +91,7 @@ function AgreementDetails({
 
 
   /* =========================================
-     AGREEMENT ID
+     AGREEMENT CODE
   ========================================= */
 
   const agreementCode =
@@ -85,6 +104,11 @@ function AgreementDetails({
       : agreement.agreement_type === "FRM"
       ? "FRM"
       : "OTH";
+
+
+  /* =========================================
+     AGREEMENT ID
+  ========================================= */
 
   const agreementId =
     agreement.agreement_id ||
@@ -143,8 +167,180 @@ function AgreementDetails({
     agreement.witnesses?.witness_3 || "—";
 
 
+  /* =========================================
+     CUTTING PERIOD TEXT
+  ========================================= */
+
+  const cuttingPeriodText =
+    purchaseYear !== "—" &&
+    endingYear !== "—"
+      ? `वर्ष ${purchaseYear} से वर्ष ${endingYear} तक`
+      : "—";
+
+
+  /* =========================================
+     DOWNLOAD PDF
+  ========================================= */
+
+  const handleDownloadPDF = async () => {
+    if (isGeneratingPdf) {
+      return;
+    }
+
+    try {
+      setIsGeneratingPdf(true);
+      setPdfSuccess(false);
+
+      /*
+        Wait one frame so the hidden PDF
+        template is completely rendered.
+      */
+      await new Promise((resolve) => {
+        requestAnimationFrame(resolve);
+      });
+
+      const pdfElement =
+        document.getElementById(
+          "sams-agreement-pdf"
+        );
+
+      if (!pdfElement) {
+        throw new Error(
+          "Agreement PDF template not found."
+        );
+      }
+
+      const canvas =
+        await html2canvas(pdfElement, {
+          scale: 2,
+          useCORS: true,
+          backgroundColor: "#ffffff",
+          logging: false,
+        });
+
+      const imgData =
+        canvas.toDataURL("image/png");
+
+      const pdf = new jsPDF({
+        orientation: "portrait",
+        unit: "mm",
+        format: "a4",
+      });
+
+      const pageWidth =
+        pdf.internal.pageSize.getWidth();
+
+      const pageHeight =
+        pdf.internal.pageSize.getHeight();
+
+      const margin = 8;
+
+      const usableWidth =
+        pageWidth - margin * 2;
+
+      const imageHeight =
+        (canvas.height * usableWidth) /
+        canvas.width;
+
+      const usablePageHeight =
+        pageHeight - margin * 2;
+
+      let heightLeft = imageHeight;
+
+      let position = margin;
+
+
+      /*
+        First page
+      */
+
+      pdf.addImage(
+        imgData,
+        "PNG",
+        margin,
+        position,
+        usableWidth,
+        imageHeight
+      );
+
+      heightLeft -= usablePageHeight;
+
+
+      /*
+        Additional pages
+      */
+
+      while (heightLeft > 0) {
+
+        position =
+          margin -
+          (imageHeight - heightLeft);
+
+        pdf.addPage();
+
+        pdf.addImage(
+          imgData,
+          "PNG",
+          margin,
+          position,
+          usableWidth,
+          imageHeight
+        );
+
+        heightLeft -= usablePageHeight;
+      }
+
+
+      /*
+        Safe filename
+      */
+
+      const safeAgreementId =
+        String(agreementId).replace(
+          /[^a-zA-Z0-9-_]/g,
+          "-"
+        );
+
+
+      /*
+        Download
+      */
+
+      pdf.save(
+        `SAMS-${safeAgreementId}.pdf`
+      );
+
+
+      /*
+        Success animation
+      */
+
+      setPdfSuccess(true);
+
+      setTimeout(() => {
+        setPdfSuccess(false);
+      }, 3500);
+
+    } catch (error) {
+
+      console.error(
+        "PDF generation failed:",
+        error
+      );
+
+      setPdfSuccess(false);
+
+    } finally {
+
+      setIsGeneratingPdf(false);
+
+    }
+  };
+
+
   return (
     <div className="agreement-details-page">
+
 
       {/* =====================================
           TOP NAVIGATION
@@ -163,11 +359,21 @@ function AgreementDetails({
 
 
         <div className="agreement-details-breadcrumb">
+
           SAMS
-          <span>/</span>
+
+          <span>
+            /
+          </span>
+
           Agreements
-          <span>/</span>
+
+          <span>
+            /
+          </span>
+
           Details
+
         </div>
 
       </div>
@@ -182,7 +388,11 @@ function AgreementDetails({
         <div className="agreement-details-title-area">
 
           <div className="agreement-details-document-icon">
-            <span>▤</span>
+
+            <span>
+              ▤
+            </span>
+
           </div>
 
 
@@ -244,6 +454,7 @@ function AgreementDetails({
         <div className="identity-side">
 
           <div>
+
             <span>
               Agreement Type
             </span>
@@ -251,10 +462,12 @@ function AgreementDetails({
             <strong>
               {agreementType}
             </strong>
+
           </div>
 
 
           <div>
+
             <span>
               Status
             </span>
@@ -262,6 +475,7 @@ function AgreementDetails({
             <strong className="identity-active">
               ● {status}
             </strong>
+
           </div>
 
         </div>
@@ -270,7 +484,7 @@ function AgreementDetails({
 
 
       {/* =====================================
-          INFORMATION GRID
+          INFORMATION
       ===================================== */}
 
       <div className="agreement-details-content">
@@ -342,7 +556,7 @@ function AgreementDetails({
 
 
         {/* ===================================
-            PARTIES
+            SELLER & BUYER
         =================================== */}
 
         <section className="agreement-details-card">
@@ -452,18 +666,22 @@ function AgreementDetails({
               first
             />
 
+
             <div className="timeline-line">
               <span />
             </div>
+
 
             <TimelineItem
               label="Ending Year"
               value={endingYear}
             />
 
+
             <div className="timeline-line">
               <span />
             </div>
+
 
             <TimelineItem
               label="Cutting Year"
@@ -481,8 +699,7 @@ function AgreementDetails({
             </strong>
 
             <span>
-              वर्ष {purchaseYear} से वर्ष{" "}
-              {endingYear} तक
+              {cuttingPeriodText}
             </span>
 
             <p>
@@ -675,23 +892,55 @@ function AgreementDetails({
 
           <div className="agreement-action-buttons">
 
+
+            {/* ===============================
+                DOWNLOAD PDF
+            =============================== */}
+
             <button
               type="button"
-              className="agreement-action-button secondary"
-              onClick={() => {
-                console.log(
-                  "Download PDF:",
-                  agreement
-                );
-              }}
+              className={`
+                agreement-action-button
+                secondary
+                pdf-download-button
+                ${
+                  isGeneratingPdf
+                    ? "loading"
+                    : ""
+                }
+                ${
+                  pdfSuccess
+                    ? "success"
+                    : ""
+                }
+              `}
+              onClick={handleDownloadPDF}
+              disabled={isGeneratingPdf}
             >
-              <span>
-                ↓
+
+              <span className="pdf-action-icon">
+
+                {isGeneratingPdf
+                  ? "◌"
+                  : pdfSuccess
+                  ? "✓"
+                  : "↓"}
+
               </span>
 
-              Download PDF
+
+              {isGeneratingPdf
+                ? "Generating PDF..."
+                : pdfSuccess
+                ? "PDF Ready"
+                : "Download PDF"}
+
             </button>
 
+
+            {/* ===============================
+                SHOW QR
+            =============================== */}
 
             <button
               type="button"
@@ -703,13 +952,19 @@ function AgreementDetails({
                 );
               }}
             >
+
               <span>
                 ◫
               </span>
 
               Show QR
+
             </button>
 
+
+            {/* ===============================
+                VERIFY
+            =============================== */}
 
             <button
               type="button"
@@ -721,16 +976,326 @@ function AgreementDetails({
                 );
               }}
             >
+
               <span>
                 ✓
               </span>
 
               Verify Agreement
+
             </button>
+
 
           </div>
 
         </section>
+
+
+      </div>
+
+
+      {/* =====================================
+          HIDDEN PDF DOCUMENT
+          
+          IMPORTANT:
+          This is inside AgreementDetails,
+          NOT inside Witness component.
+      ===================================== */}
+
+      <div
+        id="sams-agreement-pdf"
+        className="sams-agreement-pdf"
+      >
+
+
+        {/* ===================================
+            PDF HEADER
+        =================================== */}
+
+        <div className="pdf-header">
+
+          <h1>
+            सुपारी बागान बिक्री एग्रीमेंट
+          </h1>
+
+          <div className="pdf-header-line" />
+
+
+          <div className="pdf-meta-grid">
+
+            <div>
+
+              <strong>
+                Agreement ID
+              </strong>
+
+              <span>
+                {agreementId}
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Agreement Type
+              </strong>
+
+              <span>
+                {agreementType}
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Agreement Status
+              </strong>
+
+              <span>
+                {status}
+              </span>
+
+            </div>
+
+
+            <div>
+
+              <strong>
+                Agreement Date
+              </strong>
+
+              <span>
+                {agreementDate}
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        {/* ===================================
+            PDF BODY
+        =================================== */}
+
+        <div className="pdf-body">
+
+
+          <p>
+            आज दिनांक:{" "}
+            <strong>
+              {agreementDate}
+            </strong>
+          </p>
+
+
+          <p>
+            मैं, श्री{" "}
+            <strong>
+              {sellerName}
+            </strong>,
+            अपने पूरे होश-हवास में यह लिखित
+            एग्रीमेंट कर रहा हूँ कि मैं सुपारी
+            बागान श्री{" "}
+            <strong>
+              {buyerName}
+            </strong>{" "}
+            को पूरे परिवार की सहमति से बिक्री
+            कर रहा हूँ।
+          </p>
+
+
+          <p>
+            इस बागान में मौजूद सभी छोटे-बड़े पेड़,
+            फल-फूल का अधिकार वर्ष{" "}
+            <strong>
+              {purchaseYear}
+            </strong>{" "}
+            से वर्ष{" "}
+            <strong>
+              {endingYear}
+            </strong>{" "}
+            तक, अर्थात कुल{" "}
+            <strong>
+              {validity}
+            </strong>{" "}
+            साल तक श्री{" "}
+            <strong>
+              {buyerName}
+            </strong>{" "}
+            के पास रहेगा।
+          </p>
+
+
+          <p>
+            अगर इस बीच किसी तरह का विवाद,
+            परेशानी या बागान को लेकर कोई तीसरा
+            व्यक्ति दावा करता है, तो उसकी पूरी
+            जिम्मेदारी मेरी होगी।
+          </p>
+
+
+          <p>
+            उस स्थिति में हुए किसी भी नुकसान की
+            भरपाई मैं स्वयं या मेरा परिवार मिलकर
+            करेगा।
+          </p>
+
+
+          <p>
+            बागान की कुल कीमत:
+            <strong>
+              {" "}₹ {totalPrice}
+            </strong>
+          </p>
+
+
+          {/* ===============================
+              CUTTING PERIOD
+          =============================== */}
+
+          <div className="pdf-cutting-box">
+
+            <strong>
+              कटाई की अवधि
+            </strong>
+
+            <span>
+              {cuttingPeriodText}
+            </span>
+
+            <p>
+              इस अवधि के दौरान बागान की कटाई एवं
+              फल लेने का अधिकार क्रेता के पास
+              रहेगा।
+            </p>
+
+          </div>
+
+
+          <p>
+            जब बागान काटने का समय आएगा, तो उस
+            वक्त किसी प्रकार का झगड़ा या विवाद
+            नहीं होगा। यदि किसी कारणवश कोई झगड़ा
+            होता है, तो उसका समाधान हमारी
+            पारिवारिक जिम्मेदारी होगी और नुकसान
+            की भरपाई हमें खुद करनी होगी।
+          </p>
+
+
+          <p>
+            यह समझौता दोनों पक्षों की पूर्णसहमति
+            से, बिना किसी दबाव, जबरदस्ती या लालच
+            के किया गया है।
+          </p>
+
+
+          {/* ===============================
+              WITNESSES
+          =============================== */}
+
+          <h2>
+            गवाह
+          </h2>
+
+
+          <div className="pdf-witness-list">
+
+            <div>
+              1. {witness1}
+            </div>
+
+            <div>
+              2. {witness2}
+            </div>
+
+            <div>
+              3. {witness3}
+            </div>
+
+          </div>
+
+
+          {/* ===============================
+              SIGNATURES
+          =============================== */}
+
+          <div className="pdf-signatures">
+
+
+            <div>
+
+              <h3>
+                विक्रि करनेवाला
+              </h3>
+
+              <div className="pdf-sign-space" />
+
+              <p>
+                हस्ताक्षर:
+                ____________________
+              </p>
+
+              <p>
+                नाम: श्री{" "}
+                {sellerName}
+              </p>
+
+            </div>
+
+
+            <div>
+
+              <h3>
+                क्रेता
+              </h3>
+
+              <div className="pdf-sign-space" />
+
+              <p>
+                हस्ताक्षर:
+                ____________________
+              </p>
+
+              <p>
+                नाम: श्री{" "}
+                {buyerName}
+              </p>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+        {/* ===================================
+            PDF FOOTER
+        =================================== */}
+
+        <div className="pdf-footer">
+
+          <strong>
+            SAMS
+          </strong>
+
+          <span>
+            Agreement Management System
+          </span>
+
+          <small>
+            Agreement ID: {agreementId}
+          </small>
+
+        </div>
+
 
       </div>
 
@@ -752,7 +1317,11 @@ function InfoItem({
     <div
       className={`
         agreement-info-item
-        ${highlight ? "highlight" : ""}
+        ${
+          highlight
+            ? "highlight"
+            : ""
+        }
       `}
     >
 
@@ -789,12 +1358,16 @@ function TimelineItem({
     >
 
       <div className="timeline-dot">
+
         <span />
+
       </div>
+
 
       <span>
         {label}
       </span>
+
 
       <strong>
         {value}
@@ -820,6 +1393,7 @@ function Witness({
         {number}
       </div>
 
+
       <div>
 
         <span>
@@ -835,6 +1409,4 @@ function Witness({
     </div>
   );
 }
-
-
 export default AgreementDetails;

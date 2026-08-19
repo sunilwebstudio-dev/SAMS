@@ -186,7 +186,7 @@ const handleViewAgreement = (agreement) => {
         top: 0,
         behavior: "smooth",
       });
-    }, 80);
+    }, 0);
   };
 
 
@@ -431,6 +431,7 @@ const handleViewAgreement = (agreement) => {
 
 
             <AgreementForm
+             key={agreementType}
               agreementType={agreementType}
               submitLabel="Preview Agreement"
               onPreview={handlePreview}
