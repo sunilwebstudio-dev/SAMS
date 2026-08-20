@@ -1,28 +1,25 @@
-/* =========================================
-   AGREEMENT DETAILS PAGE
-========================================= */
+/* =========================================================
+   SAMS — AGREEMENT DETAILS PAGE
+========================================================= */
 
 .agreement-details-page {
   width: 100%;
   max-width: 1280px;
   margin: 0 auto;
-  padding: 4px 0 50px;
-
+  padding: 8px 0 55px;
   box-sizing: border-box;
-
   color: #0f172a;
 }
 
 
-/* =========================================
+/* =========================================================
    TOP BAR
-========================================= */
+========================================================= */
 
 .agreement-details-topbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
-
   margin-bottom: 24px;
 }
 
@@ -31,21 +28,19 @@
   align-items: center;
   gap: 8px;
 
+  padding: 8px 0;
+
   border: 0;
   background: transparent;
 
   color: #475569;
 
   font-size: 13px;
-  font-weight: 700;
+  font-weight: 800;
 
   cursor: pointer;
 
-  padding: 8px 0;
-
-  transition:
-    color 0.2s ease,
-    transform 0.2s ease;
+  transition: 0.2s ease;
 }
 
 .agreement-details-back:hover {
@@ -65,7 +60,7 @@
   color: #94a3b8;
 
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .agreement-details-breadcrumb span {
@@ -73,9 +68,9 @@
 }
 
 
-/* =========================================
-   PAGE HEADER
-========================================= */
+/* =========================================================
+   HEADER
+========================================================= */
 
 .agreement-details-header {
   display: flex;
@@ -83,17 +78,14 @@
   justify-content: space-between;
 
   gap: 24px;
-
   margin-bottom: 22px;
 
-  animation:
-    agreementHeaderIn 0.55s ease both;
+  animation: agreementHeaderIn 0.5s ease both;
 }
 
 .agreement-details-title-area {
   display: flex;
   align-items: center;
-
   gap: 14px;
 }
 
@@ -105,21 +97,21 @@
   align-items: center;
   justify-content: center;
 
+  flex-shrink: 0;
+
   border: 1px solid #bbf7d0;
   border-radius: 15px;
 
-  background:
-    linear-gradient(
-      145deg,
-      #f0fdf4,
-      #dcfce7
-    );
+  background: linear-gradient(
+    145deg,
+    #f0fdf4,
+    #dcfce7
+  );
 
   color: #15803d;
 
   box-shadow:
-    0 8px 25px
-    rgba(22, 163, 74, 0.10);
+    0 8px 25px rgba(22, 163, 74, 0.1);
 }
 
 .agreement-details-document-icon span {
@@ -134,7 +126,7 @@
   color: #16a34a;
 
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 0.12em;
 }
@@ -145,11 +137,9 @@
   color: #0f172a;
 
   font-size: clamp(24px, 2.4vw, 32px);
-
   line-height: 1.15;
 
-  font-weight: 800;
-
+  font-weight: 900;
   letter-spacing: -0.02em;
 }
 
@@ -159,7 +149,6 @@
   color: #64748b;
 
   font-size: 12px;
-
   line-height: 1.5;
 }
 
@@ -178,7 +167,7 @@
   color: #15803d;
 
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .status-dot {
@@ -190,17 +179,13 @@
   background: #16a34a;
 
   box-shadow:
-    0 0 0 4px
-    rgba(22, 163, 74, 0.10);
-
-  animation:
-    statusPulse 2s ease-in-out infinite;
+    0 0 0 4px rgba(22, 163, 74, 0.1);
 }
 
 
-/* =========================================
-   IDENTITY
-========================================= */
+/* =========================================================
+   AGREEMENT IDENTITY
+========================================================= */
 
 .agreement-details-identity {
   display: grid;
@@ -216,19 +201,10 @@
   border: 1px solid #dbe5ef;
   border-radius: 16px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #ffffff 0%,
-      #f8fafc 100%
-    );
+  background: #ffffff;
 
   box-shadow:
-    0 10px 35px
-    rgba(15, 23, 42, 0.06);
-
-  animation:
-    cardReveal 0.6s 0.08s ease both;
+    0 10px 35px rgba(15, 23, 42, 0.06);
 }
 
 .identity-main {
@@ -245,7 +221,7 @@
   color: #64748b;
 
   font-size: 10px;
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 0.1em;
 }
@@ -256,7 +232,7 @@
   color: #0f172a;
 
   font-size: 23px;
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 0.02em;
 }
@@ -297,14 +273,14 @@
   color: #64748b;
 
   font-size: 10px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .identity-side strong {
   color: #1e293b;
 
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .identity-active {
@@ -312,21 +288,20 @@
 }
 
 
-/* =========================================
+/* =========================================================
    CONTENT
-========================================= */
+========================================================= */
 
 .agreement-details-content {
   display: flex;
   flex-direction: column;
-
   gap: 16px;
 }
 
 
-/* =========================================
+/* =========================================================
    CARD
-========================================= */
+========================================================= */
 
 .agreement-details-card {
   padding: 22px;
@@ -337,11 +312,7 @@
   background: #ffffff;
 
   box-shadow:
-    0 6px 22px
-    rgba(15, 23, 42, 0.045);
-
-  animation:
-    cardReveal 0.55s ease both;
+    0 6px 22px rgba(15, 23, 42, 0.045);
 
   transition:
     transform 0.25s ease,
@@ -355,21 +326,19 @@
   border-color: #cbd5e1;
 
   box-shadow:
-    0 12px 30px
-    rgba(15, 23, 42, 0.07);
+    0 12px 30px rgba(15, 23, 42, 0.07);
 }
 
 
-/* =========================================
+/* =========================================================
    CARD HEADING
-========================================= */
+========================================================= */
 
 .agreement-card-heading {
   display: flex;
   align-items: center;
 
   gap: 11px;
-
   margin-bottom: 20px;
 }
 
@@ -390,7 +359,7 @@
   color: #15803d;
 
   font-size: 15px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .agreement-card-heading span {
@@ -401,7 +370,7 @@
   color: #94a3b8;
 
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 0.11em;
 }
@@ -412,13 +381,13 @@
   color: #1e293b;
 
   font-size: 16px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 
-/* =========================================
-   INFORMATION GRID
-========================================= */
+/* =========================================================
+   INFO GRID
+========================================================= */
 
 .agreement-info-grid {
   display: grid;
@@ -438,16 +407,6 @@
   border-radius: 11px;
 
   background: #f8fafc;
-
-  transition:
-    background 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.agreement-info-item:hover {
-  background: #ffffff;
-
-  border-color: #bbf7d0;
 }
 
 .agreement-info-item span {
@@ -458,7 +417,7 @@
   color: #64748b;
 
   font-size: 10px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 .agreement-info-item strong {
@@ -469,7 +428,7 @@
   color: #1e293b;
 
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 900;
 
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -486,9 +445,9 @@
 }
 
 
-/* =========================================
-   PARTY GRID
-========================================= */
+/* =========================================================
+   PARTY
+========================================================= */
 
 .agreement-party-grid {
   display: grid;
@@ -511,19 +470,6 @@
   border-radius: 12px;
 
   background: #f8fafc;
-
-  transition:
-    transform 0.25s ease,
-    border-color 0.25s ease,
-    background 0.25s ease;
-}
-
-.agreement-party-card:hover {
-  transform: translateY(-2px);
-
-  border-color: #bbf7d0;
-
-  background: #f0fdf4;
 }
 
 .party-avatar {
@@ -543,12 +489,11 @@
   color: #334155;
 
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .party-avatar.buyer {
   background: #dcfce7;
-
   color: #15803d;
 }
 
@@ -560,7 +505,7 @@
   color: #94a3b8;
 
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 0.1em;
 }
@@ -571,13 +516,13 @@
   color: #1e293b;
 
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 
-/* =========================================
+/* =========================================================
    TIMELINE
-========================================= */
+========================================================= */
 
 .agreement-timeline {
   display: grid;
@@ -627,7 +572,7 @@
   color: #64748b;
 
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .agreement-timeline-item > strong {
@@ -636,44 +581,19 @@
   color: #1e293b;
 
   font-size: 14px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .timeline-line {
   height: 2px;
 
-  position: relative;
-
-  background:
-    linear-gradient(
-      90deg,
-      #bbf7d0,
-      #86efac
-    );
-}
-
-.timeline-line span {
-  position: absolute;
-
-  left: 50%;
-
-  top: 50%;
-
-  width: 5px;
-  height: 5px;
-
-  border-radius: 50%;
-
-  background: #22c55e;
-
-  transform:
-    translate(-50%, -50%);
+  background: #86efac;
 }
 
 
-/* =========================================
-   CUTTING PERIOD NOTE
-========================================= */
+/* =========================================================
+   CUTTING NOTE
+========================================================= */
 
 .cutting-period-note {
   padding: 15px 17px;
@@ -681,12 +601,7 @@
   border: 1px solid #bbf7d0;
   border-radius: 12px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #f0fdf4,
-      #f7fee7
-    );
+  background: #f0fdf4;
 }
 
 .cutting-period-note strong {
@@ -697,7 +612,7 @@
   color: #166534;
 
   font-size: 13px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .cutting-period-note > span {
@@ -706,7 +621,7 @@
   color: #15803d;
 
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .cutting-period-note p {
@@ -715,14 +630,13 @@
   color: #64748b;
 
   font-size: 10px;
-
   line-height: 1.5;
 }
 
 
-/* =========================================
+/* =========================================================
    PRICE
-========================================= */
+========================================================= */
 
 .agreement-price-card {
   display: flex;
@@ -736,12 +650,7 @@
   border: 1px solid #bbf7d0;
   border-radius: 14px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #f0fdf4,
-      #ffffff
-    );
+  background: #f0fdf4;
 }
 
 .agreement-price-card span {
@@ -750,7 +659,7 @@
   color: #166534;
 
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .agreement-price-card p {
@@ -771,9 +680,9 @@
 }
 
 
-/* =========================================
+/* =========================================================
    WITNESSES
-========================================= */
+========================================================= */
 
 .agreement-witness-grid {
   display: grid;
@@ -796,16 +705,6 @@
   border-radius: 11px;
 
   background: #f8fafc;
-
-  transition:
-    transform 0.2s ease,
-    border-color 0.2s ease;
-}
-
-.agreement-witness-card:hover {
-  transform: translateY(-2px);
-
-  border-color: #cbd5e1;
 }
 
 .witness-number {
@@ -825,7 +724,7 @@
   color: #475569;
 
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .agreement-witness-card span {
@@ -836,7 +735,7 @@
   color: #94a3b8;
 
   font-size: 9px;
-  font-weight: 700;
+  font-weight: 800;
 }
 
 .agreement-witness-card strong {
@@ -845,13 +744,13 @@
   color: #1e293b;
 
   font-size: 12px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 
-/* =========================================
-   SYSTEM INFORMATION
-========================================= */
+/* =========================================================
+   SYSTEM
+========================================================= */
 
 .agreement-system-grid {
   display: grid;
@@ -863,9 +762,9 @@
 }
 
 
-/* =========================================
-   ACTIONS
-========================================= */
+/* =========================================================
+   ACTION AREA
+========================================================= */
 
 .agreement-details-actions {
   display: flex;
@@ -876,22 +775,17 @@
 
   padding: 22px;
 
-  border: 1px solid #dbe5ef;
+  border: 1px solid #1e293b;
   border-radius: 16px;
 
-  background:
-    linear-gradient(
-      135deg,
-      #0f172a,
-      #1e293b
-    );
+  background: linear-gradient(
+    135deg,
+    #0f172a,
+    #1e293b
+  );
 
   box-shadow:
-    0 16px 40px
-    rgba(15, 23, 42, 0.15);
-
-  animation:
-    cardReveal 0.55s 0.2s ease both;
+    0 16px 40px rgba(15, 23, 42, 0.15);
 }
 
 .agreement-action-intro {
@@ -906,7 +800,7 @@
   color: #86efac;
 
   font-size: 9px;
-  font-weight: 800;
+  font-weight: 900;
 
   letter-spacing: 0.12em;
 }
@@ -917,7 +811,7 @@
   color: #ffffff;
 
   font-size: 17px;
-  font-weight: 800;
+  font-weight: 900;
 }
 
 .agreement-action-intro p {
@@ -946,21 +840,18 @@
 
   gap: 7px;
 
-  min-height: 38px;
+  min-height: 40px;
 
-  padding: 0 14px;
+  padding: 0 15px;
 
   border-radius: 10px;
 
   font-size: 11px;
-  font-weight: 800;
+  font-weight: 900;
 
   cursor: pointer;
 
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+  transition: 0.2s ease;
 }
 
 .agreement-action-button:hover {
@@ -974,17 +865,13 @@
 .agreement-action-button.secondary {
   border: 1px solid #475569;
 
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255,255,255,0.07);
 
   color: #e2e8f0;
 }
 
 .agreement-action-button.secondary:hover {
-  background: rgba(255, 255, 255, 0.13);
-
-  box-shadow:
-    0 8px 20px
-    rgba(0, 0, 0, 0.18);
+  background: rgba(255,255,255,0.14);
 }
 
 .agreement-action-button.primary {
@@ -995,46 +882,768 @@
   color: #ffffff;
 
   box-shadow:
-    0 8px 20px
-    rgba(22, 163, 74, 0.22);
+    0 8px 20px rgba(22,163,74,0.22);
 }
 
 .agreement-action-button.primary:hover {
   background: #15803d;
-
-  box-shadow:
-    0 12px 25px
-    rgba(22, 163, 74, 0.28);
 }
 
 
-/* =========================================
+/* =========================================================
+   PDF HIDDEN TEMPLATE
+========================================================= */
+
+.sams-agreement-pdf {
+  position: fixed;
+
+  left: -100000px;
+  top: 0;
+
+  width: 794px;
+
+  box-sizing: border-box;
+
+  padding: 24px 34px 20px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  font-family:
+    "Nirmala UI",
+    "Noto Sans Devanagari",
+    Arial,
+    sans-serif;
+
+  font-size: 17px;
+
+  line-height: 1.48;
+}
+
+
+/* =========================================================
+   PDF HEADER
+========================================================= */
+
+.pdf-header {
+  text-align: center;
+
+  margin-bottom: 12px;
+}
+
+.pdf-header h1 {
+  margin: 0 0 10px;
+
+  color: #111827;
+
+  font-size: 25px;
+
+  line-height: 1.25;
+
+  font-weight: 900;
+}
+
+.pdf-header-line {
+  height: 2px;
+
+  margin: 9px 0 10px;
+
+  background: #334155;
+}
+
+
+/* =========================================================
+   PDF QR
+========================================================= */
+
+.pdf-qr-section {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+
+  margin: 10px 0 14px;
+
+  padding: 10px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  background: #f8fafc;
+}
+
+.pdf-qr-code {
+  width: 100px;
+  height: 100px;
+
+  flex: 0 0 100px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #ffffff;
+
+  border-radius: 6px;
+}
+
+.pdf-qr-code canvas {
+  display: block;
+
+  width: 90px !important;
+  height: 90px !important;
+}
+
+.pdf-qr-information {
+  display: flex;
+  flex-direction: column;
+
+  gap: 3px;
+
+  min-width: 0;
+}
+
+.pdf-qr-information strong {
+  color: #111827;
+
+  font-size: 14px;
+  font-weight: 900;
+}
+
+.pdf-qr-information span {
+  color: #334155;
+
+  font-size: 11px;
+
+  line-height: 1.4;
+}
+
+.pdf-qr-information small {
+  color: #64748b;
+
+  font-size: 10px;
+}
+
+
+/* =========================================================
+   PDF META
+========================================================= */
+
+.pdf-meta-grid {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  overflow: hidden;
+
+  border: 2px solid #475569;
+  border-radius: 4px;
+}
+
+.pdf-meta-grid > div {
+  display: flex;
+  align-items: center;
+
+  gap: 7px;
+
+  min-height: 34px;
+
+  padding: 6px 9px;
+
+  background: #ffffff;
+
+  font-size: 12px;
+
+  line-height: 1.3;
+}
+
+.pdf-meta-grid > div:nth-child(odd) {
+  border-right: 1px solid #94a3b8;
+}
+
+.pdf-meta-grid > div:nth-child(-n+2) {
+  border-bottom: 1px solid #94a3b8;
+}
+
+.pdf-meta-grid strong {
+  color: #111827;
+
+  font-weight: 900;
+}
+
+.pdf-meta-grid span {
+  color: #1e293b;
+
+  font-weight: 700;
+}
+
+.pdf-status {
+  color: #166534 !important;
+  font-weight: 900 !important;
+}
+
+
+/* =========================================================
+   PDF BODY
+========================================================= */
+
+.pdf-body {
+  color: #111827;
+
+  font-size: 17px;
+
+  line-height: 1.48;
+}
+
+.pdf-body p {
+  margin: 0 0 9px;
+
+  text-align: justify;
+}
+
+.pdf-body strong {
+  font-weight: 900;
+}
+
+.pdf-price {
+  font-size: 18px;
+
+  color: #111827;
+}
+
+
+/* =========================================================
+   PDF CUTTING BOX
+========================================================= */
+
+.pdf-cutting-box {
+  margin: 10px 0 11px;
+
+  padding: 9px 12px;
+
+  border: 2px solid #64748b;
+  border-radius: 5px;
+
+  background: #f8fafc;
+}
+
+.pdf-cutting-box strong {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #111827;
+
+  font-size: 16px;
+  font-weight: 900;
+}
+
+.pdf-cutting-box span {
+  display: block;
+
+  margin-bottom: 2px;
+
+  color: #111827;
+
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.pdf-cutting-box p {
+  margin: 0;
+
+  color: #334155;
+
+  font-size: 12px;
+
+  line-height: 1.35;
+
+  text-align: left;
+}
+
+
+/* =========================================================
+   PDF WITNESSES
+========================================================= */
+
+.pdf-body h2 {
+  margin: 11px 0 6px;
+
+  padding-bottom: 4px;
+
+  border-bottom: 2px solid #64748b;
+
+  color: #111827;
+
+  font-size: 18px;
+
+  font-weight: 900;
+}
+
+.pdf-witness-list {
+  margin-bottom: 10px;
+}
+
+.pdf-witness-list div {
+  width: 48%;
+
+  min-height: 20px;
+
+  margin-bottom: 4px;
+
+  padding-bottom: 2px;
+
+  border-bottom: 1px solid #475569;
+
+  color: #111827;
+
+  font-size: 14px;
+
+  font-weight: 700;
+}
+
+
+/* =========================================================
+   PDF SIGNATURES
+========================================================= */
+
+.pdf-signatures {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 70px;
+
+  margin-top: 12px;
+
+  padding-top: 9px;
+
+  border-top: 2px solid #64748b;
+}
+
+.pdf-signatures h3 {
+  margin: 0 0 8px;
+
+  color: #111827;
+
+  font-size: 14px;
+
+  font-weight: 900;
+}
+
+.pdf-signatures p {
+  margin: 3px 0;
+
+  color: #111827;
+
+  font-size: 13px;
+
+  font-weight: 700;
+
+  text-align: left;
+}
+
+.pdf-sign-space {
+  height: 20px;
+}
+
+
+/* =========================================================
+   PDF FOOTER
+========================================================= */
+
+.pdf-footer {
+  display: flex;
+  align-items: center;
+
+  gap: 8px;
+
+  margin-top: 9px;
+
+  padding-top: 7px;
+
+  border-top: 2px solid #94a3b8;
+
+  color: #334155;
+
+  font-size: 10px;
+
+  font-weight: 800;
+
+  line-height: 1.3;
+}
+
+.pdf-footer strong {
+  color: #166534;
+
+  font-size: 12px;
+
+  font-weight: 900;
+}
+
+.pdf-footer span {
+  color: #334155;
+
+  font-weight: 800;
+}
+
+.pdf-footer small {
+  margin-left: auto;
+
+  color: #334155;
+
+  font-size: 9px;
+
+  font-weight: 800;
+}
+
+
+/* =========================================================
+   PDF BUTTON STATES
+========================================================= */
+
+.pdf-download-button {
+  position: relative;
+}
+
+.pdf-download-button.loading {
+  cursor: wait;
+
+  opacity: 0.75;
+}
+
+.pdf-download-button.success {
+  border-color: #22c55e !important;
+
+  background: #166534 !important;
+
+  color: #ffffff !important;
+}
+
+.pdf-action-icon {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  width: 18px;
+  height: 18px;
+}
+
+
+/* =========================================================
+   QR MODAL
+========================================================= */
+
+.sams-qr-modal-overlay {
+  position: fixed;
+  inset: 0;
+
+  z-index: 10000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 20px;
+
+  background: rgba(15,23,42,0.72);
+
+  backdrop-filter: blur(12px);
+
+  animation: samsQrOverlayIn 0.25s ease;
+}
+
+.sams-qr-modal {
+  position: relative;
+
+  width: min(420px, 100%);
+
+  padding: 30px;
+
+  text-align: center;
+
+  border-radius: 25px;
+
+  background: #ffffff;
+
+  border: 1px solid #e2e8f0;
+
+  box-shadow:
+    0 30px 90px rgba(0,0,0,0.35);
+
+  animation:
+    samsQrModalIn 0.35s ease;
+}
+
+.sams-qr-close {
+  position: absolute;
+
+  top: 15px;
+  right: 15px;
+
+  width: 35px;
+  height: 35px;
+
+  border: none;
+  border-radius: 50%;
+
+  background: #f1f5f9;
+
+  color: #475569;
+
+  font-size: 22px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.sams-qr-close:hover {
+  background: #e2e8f0;
+
+  transform: rotate(90deg);
+}
+
+.sams-qr-badge {
+  display: inline-block;
+
+  padding: 6px 12px;
+
+  border: 1px solid #dbeafe;
+  border-radius: 999px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  font-size: 9px;
+
+  font-weight: 900;
+
+  letter-spacing: 0.12em;
+}
+
+.sams-qr-modal h2 {
+  margin: 14px 0 6px;
+
+  color: #0f172a;
+
+  font-size: 23px;
+
+  font-weight: 900;
+}
+
+.sams-qr-description {
+  max-width: 320px;
+
+  margin: 0 auto;
+
+  color: #64748b;
+
+  font-size: 11px;
+
+  line-height: 1.6;
+}
+
+
+/* =========================================================
+   QR DISPLAY
+========================================================= */
+
+.sams-qr-display {
+  width: 270px;
+  height: 270px;
+
+  margin: 22px auto;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+
+  background: #ffffff;
+
+  box-shadow:
+    0 12px 35px rgba(15,23,42,0.08);
+}
+
+.sams-qr-display canvas {
+  display: block;
+
+  width: 230px !important;
+  height: 230px !important;
+}
+
+
+/* =========================================================
+   QR AGREEMENT ID
+========================================================= */
+
+.sams-qr-agreement-id {
+  padding: 12px;
+
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+
+  background: #f8fafc;
+}
+
+.sams-qr-agreement-id span {
+  display: block;
+
+  color: #94a3b8;
+
+  font-size: 8px;
+  font-weight: 900;
+
+  letter-spacing: 0.12em;
+}
+
+.sams-qr-agreement-id strong {
+  display: block;
+
+  margin-top: 4px;
+
+  color: #0f172a;
+
+  font-size: 13px;
+
+  font-weight: 900;
+}
+
+
+/* =========================================================
+   QR SECURITY
+========================================================= */
+
+.sams-qr-security {
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  margin-top: 12px;
+
+  padding: 11px;
+
+  text-align: left;
+
+  border: 1px solid #dcfce7;
+  border-radius: 12px;
+
+  background: #f0fdf4;
+}
+
+.sams-qr-security > span {
+  width: 27px;
+  height: 27px;
+
+  display: grid;
+  place-items: center;
+
+  flex: 0 0 27px;
+
+  border-radius: 50%;
+
+  background: #16a34a;
+
+  color: #ffffff;
+
+  font-weight: 900;
+}
+
+.sams-qr-security strong {
+  display: block;
+
+  color: #166534;
+
+  font-size: 10px;
+
+  font-weight: 900;
+}
+
+.sams-qr-security small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: #64748b;
+
+  font-size: 9px;
+}
+
+
+/* =========================================================
+   QR DONE
+========================================================= */
+
+.sams-qr-done {
+  width: 100%;
+  height: 45px;
+
+  margin-top: 15px;
+
+  border: none;
+  border-radius: 11px;
+
+  background: #0f172a;
+
+  color: #ffffff;
+
+  font-size: 12px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.sams-qr-done:hover {
+  background: #1e293b;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 10px 25px rgba(15,23,42,0.18);
+}
+
+
+/* =========================================================
    ANIMATIONS
-========================================= */
+========================================================= */
 
 @keyframes agreementHeaderIn {
-
   from {
     opacity: 0;
-    transform:
-      translateY(12px);
+    transform: translateY(12px);
   }
 
   to {
     opacity: 1;
-    transform:
-      translateY(0);
+    transform: translateY(0);
   }
-
 }
 
-@keyframes cardReveal {
+@keyframes samsQrOverlayIn {
+  from {
+    opacity: 0;
+  }
 
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes samsQrModalIn {
   from {
     opacity: 0;
     transform:
-      translateY(18px)
-      scale(0.985);
+      translateY(20px)
+      scale(0.95);
   }
 
   to {
@@ -1043,30 +1652,12 @@
       translateY(0)
       scale(1);
   }
-
-}
-
-@keyframes statusPulse {
-
-  0%,
-  100% {
-    box-shadow:
-      0 0 0 4px
-      rgba(22, 163, 74, 0.10);
-  }
-
-  50% {
-    box-shadow:
-      0 0 0 7px
-      rgba(22, 163, 74, 0.03);
-  }
-
 }
 
 
-/* =========================================
+/* =========================================================
    TABLET
-========================================= */
+========================================================= */
 
 @media (max-width: 1000px) {
 
@@ -1092,13 +1683,12 @@
   .agreement-action-buttons {
     justify-content: flex-start;
   }
-
 }
 
 
-/* =========================================
+/* =========================================================
    MOBILE
-========================================= */
+========================================================= */
 
 @media (max-width: 700px) {
 
@@ -1109,8 +1699,6 @@
   .agreement-details-topbar {
     align-items: flex-start;
     flex-direction: column;
-
-    gap: 4px;
   }
 
   .agreement-details-breadcrumb {
@@ -1120,42 +1708,14 @@
   .agreement-details-header {
     align-items: flex-start;
     flex-direction: column;
-
-    gap: 14px;
-  }
-
-  .agreement-details-title-area {
-    align-items: flex-start;
   }
 
   .agreement-details-header-status {
     align-self: flex-start;
   }
 
-  .agreement-details-identity {
-    border-radius: 13px;
-  }
-
-  .identity-main {
-    padding: 18px;
-  }
-
-  .identity-main strong {
-    font-size: 18px;
-  }
-
-  .identity-side {
-    grid-template-columns: 1fr;
-  }
-
-  .identity-side > div {
-    padding: 14px 18px;
-  }
-
   .agreement-details-card {
     padding: 16px;
-
-    border-radius: 13px;
   }
 
   .agreement-info-grid {
@@ -1169,33 +1729,20 @@
   .agreement-timeline {
     grid-template-columns: 1fr;
 
-    gap: 0;
+    gap: 8px;
   }
 
   .agreement-timeline-item {
     align-items: flex-start;
 
     text-align: left;
-
-    padding-left: 6px;
   }
 
   .timeline-line {
     width: 2px;
-    height: 28px;
+    height: 22px;
 
-    margin-left: 12px;
-
-    background:
-      linear-gradient(
-        180deg,
-        #bbf7d0,
-        #86efac
-      );
-  }
-
-  .timeline-line span {
-    left: 50%;
+    margin-left: 6px;
   }
 
   .agreement-witness-grid {
@@ -1211,14 +1758,8 @@
     flex-direction: column;
   }
 
-  .agreement-price-card strong {
-    font-size: 20px;
-  }
-
   .agreement-details-actions {
     padding: 17px;
-
-    border-radius: 13px;
   }
 
   .agreement-action-buttons {
@@ -1233,302 +1774,32 @@
     width: 100%;
   }
 
+  .sams-qr-modal {
+    padding: 24px 18px;
+  }
+
+  .sams-qr-display {
+    width: 245px;
+    height: 245px;
+  }
+
+  .sams-qr-display canvas {
+    width: 210px !important;
+    height: 210px !important;
+  }
 }
 
 
-/* =========================================
+/* =========================================================
    REDUCED MOTION
-========================================= */
+========================================================= */
 
 @media (prefers-reduced-motion: reduce) {
 
   .agreement-details-page *,
-  .agreement-details-page {
+  .sams-qr-modal-overlay,
+  .sams-qr-modal {
     animation: none !important;
     transition: none !important;
   }
-
-}
-
-/* =========================================
-   PDF DOCUMENT
-========================================= */
-
-.sams-agreement-pdf {
-  position: fixed;
-
-  left: -100000px;
-  top: 0;
-
-  width: 794px;
-
-  box-sizing: border-box;
-
-  padding: 42px 48px;
-
-  background: #ffffff;
-
-  color: #111827;
-
-  font-family:
-    "Noto Sans Devanagari",
-    "Nirmala UI",
-    Arial,
-    sans-serif;
-
-  font-size: 15px;
-
-  line-height: 1.75;
-}
-
-.pdf-header {
-  text-align: center;
-
-  margin-bottom: 24px;
-}
-
-.pdf-header h1 {
-  margin: 0;
-
-  font-size: 25px;
-
-  font-weight: 900;
-
-  color: #111827;
-}
-
-.pdf-header-line {
-  height: 1px;
-
-  margin: 12px 0 14px;
-
-  background: #334155;
-}
-
-.pdf-meta-grid {
-  display: grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  border: 1px solid #64748b;
-}
-
-.pdf-meta-grid > div {
-  display: flex;
-
-  gap: 8px;
-
-  padding: 7px 9px;
-
-  border-bottom: 1px solid #cbd5e1;
-
-  font-size: 11px;
-
-  text-align: left;
-}
-
-.pdf-meta-grid > div:nth-child(odd) {
-  border-right: 1px solid #cbd5e1;
-}
-
-.pdf-meta-grid strong {
-  font-weight: 800;
-}
-
-.pdf-meta-grid span {
-  color: #334155;
-}
-
-.pdf-body p {
-  margin: 0 0 15px;
-
-  text-align: justify;
-}
-
-.pdf-body strong {
-  font-weight: 800;
-}
-
-.pdf-body h2 {
-  margin: 22px 0 10px;
-
-  font-size: 17px;
-
-  border-bottom: 1px solid #94a3b8;
-
-  padding-bottom: 5px;
-}
-
-.pdf-cutting-box {
-  margin: 18px 0;
-
-  padding: 12px 15px;
-
-  border: 1px solid #64748b;
-
-  background: #f8fafc;
-}
-
-.pdf-cutting-box strong {
-  display: block;
-
-  font-size: 15px;
-}
-
-.pdf-cutting-box span {
-  display: block;
-
-  font-size: 14px;
-
-  font-weight: 800;
-}
-
-.pdf-cutting-box p {
-  margin: 4px 0 0;
-
-  font-size: 12px;
-
-  text-align: left;
-}
-
-.pdf-witness-list {
-  margin-bottom: 30px;
-}
-
-.pdf-witness-list div {
-  margin-bottom: 7px;
-
-  min-height: 20px;
-
-  border-bottom: 1px solid #334155;
-
-  width: 55%;
-}
-
-.pdf-signatures {
-  display: grid;
-
-  grid-template-columns:
-    1fr 1fr;
-
-  gap: 100px;
-
-  margin-top: 40px;
-
-  border-top: 1px solid #94a3b8;
-
-  padding-top: 14px;
-}
-
-.pdf-signatures h3 {
-  margin: 0 0 25px;
-
-  font-size: 14px;
-}
-
-.pdf-signatures p {
-  margin: 5px 0;
-
-  text-align: left;
-}
-
-.pdf-sign-space {
-  height: 35px;
-}
-
-.pdf-footer {
-  display: flex;
-
-  align-items: center;
-
-  gap: 8px;
-
-  margin-top: 35px;
-
-  padding-top: 10px;
-
-  border-top: 1px solid #cbd5e1;
-
-  color: #64748b;
-
-  font-size: 9px;
-}
-
-.pdf-footer strong {
-  color: #15803d;
-
-  font-size: 13px;
-}
-
-.pdf-footer small {
-  margin-left: auto;
-}
-
-
-/* =========================================
-   PDF BUTTON STATES
-========================================= */
-
-.pdf-download-button {
-  position: relative;
-
-  overflow: hidden;
-}
-
-.pdf-download-button.loading {
-  cursor: wait;
-
-  opacity: 0.8;
-}
-
-.pdf-download-button.success {
-  border-color: #22c55e !important;
-
-  background: #166534 !important;
-
-  color: #ffffff !important;
-
-  animation:
-    pdfSuccessPop 0.45s ease;
-}
-
-.pdf-action-icon {
-  display: inline-flex;
-
-  align-items: center;
-  justify-content: center;
-
-  width: 18px;
-  height: 18px;
-}
-
-.pdf-download-button.loading
-.pdf-action-icon {
-  animation:
-    pdfSpinner 0.9s linear infinite;
-}
-
-@keyframes pdfSpinner {
-
-  to {
-    transform: rotate(360deg);
-  }
-
-}
-
-@keyframes pdfSuccessPop {
-
-  0% {
-    transform: scale(0.96);
-  }
-
-  55% {
-    transform: scale(1.04);
-  }
-
-  100% {
-    transform: scale(1);
-  }
-
 }

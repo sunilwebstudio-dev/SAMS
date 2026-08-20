@@ -1,12 +1,31 @@
-import { useEffect, useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Html5Qrcode } from "html5-qrcode";
+import {
+  useEffect,
+  useRef,
+  useState,
+} from "react";
+
+import {
+  useNavigate,
+  useSearchParams,
+} from "react-router-dom";
+
+import {
+  Html5Qrcode,
+} from "html5-qrcode";
+
 import "./VerifyAgreement.css";
+
 
 function VerifyAgreement({
   agreement = null,
   onBack,
 }) {
+
+  const navigate = useNavigate();
+
+  /* =========================================
+     STATE
+  ========================================= */
 
   const [agreementId, setAgreementId] =
     useState("");
@@ -29,15 +48,23 @@ function VerifyAgreement({
   const scannerStartedRef =
     useRef(false);
 
-    const navigate = useNavigate();
+    const [searchParams] =
+  useSearchParams();
 
-const handleBack = () => {
-  if (typeof onBack === "function") {
-    onBack();
-  } else {
+
+  /* =========================================
+     BACK
+  ========================================= */
+
+  const handleBack = () => {
+
+    if (typeof onBack === "function") {
+      onBack();
+      return;
+    }
+
     navigate("/dashboard");
-  }
-};
+  };
 
 
   /* =========================================
@@ -101,11 +128,18 @@ const handleBack = () => {
      VERIFY AGREEMENT
   ========================================= */
 
-  const handleVerify = () => {
+  const handleVerify = (
+    idToVerify = agreementId
+  ) => {
+
     const enteredId =
-      agreementId.trim().toLowerCase();
+      String(idToVerify || "")
+        .trim()
+        .toLowerCase();
+
 
     if (!enteredId) {
+
       setVerificationResult({
         valid: false,
         message:
@@ -115,7 +149,9 @@ const handleBack = () => {
       return;
     }
 
+
     setIsVerifying(true);
+
     setVerificationResult(null);
 
 
@@ -131,8 +167,8 @@ const handleBack = () => {
       /*
        * Prototype verification.
        *
-       * Later this will check the
-       * SAMS backend/database.
+       * Later this will be replaced with
+       * SAMS backend/database verification.
        */
 
       if (
@@ -166,10 +202,13 @@ const handleBack = () => {
      EXTRACT AGREEMENT ID FROM QR
   ========================================= */
 
-  const extractAgreementId = (decodedText) => {
+  const extractAgreementId = (
+    decodedText
+  ) => {
 
     const text =
       String(decodedText || "").trim();
+
 
     if (!text) {
       return "";
@@ -177,11 +216,13 @@ const handleBack = () => {
 
 
     /*
-     * If QR contains a URL such as:
+     * QR can contain:
      *
-     * https://your-domain.com/verify-agreement?id=SUP-2026-001
+     * SUP-2026-000001
      *
-     * extract the id automatically.
+     * OR
+     *
+     * https://domain.com/verify-agreement?id=SUP-2026-000001
      */
 
     try {
@@ -190,9 +231,7 @@ const handleBack = () => {
         new URL(text);
 
       const queryId =
-        url.searchParams.get(
-          "id"
-        ) ||
+        url.searchParams.get("id") ||
         url.searchParams.get(
           "agreementId"
         );
@@ -203,17 +242,10 @@ const handleBack = () => {
 
     } catch {
       /*
-       * Not a URL.
-       * Continue below.
+       * QR is plain text.
        */
     }
 
-
-    /*
-     * Support simple QR text:
-     *
-     * SUP-2026-001
-     */
 
     return text;
   };
@@ -225,16 +257,23 @@ const handleBack = () => {
 
   const stopScanner = async () => {
 
-    if (!scannerRef.current) {
+    const scanner =
+      scannerRef.current;
+
+
+    if (!scanner) {
       return;
     }
+
 
     try {
 
       if (
         scannerStartedRef.current
       ) {
-        await scannerRef.current.stop();
+
+        await scanner.stop();
+
       }
 
     } catch (error) {
@@ -246,9 +285,10 @@ const handleBack = () => {
 
     }
 
+
     try {
 
-      await scannerRef.current.clear();
+      await scanner.clear();
 
     } catch (error) {
 
@@ -259,10 +299,12 @@ const handleBack = () => {
 
     }
 
+
     scannerStartedRef.current =
       false;
 
-    scannerRef.current = null;
+    scannerRef.current =
+      null;
   };
 
 
@@ -281,148 +323,215 @@ const handleBack = () => {
 
 
   /* =========================================
-     START QR SCANNER
+     START SCANNER
   ========================================= */
 
-  const startScanner = async () => {
+const startScanner = async () => {
+  if (scannerRef.current) {
+    return;
+  }
 
-    setScannerError("");
+  setScannerError("");
+  setScannerOpen(true);
 
-    setScannerOpen(true);
+  await new Promise((resolve) => {
+    setTimeout(resolve, 250);
+  });
 
-    /*
-     * Wait for modal DOM element.
-     */
-
-    await new Promise((resolve) => {
-      setTimeout(resolve, 150);
+  try {
+    // First ask browser for camera access.
+    await navigator.mediaDevices.getUserMedia({
+      video: true,
     });
 
+    // Get cameras available on this device.
+    const cameras =
+      await Html5Qrcode.getCameras();
 
-    try {
+    if (!cameras || cameras.length === 0) {
+      throw new Error(
+        "No camera device found."
+      );
+    }
 
-      const scanner =
-        new Html5Qrcode(
-          "sams-qr-reader"
+    /*
+     * Prefer a rear/environment camera
+     * when available.
+     *
+     * Otherwise use the first available
+     * camera, which is usually the laptop
+     * webcam.
+     */
+    let selectedCamera =
+      cameras.find((camera) => {
+        const label =
+          camera.label.toLowerCase();
+
+        return (
+          label.includes("back") ||
+          label.includes("rear") ||
+          label.includes("environment")
         );
+      });
 
-      scannerRef.current =
-        scanner;
+    if (!selectedCamera) {
+      selectedCamera = cameras[0];
+    }
 
+    const scanner =
+      new Html5Qrcode(
+        "sams-qr-reader"
+      );
 
-      await scanner.start(
+    scannerRef.current = scanner;
 
-        {
-          facingMode: {
-            ideal: "environment",
-          },
+    await scanner.start(
+      selectedCamera.id,
+      {
+        fps: 10,
+
+        qrbox: {
+          width: 240,
+          height: 240,
         },
 
-        {
-          fps: 10,
+        aspectRatio: 1,
+      },
 
-          qrbox: {
-            width: 240,
-            height: 240,
-          },
-
-          aspectRatio: 1,
-
-        },
-
-        async (decodedText) => {
-
-          const detectedId =
-            extractAgreementId(
-              decodedText
-            );
-
-
-          if (!detectedId) {
-            setScannerError(
-              "This QR code does not contain a valid Agreement ID."
-            );
-
-            return;
-          }
-
-
-          /*
-           * Put scanned ID into input.
-           */
-
-          setAgreementId(
-            detectedId
+      async (decodedText) => {
+        const detectedId =
+          extractAgreementId(
+            decodedText
           );
 
-          setVerificationResult(null);
+        if (!detectedId) {
+          setScannerError(
+            "This QR code does not contain a valid Agreement ID."
+          );
 
-
-          /*
-           * Stop scanner immediately
-           * after successful scan.
-           */
-
-          await stopScanner();
-
-          setScannerOpen(false);
-
-
-          /*
-           * Automatically verify.
-           */
-
-          setTimeout(() => {
-
-            handleVerify();
-
-          }, 100);
-
-        },
-
-        () => {
-          /*
-           * QR scan frame errors are normal.
-           * We intentionally don't show them.
-           */
+          return;
         }
 
-      );
+        setAgreementId(
+          detectedId
+        );
 
-      scannerStartedRef.current =
-        true;
+        setVerificationResult(
+          null
+        );
 
-    } catch (error) {
+        await stopScanner();
 
-      console.error(
-        "QR scanner error:",
-        error
-      );
+        setScannerOpen(false);
 
-      scannerStartedRef.current =
-        false;
+        setTimeout(() => {
+          handleVerify(
+            detectedId
+          );
+        }, 150);
+      },
 
-      setScannerError(
-        "Camera could not be started. Please allow camera permission and try again."
-      );
+      () => {
+        // Normal scanning frame errors.
+        // We intentionally ignore them.
+      }
+    );
 
-    }
-  };
+    scannerStartedRef.current =
+      true;
+
+  } catch (error) {
+
+    console.error(
+      "QR scanner error:",
+      error
+    );
+
+    scannerStartedRef.current =
+      false;
+
+    scannerRef.current =
+      null;
+
+    setScannerError(
+      "No usable camera was found on this device. Please connect or enable a webcam and try again."
+    );
+  }
+};
 
 
   /* =========================================
-     SCANNER CLEANUP
+     CLEANUP
   ========================================= */
 
   useEffect(() => {
 
     return () => {
 
-      stopScanner();
+      const cleanupScanner =
+        async () => {
+
+          const scanner =
+            scannerRef.current;
+
+
+          if (!scanner) {
+            return;
+          }
+
+
+          try {
+
+            if (
+              scannerStartedRef.current
+            ) {
+              await scanner.stop();
+            }
+
+          } catch {
+            // Ignore cleanup errors.
+          }
+
+
+          try {
+
+            await scanner.clear();
+
+          } catch {
+            // Ignore cleanup errors.
+          }
+
+        };
+
+
+      cleanupScanner();
 
     };
 
   }, []);
+
+  useEffect(() => {
+
+  const qrAgreementId =
+    searchParams.get("id");
+
+  if (qrAgreementId) {
+
+    setAgreementId(
+      qrAgreementId
+    );
+
+    setTimeout(() => {
+
+      handleVerify(
+        qrAgreementId
+      );
+
+    }, 300);
+
+  }
+
+}, [searchParams]);
 
 
   /* =========================================
@@ -430,6 +539,7 @@ const handleBack = () => {
   ========================================= */
 
   return (
+
     <div className="verify-agreement-page">
 
 
@@ -453,6 +563,7 @@ const handleBack = () => {
           <div className="verify-brand-icon">
             ✓
           </div>
+
 
           <div>
 
@@ -488,9 +599,11 @@ const handleBack = () => {
             SECURE VERIFICATION
           </div>
 
+
           <h1>
             Verify an Agreement
           </h1>
+
 
           <p>
             Enter the Agreement ID or scan the
@@ -507,6 +620,7 @@ const handleBack = () => {
 
         <section className="verify-search-card">
 
+
           <label>
             Agreement ID
           </label>
@@ -517,6 +631,7 @@ const handleBack = () => {
             <span>
               #
             </span>
+
 
             <input
               type="text"
@@ -545,15 +660,10 @@ const handleBack = () => {
 
           <button
             type="button"
-            className={`
-              verify-search-button
-              ${
-                isVerifying
-                  ? "loading"
-                  : ""
-              }
-            `}
-            onClick={handleVerify}
+            className="verify-search-button"
+            onClick={() => {
+              handleVerify();
+            }}
             disabled={isVerifying}
           >
 
@@ -581,7 +691,7 @@ const handleBack = () => {
 
 
           {/* =================================
-              DIVIDER
+              OR
           ================================= */}
 
           <div className="verify-or-divider">
@@ -598,7 +708,7 @@ const handleBack = () => {
 
 
           {/* =================================
-              QR BUTTON
+              SCAN QR
           ================================= */}
 
           <button
@@ -612,17 +722,21 @@ const handleBack = () => {
               ▣
             </span>
 
+
             <span className="verify-qr-text">
 
               <strong>
                 Scan QR Code
               </strong>
 
+
               <small>
-                Use your camera to verify
+                Use your camera to verify an
+                agreement
               </small>
 
             </span>
+
 
             <span className="verify-qr-arrow">
               →
@@ -630,6 +744,10 @@ const handleBack = () => {
 
           </button>
 
+
+          {/* =================================
+              SECURITY HINT
+          ================================= */}
 
           <div className="verify-search-hint">
 
@@ -720,6 +838,7 @@ const handleBack = () => {
                   VERIFIED RECORD
                 </span>
 
+
                 <h2>
                   Agreement Details
                 </h2>
@@ -740,11 +859,14 @@ const handleBack = () => {
             </div>
 
 
+            {/* AGREEMENT ID */}
+
             <div className="verified-agreement-id">
 
               <span>
                 Agreement ID
               </span>
+
 
               <strong>
                 {actualAgreementId}
@@ -753,13 +875,17 @@ const handleBack = () => {
             </div>
 
 
+            {/* DETAILS */}
+
             <div className="verified-details-grid">
+
 
               <div>
 
                 <span>
                   Agreement Type
                 </span>
+
 
                 <strong>
                   {agreementType}
@@ -774,6 +900,7 @@ const handleBack = () => {
                   Status
                 </span>
 
+
                 <strong className="verified-green">
                   ● {status}
                 </strong>
@@ -786,6 +913,7 @@ const handleBack = () => {
                 <span>
                   Seller
                 </span>
+
 
                 <strong>
                   {sellerName}
@@ -800,6 +928,7 @@ const handleBack = () => {
                   Buyer
                 </span>
 
+
                 <strong>
                   {buyerName}
                 </strong>
@@ -812,6 +941,7 @@ const handleBack = () => {
                 <span>
                   Purchase Year
                 </span>
+
 
                 <strong>
                   {purchaseYear}
@@ -826,6 +956,7 @@ const handleBack = () => {
                   Ending Year
                 </span>
 
+
                 <strong>
                   {endingYear}
                 </strong>
@@ -838,6 +969,7 @@ const handleBack = () => {
                 <span>
                   Validity
                 </span>
+
 
                 <strong>
                   {validity} Years
@@ -852,6 +984,7 @@ const handleBack = () => {
                   Cutting Period
                 </span>
 
+
                 <strong>
                   {cuttingPeriod}
                 </strong>
@@ -865,6 +998,7 @@ const handleBack = () => {
                   Total Bagan Price
                 </span>
 
+
                 <strong>
                   ₹ {totalPrice}
                 </strong>
@@ -874,17 +1008,21 @@ const handleBack = () => {
             </div>
 
 
+            {/* TRUST FOOTER */}
+
             <div className="verification-trust-footer">
 
               <div className="trust-check">
                 ✓
               </div>
 
+
               <div>
 
                 <strong>
                   Verified by SAMS
                 </strong>
+
 
                 <span>
                   This agreement ID matches
@@ -895,14 +1033,13 @@ const handleBack = () => {
 
             </div>
 
-
           </section>
 
         )}
 
 
         {/* ===================================
-            NO AGREEMENT CONTEXT
+            NO AGREEMENT
         =================================== */}
 
         {!agreement && (
@@ -912,6 +1049,7 @@ const handleBack = () => {
             <div>
               i
             </div>
+
 
             <p>
               You can enter an Agreement ID or
@@ -941,11 +1079,14 @@ const handleBack = () => {
               event.target ===
               event.currentTarget
             ) {
+
               closeScanner();
+
             }
 
           }}
         >
+
 
           <section className="qr-scanner-modal">
 
@@ -959,6 +1100,7 @@ const handleBack = () => {
                 <span>
                   SAMS SECURE SCAN
                 </span>
+
 
                 <h2>
                   Scan Agreement QR
@@ -978,7 +1120,7 @@ const handleBack = () => {
             </div>
 
 
-            {/* SCANNER */}
+            {/* CAMERA */}
 
             <div className="qr-scanner-container">
 
@@ -987,12 +1129,17 @@ const handleBack = () => {
                 className="sams-qr-reader"
               />
 
+
               <div className="qr-scan-frame">
 
                 <span className="corner top-left" />
+
                 <span className="corner top-right" />
+
                 <span className="corner bottom-left" />
+
                 <span className="corner bottom-right" />
+
 
                 <div className="qr-scan-line" />
 
@@ -1011,6 +1158,7 @@ const handleBack = () => {
                   !
                 </span>
 
+
                 {scannerError}
 
               </div>
@@ -1018,11 +1166,14 @@ const handleBack = () => {
             )}
 
 
+            {/* INSTRUCTION */}
+
             <div className="qr-scanner-instruction">
 
               <div className="qr-instruction-icon">
                 ▣
               </div>
+
 
               <div>
 
@@ -1031,16 +1182,18 @@ const handleBack = () => {
                   the frame
                 </strong>
 
+
                 <p>
-                  Keep your camera steady and
-                  make sure the QR code is clearly
-                  visible.
+                  Keep the QR code clearly visible
+                  and hold your camera steady.
                 </p>
 
               </div>
 
             </div>
 
+
+            {/* CANCEL */}
 
             <button
               type="button"
@@ -1050,7 +1203,6 @@ const handleBack = () => {
               Cancel
             </button>
 
-
           </section>
 
         </div>
@@ -1058,7 +1210,9 @@ const handleBack = () => {
       )}
 
     </div>
+
   );
 }
+
 
 export default VerifyAgreement;

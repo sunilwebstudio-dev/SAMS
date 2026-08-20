@@ -2,6 +2,8 @@ import "./AgreementDetails.css";
 import { useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
+import { QRCodeCanvas } from "qrcode.react";
+
 import VerifyAgreement from "../../pages/agreements/VerifyAgreement";
 
 function AgreementDetails({
@@ -18,24 +20,16 @@ function AgreementDetails({
   const [pdfSuccess, setPdfSuccess] =
     useState(false);
 
-    const [showVerification, setShowVerification] =
-  useState(false);
+  const [showVerification, setShowVerification] =
+    useState(false);
+
+  const [showQR, setShowQR] =
+    useState(false);
 
 
   /* =========================================
      SAFETY CHECK
   ========================================= */
-
-  if (showVerification) {
-  return (
-    <VerifyAgreement
-      agreement={agreement}
-      onBack={() => {
-        setShowVerification(false);
-      }}
-    />
-  );
-}
 
   if (!agreement) {
     return null;
@@ -131,6 +125,16 @@ function AgreementDetails({
 
 
   /* =========================================
+     VERIFICATION URL
+  ========================================= */
+
+  const verificationUrl =
+    `${window.location.origin}/verify-agreement?id=${encodeURIComponent(
+      agreementId
+    )}`;
+
+
+  /* =========================================
      STATUS
   ========================================= */
 
@@ -206,10 +210,6 @@ function AgreementDetails({
       setIsGeneratingPdf(true);
       setPdfSuccess(false);
 
-      /*
-        Wait one frame so the hidden PDF
-        template is completely rendered.
-      */
       await new Promise((resolve) => {
         requestAnimationFrame(resolve);
       });
@@ -233,9 +233,6 @@ function AgreementDetails({
           logging: false,
         });
 
-      const imgData =
-        canvas.toDataURL("image/png");
-
       const pdf = new jsPDF({
         orientation: "portrait",
         unit: "mm",
@@ -248,67 +245,58 @@ function AgreementDetails({
       const pageHeight =
         pdf.internal.pageSize.getHeight();
 
-      const margin = 8;
+      const margin = 5;
 
-      const usableWidth =
+      const maxWidth =
         pageWidth - margin * 2;
 
-      const imageHeight =
-        (canvas.height * usableWidth) /
-        canvas.width;
-
-      const usablePageHeight =
+      const maxHeight =
         pageHeight - margin * 2;
 
-      let heightLeft = imageHeight;
-
-      let position = margin;
-
-
       /*
-        First page
-      */
+       * Fit complete agreement
+       * inside ONE A4 page.
+       */
 
-      pdf.addImage(
-        imgData,
-        "PNG",
-        margin,
-        position,
-        usableWidth,
-        imageHeight
-      );
+      const scaleX =
+        maxWidth / canvas.width;
 
-      heightLeft -= usablePageHeight;
+      const scaleY =
+        maxHeight / canvas.height;
 
+      const scale =
+        Math.min(scaleX, scaleY);
 
-      /*
-        Additional pages
-      */
+      const finalWidth =
+        canvas.width * scale;
 
-      while (heightLeft > 0) {
+      const finalHeight =
+        canvas.height * scale;
 
-        position =
-          margin -
-          (imageHeight - heightLeft);
+      const x =
+        (pageWidth - finalWidth) / 2;
 
-        pdf.addPage();
+      const y =
+        (pageHeight - finalHeight) / 2;
 
-        pdf.addImage(
-          imgData,
-          "PNG",
-          margin,
-          position,
-          usableWidth,
-          imageHeight
+      const image =
+        canvas.toDataURL(
+          "image/jpeg",
+          0.95
         );
 
-        heightLeft -= usablePageHeight;
-      }
-
-
       /*
-        Safe filename
-      */
+       * ONE PAGE ONLY
+       */
+
+      pdf.addImage(
+        image,
+        "JPEG",
+        x,
+        y,
+        finalWidth,
+        finalHeight
+      );
 
       const safeAgreementId =
         String(agreementId).replace(
@@ -316,19 +304,9 @@ function AgreementDetails({
           "-"
         );
 
-
-      /*
-        Download
-      */
-
       pdf.save(
         `SAMS-${safeAgreementId}.pdf`
       );
-
-
-      /*
-        Success animation
-      */
 
       setPdfSuccess(true);
 
@@ -353,6 +331,26 @@ function AgreementDetails({
   };
 
 
+  /* =========================================
+     VERIFY PAGE
+  ========================================= */
+
+  if (showVerification) {
+    return (
+      <VerifyAgreement
+        agreement={agreement}
+        onBack={() => {
+          setShowVerification(false);
+        }}
+      />
+    );
+  }
+
+
+  /* =========================================
+     MAIN RETURN
+  ========================================= */
+
   return (
     <div className="agreement-details-page">
 
@@ -372,20 +370,15 @@ function AgreementDetails({
           Back
         </button>
 
-
         <div className="agreement-details-breadcrumb">
 
           SAMS
 
-          <span>
-            /
-          </span>
+          <span>/</span>
 
           Agreements
 
-          <span>
-            /
-          </span>
+          <span>/</span>
 
           Details
 
@@ -403,13 +396,8 @@ function AgreementDetails({
         <div className="agreement-details-title-area">
 
           <div className="agreement-details-document-icon">
-
-            <span>
-              ▤
-            </span>
-
+            <span>▤</span>
           </div>
-
 
           <div>
 
@@ -499,15 +487,13 @@ function AgreementDetails({
 
 
       {/* =====================================
-          INFORMATION
+          CONTENT
       ===================================== */}
 
       <div className="agreement-details-content">
 
 
-        {/* ===================================
-            AGREEMENT INFORMATION
-        =================================== */}
+        {/* AGREEMENT INFORMATION */}
 
         <section className="agreement-details-card">
 
@@ -570,9 +556,7 @@ function AgreementDetails({
         </section>
 
 
-        {/* ===================================
-            SELLER & BUYER
-        =================================== */}
+        {/* SELLER & BUYER */}
 
         <section className="agreement-details-card">
 
@@ -598,7 +582,6 @@ function AgreementDetails({
 
 
           <div className="agreement-party-grid">
-
 
             <div className="agreement-party-card">
 
@@ -646,9 +629,7 @@ function AgreementDetails({
         </section>
 
 
-        {/* ===================================
-            AGREEMENT PERIOD
-        =================================== */}
+        {/* AGREEMENT PERIOD */}
 
         <section className="agreement-details-card">
 
@@ -681,22 +662,18 @@ function AgreementDetails({
               first
             />
 
-
             <div className="timeline-line">
               <span />
             </div>
-
 
             <TimelineItem
               label="Ending Year"
               value={endingYear}
             />
 
-
             <div className="timeline-line">
               <span />
             </div>
-
 
             <TimelineItem
               label="Cutting Year"
@@ -728,9 +705,7 @@ function AgreementDetails({
         </section>
 
 
-        {/* ===================================
-            FINANCIAL
-        =================================== */}
+        {/* FINANCIAL */}
 
         <section className="agreement-details-card">
 
@@ -778,9 +753,7 @@ function AgreementDetails({
         </section>
 
 
-        {/* ===================================
-            WITNESSES
-        =================================== */}
+        {/* WITNESSES */}
 
         <section className="agreement-details-card">
 
@@ -827,9 +800,7 @@ function AgreementDetails({
         </section>
 
 
-        {/* ===================================
-            SYSTEM INFORMATION
-        =================================== */}
+        {/* SYSTEM INFORMATION */}
 
         <section className="agreement-details-card">
 
@@ -881,9 +852,7 @@ function AgreementDetails({
         </section>
 
 
-        {/* ===================================
-            ACTION AREA
-        =================================== */}
+        {/* ACTIONS */}
 
         <section className="agreement-details-actions">
 
@@ -908,9 +877,7 @@ function AgreementDetails({
           <div className="agreement-action-buttons">
 
 
-            {/* ===============================
-                DOWNLOAD PDF
-            =============================== */}
+            {/* DOWNLOAD PDF */}
 
             <button
               type="button"
@@ -918,16 +885,8 @@ function AgreementDetails({
                 agreement-action-button
                 secondary
                 pdf-download-button
-                ${
-                  isGeneratingPdf
-                    ? "loading"
-                    : ""
-                }
-                ${
-                  pdfSuccess
-                    ? "success"
-                    : ""
-                }
+                ${isGeneratingPdf ? "loading" : ""}
+                ${pdfSuccess ? "success" : ""}
               `}
               onClick={handleDownloadPDF}
               disabled={isGeneratingPdf}
@@ -953,18 +912,13 @@ function AgreementDetails({
             </button>
 
 
-            {/* ===============================
-                SHOW QR
-            =============================== */}
+            {/* SHOW QR */}
 
             <button
               type="button"
               className="agreement-action-button secondary"
               onClick={() => {
-                console.log(
-                  "Show QR:",
-                  agreement
-                );
+                setShowQR(true);
               }}
             >
 
@@ -977,39 +931,148 @@ function AgreementDetails({
             </button>
 
 
-            {/* ===============================
-                VERIFY
-            =============================== */}
+            {/* VERIFY */}
 
-           <button
-  type="button"
-  className="agreement-action-button primary"
-  onClick={() => {
-    setShowVerification(true);
-  }}
->
-  <span>
-    ✓
-  </span>
+            <button
+              type="button"
+              className="agreement-action-button primary"
+              onClick={() => {
+                setShowVerification(true);
+              }}
+            >
 
-  Verify Agreement
-</button>
+              <span>
+                ✓
+              </span>
 
+              Verify Agreement
+
+            </button>
 
           </div>
 
         </section>
 
-
       </div>
 
 
       {/* =====================================
-          HIDDEN PDF DOCUMENT
-          
-          IMPORTANT:
-          This is inside AgreementDetails,
-          NOT inside Witness component.
+          QR MODAL
+      ===================================== */}
+
+      {showQR && (
+
+        <div
+          className="sams-qr-modal-overlay"
+          onClick={(event) => {
+
+            if (
+              event.target ===
+              event.currentTarget
+            ) {
+              setShowQR(false);
+            }
+
+          }}
+        >
+
+          <section className="sams-qr-modal">
+
+            <button
+              type="button"
+              className="sams-qr-close"
+              onClick={() => {
+                setShowQR(false);
+              }}
+            >
+              ×
+            </button>
+
+
+            <div className="sams-qr-badge">
+              SAMS SECURE QR
+            </div>
+
+
+            <h2>
+              Agreement Verification
+            </h2>
+
+
+            <p className="sams-qr-description">
+              Scan this QR code to verify this
+              agreement through SAMS.
+            </p>
+
+
+            <div className="sams-qr-display">
+
+              <QRCodeCanvas
+                value={verificationUrl}
+                size={230}
+                bgColor="#ffffff"
+                fgColor="#0f172a"
+                level="H"
+                includeMargin={true}
+              />
+
+            </div>
+
+
+            <div className="sams-qr-agreement-id">
+
+              <span>
+                AGREEMENT ID
+              </span>
+
+              <strong>
+                {agreementId}
+              </strong>
+
+            </div>
+
+
+            <div className="sams-qr-security">
+
+              <span>
+                ✓
+              </span>
+
+              <div>
+
+                <strong>
+                  Official SAMS Verification
+                </strong>
+
+                <small>
+                  This QR code is linked to
+                  this agreement.
+                </small>
+
+              </div>
+
+            </div>
+
+
+            <button
+              type="button"
+              className="sams-qr-done"
+              onClick={() => {
+                setShowQR(false);
+              }}
+            >
+              Done
+            </button>
+
+          </section>
+
+        </div>
+
+      )}
+
+
+      {/* =====================================
+          HIDDEN PDF
       ===================================== */}
 
       <div
@@ -1017,10 +1080,7 @@ function AgreementDetails({
         className="sams-agreement-pdf"
       >
 
-
-        {/* ===================================
-            PDF HEADER
-        =================================== */}
+        {/* PDF HEADER */}
 
         <div className="pdf-header">
 
@@ -1030,68 +1090,106 @@ function AgreementDetails({
 
           <div className="pdf-header-line" />
 
-
-          <div className="pdf-meta-grid">
-
-            <div>
-
-              <strong>
-                Agreement ID
-              </strong>
-
-              <span>
-                {agreementId}
-              </span>
-
-            </div>
+        </div>
 
 
-            <div>
+        {/* PDF QR */}
 
-              <strong>
-                Agreement Type
-              </strong>
+        <div className="pdf-qr-section">
 
-              <span>
-                {agreementType}
-              </span>
+          <div className="pdf-qr-code">
 
-            </div>
+            <QRCodeCanvas
+              value={verificationUrl}
+              size={82}
+              level="H"
+              includeMargin={true}
+              bgColor="#ffffff"
+              fgColor="#000000"
+            />
 
-
-            <div>
-
-              <strong>
-                Agreement Status
-              </strong>
-
-              <span>
-                {status}
-              </span>
-
-            </div>
+          </div>
 
 
-            <div>
+          <div className="pdf-qr-information">
 
-              <strong>
-                Agreement Date
-              </strong>
+            <strong>
+              SAMS Agreement Verification
+            </strong>
 
-              <span>
-                {agreementDate}
-              </span>
+            <span>
+              QR कोड स्कैन करके इस एग्रीमेंट की
+              सत्यता जाँचें।
+            </span>
 
-            </div>
+            <small>
+              Agreement ID: {agreementId}
+            </small>
 
           </div>
 
         </div>
 
 
-        {/* ===================================
-            PDF BODY
-        =================================== */}
+        {/* PDF META */}
+
+        <div className="pdf-meta-grid">
+
+          <div>
+
+            <strong>
+              Agreement ID
+            </strong>
+
+            <span>
+              {agreementId}
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Agreement Type
+            </strong>
+
+            <span>
+              {agreementType}
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Agreement Status
+            </strong>
+
+            <span className="pdf-status">
+              {status}
+            </span>
+
+          </div>
+
+
+          <div>
+
+            <strong>
+              Agreement Date
+            </strong>
+
+            <span>
+              {agreementDate}
+            </span>
+
+          </div>
+
+        </div>
+
+
+        {/* PDF BODY */}
 
         <div className="pdf-body">
 
@@ -1158,16 +1256,14 @@ function AgreementDetails({
 
 
           <p>
-            बागान की कुल कीमत:
-            <strong>
-              {" "}₹ {totalPrice}
+            बागान की कुल कीमत:{" "}
+            <strong className="pdf-price">
+              ₹ {totalPrice}
             </strong>
           </p>
 
 
-          {/* ===============================
-              CUTTING PERIOD
-          =============================== */}
+          {/* CUTTING PERIOD */}
 
           <div className="pdf-cutting-box">
 
@@ -1205,9 +1301,7 @@ function AgreementDetails({
           </p>
 
 
-          {/* ===============================
-              WITNESSES
-          =============================== */}
+          {/* WITNESSES */}
 
           <h2>
             गवाह
@@ -1231,17 +1325,14 @@ function AgreementDetails({
           </div>
 
 
-          {/* ===============================
-              SIGNATURES
-          =============================== */}
+          {/* SIGNATURES */}
 
           <div className="pdf-signatures">
-
 
             <div>
 
               <h3>
-                विक्रि करनेवाला
+                विक्रेता
               </h3>
 
               <div className="pdf-sign-space" />
@@ -1279,16 +1370,12 @@ function AgreementDetails({
 
             </div>
 
-
           </div>
-
 
         </div>
 
 
-        {/* ===================================
-            PDF FOOTER
-        =================================== */}
+        {/* PDF FOOTER */}
 
         <div className="pdf-footer">
 
@@ -1305,7 +1392,6 @@ function AgreementDetails({
           </small>
 
         </div>
-
 
       </div>
 
@@ -1327,11 +1413,7 @@ function InfoItem({
     <div
       className={`
         agreement-info-item
-        ${
-          highlight
-            ? "highlight"
-            : ""
-        }
+        ${highlight ? "highlight" : ""}
       `}
     >
 
@@ -1368,16 +1450,12 @@ function TimelineItem({
     >
 
       <div className="timeline-dot">
-
         <span />
-
       </div>
-
 
       <span>
         {label}
       </span>
-
 
       <strong>
         {value}
@@ -1403,7 +1481,6 @@ function Witness({
         {number}
       </div>
 
-
       <div>
 
         <span>
@@ -1419,4 +1496,6 @@ function Witness({
     </div>
   );
 }
+
+
 export default AgreementDetails;

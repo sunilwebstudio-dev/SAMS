@@ -54,132 +54,162 @@ function AgreementForm({
   submitLabel = "Preview Agreement",
   loading = false,
 }) {
+  /* =========================================
+     FORM STATE
+  ========================================= */
+
   const [form, setForm] = useState(() => {
-  try {
-    const key = getDraftKey(agreementType);
+    try {
+      const key = getDraftKey(agreementType);
 
-    const savedDraft =
-      sessionStorage.getItem(key);
+      const savedDraft =
+        sessionStorage.getItem(key);
 
-    if (savedDraft) {
-      return JSON.parse(savedDraft);
+      if (savedDraft) {
+        return JSON.parse(savedDraft);
+      }
+    } catch (error) {
+      console.warn(
+        "Unable to restore agreement draft:",
+        error
+      );
     }
-  } catch (error) {
-    console.warn(
-      "Unable to restore agreement draft:",
-      error
-    );
-  }
 
-  return {
-    ...DEFAULT_FORM,
-    agreementType: agreementType || "",
-  };
-});
+    return {
+      ...DEFAULT_FORM,
+      agreementType: agreementType || "",
+    };
+  });
+
   const [errors, setErrors] = useState({});
   const [touched, setTouched] = useState({});
   const [visibleFields, setVisibleFields] = useState(0);
 
+  /* =========================================
+     SELECTED TYPE
+  ========================================= */
+
   const selectedType = useMemo(
     () =>
       AGREEMENT_TYPES.find(
-        (type) => type.code === form.agreementType
+        (type) =>
+          type.code === form.agreementType
       ),
     [form.agreementType]
   );
 
-  /*
-   * =========================================
-   * INITIAL DATA
-   * =========================================
-   */
+  /* =========================================
+     INITIAL DATA / DRAFT
+  ========================================= */
 
   useEffect(() => {
-  const type =
-    agreementType ||
-    initialData?.agreementType ||
-    "";
+    const type =
+      agreementType ||
+      initialData?.agreementType ||
+      "";
 
-  if (initialData) {
-    setForm({
-      ...DEFAULT_FORM,
+    /*
+     * If editing/previewing existing data,
+     * load that data first.
+     */
 
-      agreementType: type,
+    if (initialData) {
+      setForm({
+        ...DEFAULT_FORM,
 
-      sellerName:
-        initialData.sellerName || "",
+        agreementType: type,
 
-      purchaseYear:
-        initialData.purchaseYear || "",
+        sellerName:
+          initialData.sellerName || "",
 
-      validityYears:
-        initialData.validityYears || "",
+        purchaseYear:
+          initialData.purchaseYear || "",
 
-      endingYear:
-        initialData.endingYear || "",
+        validityYears:
+          initialData.validityYears || "",
 
-      totalBaganPrice:
-        initialData.totalBaganPrice || "",
+        endingYear:
+          initialData.endingYear || "",
 
-      cuttingPeriod:
-        initialData.cuttingPeriod || "",
+        totalBaganPrice:
+          initialData.totalBaganPrice || "",
 
-      witness1:
-        initialData.witness1 || "",
+        /*
+         * Cutting Period is now automatic.
+         * We still temporarily load the old value,
+         * then the automatic effect below will
+         * replace it using Purchase Year + Ending Year.
+         */
+        cuttingPeriod:
+          initialData.cuttingPeriod || "",
 
-      witness2:
-        initialData.witness2 || "",
+        witness1:
+          initialData.witness1 || "",
 
-      witness3:
-        initialData.witness3 || "",
-    });
+        witness2:
+          initialData.witness2 || "",
 
-    return;
-  }
+        witness3:
+          initialData.witness3 || "",
+      });
 
-  try {
-    const savedDraft =
-      sessionStorage.getItem(
-        getDraftKey(type)
-      );
-
-    if (savedDraft) {
-      setForm(JSON.parse(savedDraft));
       return;
     }
-  } catch (error) {
-    console.warn(
-      "Unable to restore agreement draft:",
-      error
-    );
-  }
 
-  setForm({
-    ...DEFAULT_FORM,
-    agreementType: type,
-  });
+    /*
+     * Restore draft.
+     */
 
-  setErrors({});
-  setTouched({});
-  setVisibleFields(0);
-}, [agreementType, initialData]);
+    try {
+      const savedDraft =
+        sessionStorage.getItem(
+          getDraftKey(type)
+        );
 
+      if (savedDraft) {
+        setForm(JSON.parse(savedDraft));
+        return;
+      }
+    } catch (error) {
+      console.warn(
+        "Unable to restore agreement draft:",
+        error
+      );
+    }
 
-  /*
-   * =========================================
-   * AUTO CALCULATE ENDING YEAR
-   * =========================================
-   */
+    /*
+     * Fresh form.
+     */
+
+    setForm({
+      ...DEFAULT_FORM,
+      agreementType: type,
+    });
+
+    setErrors({});
+    setTouched({});
+    setVisibleFields(0);
+  }, [agreementType, initialData]);
+
+  /* =========================================
+     AUTO CALCULATE ENDING YEAR
+  ========================================= */
 
   useEffect(() => {
     if (
       !form.purchaseYear ||
       !form.validityYears
     ) {
-      setForm((previous) => ({
-        ...previous,
-        endingYear: "",
-      }));
+      setForm((previous) => {
+        if (previous.endingYear === "") {
+          return previous;
+        }
+
+        return {
+          ...previous,
+          endingYear: "",
+        };
+      });
 
       return;
     }
@@ -196,10 +226,16 @@ function AgreementForm({
       purchaseYear <= 0 ||
       validityYears <= 0
     ) {
-      setForm((previous) => ({
-        ...previous,
-        endingYear: "",
-      }));
+      setForm((previous) => {
+        if (previous.endingYear === "") {
+          return previous;
+        }
+
+        return {
+          ...previous,
+          endingYear: "",
+        };
+      });
 
       return;
     }
@@ -207,26 +243,82 @@ function AgreementForm({
     const endingYear =
       purchaseYear + validityYears;
 
-    setForm((previous) => ({
-      ...previous,
-      endingYear: String(endingYear),
-    }));
+    setForm((previous) => {
+      const newEndingYear =
+        String(endingYear);
+
+      if (
+        previous.endingYear ===
+        newEndingYear
+      ) {
+        return previous;
+      }
+
+      return {
+        ...previous,
+        endingYear: newEndingYear,
+      };
+    });
   }, [
     form.purchaseYear,
     form.validityYears,
   ]);
 
-  /*
-   * =========================================
-   * PREMIUM FIELD REVEAL
-   * =========================================
-   */
+  /* =========================================
+     AUTO GENERATE CUTTING PERIOD
+  ========================================= */
+
+  useEffect(() => {
+    if (
+      !form.purchaseYear ||
+      !form.endingYear
+    ) {
+      setForm((previous) => {
+        if (previous.cuttingPeriod === "") {
+          return previous;
+        }
+
+        return {
+          ...previous,
+          cuttingPeriod: "",
+        };
+      });
+
+      return;
+    }
+
+    const cuttingPeriod =
+      `वर्ष ${form.purchaseYear} से वर्ष ${form.endingYear} तक`;
+
+    setForm((previous) => {
+      if (
+        previous.cuttingPeriod ===
+        cuttingPeriod
+      ) {
+        return previous;
+      }
+
+      return {
+        ...previous,
+        cuttingPeriod,
+      };
+    });
+  }, [
+    form.purchaseYear,
+    form.endingYear,
+  ]);
+
+  /* =========================================
+     PREMIUM FIELD REVEAL
+  ========================================= */
 
   useEffect(() => {
     if (!form.agreementType) {
       setVisibleFields(0);
       return;
     }
+
+    setVisibleFields(0);
 
     const timer = setInterval(() => {
       setVisibleFields((previous) => {
@@ -242,11 +334,9 @@ function AgreementForm({
     return () => clearInterval(timer);
   }, [form.agreementType]);
 
-  /*
-   * =========================================
-   * CHANGE
-   * =========================================
-   */
+  /* =========================================
+     CHANGE
+  ========================================= */
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -263,40 +353,35 @@ function AgreementForm({
       }));
     }
   };
-  
-  /*
- * =========================================
- * SAVE DRAFT
- * =========================================
- */
 
-useEffect(() => {
-  if (!form.agreementType) {
-    return;
-  }
+  /* =========================================
+     SAVE DRAFT
+  ========================================= */
 
-  try {
-    const key =
-      getDraftKey(form.agreementType);
+  useEffect(() => {
+    if (!form.agreementType) {
+      return;
+    }
 
-    sessionStorage.setItem(
-      key,
-      JSON.stringify(form)
-    );
-  } catch (error) {
-    console.warn(
-      "Unable to save agreement draft:",
-      error
-    );
-  }
-}, [form]);
+    try {
+      const key =
+        getDraftKey(form.agreementType);
 
+      sessionStorage.setItem(
+        key,
+        JSON.stringify(form)
+      );
+    } catch (error) {
+      console.warn(
+        "Unable to save agreement draft:",
+        error
+      );
+    }
+  }, [form]);
 
-  /*
-   * =========================================
-   * BLUR
-   * =========================================
-   */
+  /* =========================================
+     BLUR
+  ========================================= */
 
   const handleBlur = (event) => {
     const { name } = event.target;
@@ -309,11 +394,9 @@ useEffect(() => {
     validateField(name, form[name]);
   };
 
-  /*
-   * =========================================
-   * FIELD VALIDATION
-   * =========================================
-   */
+  /* =========================================
+     FIELD VALIDATION
+  ========================================= */
 
   const validateField = (name, value) => {
     let message = "";
@@ -363,19 +446,6 @@ useEffect(() => {
       }
     }
 
-   if (name === "cuttingPeriod") {
-  if (!value) {
-    message =
-      "Cutting year is required.";
-  } else if (
-    !Number.isInteger(Number(value)) ||
-    Number(value) < 1900 ||
-    Number(value) > 2100
-  ) {
-    message =
-      "Enter a valid cutting year.";
-  }
-}
     setErrors((previous) => ({
       ...previous,
       [name]: message,
@@ -384,11 +454,9 @@ useEffect(() => {
     return message;
   };
 
-  /*
-   * =========================================
-   * FULL VALIDATION
-   * =========================================
-   */
+  /* =========================================
+     FULL VALIDATION
+  ========================================= */
 
   const validateForm = () => {
     const fields = [
@@ -396,7 +464,6 @@ useEffect(() => {
       "purchaseYear",
       "validityYears",
       "totalBaganPrice",
-      "cuttingPeriod",
     ];
 
     const newErrors = {};
@@ -448,21 +515,36 @@ useEffect(() => {
             "Amount cannot be negative.";
         }
       }
-
-      if (field === "cuttingPeriod") {
-  if (!value) {
-    newErrors[field] =
-      "Cutting year is required.";
-  } else if (
-    !Number.isInteger(Number(value)) ||
-    Number(value) < 1900 ||
-    Number(value) > 2100
-  ) {
-    newErrors[field] =
-      "Enter a valid cutting year.";
-  }
-}
     });
+
+    /*
+     * Ending Year must also exist.
+     * It is automatic, so user does not
+     * manually validate it.
+     */
+
+    if (
+      form.purchaseYear &&
+      form.validityYears &&
+      !form.endingYear
+    ) {
+      newErrors.validityYears =
+        "Unable to calculate ending year.";
+    }
+
+    /*
+     * Cutting Period must exist,
+     * but it is automatically generated.
+     */
+
+    if (
+      form.purchaseYear &&
+      form.endingYear &&
+      !form.cuttingPeriod
+    ) {
+      newErrors.cuttingPeriod =
+        "Cutting period could not be generated.";
+    }
 
     setErrors(newErrors);
 
@@ -471,7 +553,6 @@ useEffect(() => {
       purchaseYear: true,
       validityYears: true,
       totalBaganPrice: true,
-      cuttingPeriod: true,
     });
 
     return (
@@ -479,11 +560,9 @@ useEffect(() => {
     );
   };
 
-  /*
-   * =========================================
-   * BUILD PAYLOAD
-   * =========================================
-   */
+  /* =========================================
+     BUILD PAYLOAD
+  ========================================= */
 
   const buildPayload = () => {
     const today = new Date();
@@ -516,6 +595,11 @@ useEffect(() => {
       total_bagan_price:
         Number(form.totalBaganPrice),
 
+      /*
+       * Automatically generated:
+       * "वर्ष 2023 से वर्ष 2026 तक"
+       */
+
       cutting_period:
         form.cuttingPeriod.trim(),
 
@@ -546,11 +630,9 @@ useEffect(() => {
     };
   };
 
-  /*
-   * =========================================
-   * PREVIEW
-   * =========================================
-   */
+  /* =========================================
+     PREVIEW
+  ========================================= */
 
   const handlePreview = (event) => {
     event.preventDefault();
@@ -578,11 +660,9 @@ useEffect(() => {
     );
   };
 
-  /*
-   * =========================================
-   * CLEAR
-   * =========================================
-   */
+  /* =========================================
+     CLEAR
+  ========================================= */
 
   const handleClear = () => {
     setForm({
@@ -596,11 +676,9 @@ useEffect(() => {
     setTouched({});
   };
 
-  /*
-   * =========================================
-   * RENDER
-   * =========================================
-   */
+  /* =========================================
+     RENDER
+  ========================================= */
 
   return (
     <form
@@ -915,7 +993,6 @@ useEffect(() => {
               </div>
 
             </div>
-          
 
           </div>
 
@@ -999,45 +1076,40 @@ useEffect(() => {
               </div>
 
 
-              {/* CUTTING PERIOD */}
+              {/* CUTTING PERIOD — AUTOMATIC */}
 
               <div className="agreement-form-field">
 
                 <label htmlFor="cuttingPeriod">
-                  Cutting Period
-                  <span>*</span>
+                  कटाई की अवधि
                 </label>
 
-                <input
-                  id="cuttingPeriod"
-                  name="cuttingPeriod"
-                  type="number"
-                  min="1900"
-                  max="2100"
-                  step="1"
-                  value={form.cuttingPeriod}
-                  onChange={handleChange}
-                  onBlur={handleBlur}
-                  placeholder="e.g. 2031"
-                  disabled={loading}
-                  className={
-                    touched.cuttingPeriod &&
-                    errors.cuttingPeriod
-                      ? "has-error"
-                      : ""
-                  }
-                />
+                <div className="automatic-field">
 
-            
+                  <input
+                    id="cuttingPeriod"
+                    name="cuttingPeriod"
+                    type="text"
+                    value={
+                      form.cuttingPeriod ||
+                      "Purchase Year और Ending Year से automatically calculate होगा"
+                    }
+                    readOnly
+                    disabled
+                  />
 
-                {errors.cuttingPeriod && (
-                  <small className="form-error">
-                    {errors.cuttingPeriod}
-                  </small>
-                )}
+                  <span className="automatic-badge">
+                    Automatic
+                  </span>
+
+                </div>
 
                 <small className="form-helper">
-                  Example: April 2031
+                  वर्ष{" "}
+                  {form.purchaseYear || "—"}{" "}
+                  से वर्ष{" "}
+                  {form.endingYear || "—"}{" "}
+                  तक।
                 </small>
 
               </div>
@@ -1079,6 +1151,8 @@ useEffect(() => {
 
             <div className="agreement-form-grid">
 
+              {/* WITNESS 1 */}
+
               <div className="agreement-form-field">
 
                 <label htmlFor="witness1">
@@ -1099,6 +1173,8 @@ useEffect(() => {
               </div>
 
 
+              {/* WITNESS 2 */}
+
               <div className="agreement-form-field">
 
                 <label htmlFor="witness2">
@@ -1118,6 +1194,8 @@ useEffect(() => {
 
               </div>
 
+
+              {/* WITNESS 3 */}
 
               <div className="agreement-form-field">
 
@@ -1267,7 +1345,7 @@ useEffect(() => {
 
 
       {/* =====================================
-          OTHER AGREEMENT — TEMPORARY UI
+          OTHER AGREEMENT
       ===================================== */}
 
       {form.agreementType === "OTHER" && (

@@ -19,6 +19,10 @@ function AgreementPreview({
     useState(false);
 
 
+  /* =========================================
+     SAFETY CHECK
+  ========================================= */
+
   if (!agreement) {
     return null;
   }
@@ -68,9 +72,23 @@ function AgreementPreview({
         ).toLocaleString("en-IN")
       : "____________________";
 
+
+  /* =========================================
+     CUTTING PERIOD
+     
+     Automatic:
+     Purchase Year → Ending Year
+  ========================================= */
+
   const cuttingPeriod =
     agreement.cutting_period ||
-    "____________________";
+    (
+      agreement.purchase_year &&
+      agreement.ending_year
+        ? `वर्ष ${agreement.purchase_year} से वर्ष ${agreement.ending_year} तक`
+        : "____________________"
+    );
+
 
   const witness1 =
     agreement.witnesses?.witness_1 ||
@@ -141,7 +159,7 @@ function AgreementPreview({
 
 
   /* =========================================
-     BUYER INFORMATION
+     SYSTEM INFORMATION
   ========================================= */
 
   const createdBy =
@@ -174,8 +192,8 @@ function AgreementPreview({
     setIsCreating(true);
 
     /*
-      Fake processing animation for prototype.
-      Later this will be replaced by backend API.
+      Prototype processing animation.
+      Later this can be replaced by backend API.
     */
 
     setTimeout(() => {
@@ -199,13 +217,17 @@ function AgreementPreview({
     setShowSuccess(false);
 
     /*
-      Parent will now clear the old draft
-      and open a completely fresh form.
+      Parent clears the old draft and
+      opens a fresh agreement form.
     */
 
     onSubmit?.();
   };
 
+
+  /* =========================================
+     MAIN RETURN
+  ========================================= */
 
   return (
     <div className="agreement-preview-page">
@@ -284,7 +306,9 @@ function AgreementPreview({
         <article className="agreement-a4-page">
 
 
-          {/* DOCUMENT TITLE */}
+          {/* =================================
+              DOCUMENT TITLE
+          ================================= */}
 
           <header className="agreement-document-header">
 
@@ -295,7 +319,9 @@ function AgreementPreview({
           </header>
 
 
-          {/* TWO COLUMN INFORMATION */}
+          {/* =================================
+              TWO COLUMN INFORMATION
+          ================================= */}
 
           <section className="agreement-document-meta">
 
@@ -415,9 +441,14 @@ function AgreementPreview({
           </section>
 
 
-          {/* DOCUMENT BODY */}
+          {/* =================================
+              DOCUMENT BODY
+          ================================= */}
 
           <div className="agreement-document-body">
+
+
+            {/* DATE */}
 
             <p>
               आज दिनांक:{" "}
@@ -426,6 +457,8 @@ function AgreementPreview({
               </span>
             </p>
 
+
+            {/* SELLER / BUYER */}
 
             <p>
               मैं, श्री{" "}
@@ -442,6 +475,8 @@ function AgreementPreview({
               रहा हूँ।
             </p>
 
+
+            {/* AGREEMENT PERIOD */}
 
             <p>
               इस बागान में मौजूद सभी छोटे-बड़े पेड़,
@@ -465,6 +500,8 @@ function AgreementPreview({
             </p>
 
 
+            {/* RESPONSIBILITY */}
+
             <p>
               अगर इस बीच किसी तरह का विवाद, परेशानी
               या बागान को लेकर कोई तीसरा व्यक्ति दावा
@@ -480,6 +517,8 @@ function AgreementPreview({
             </p>
 
 
+            {/* TOTAL PRICE */}
+
             <p>
               बागान की कुल कीमत:{" "}
               <span className="agreement-filled-value">
@@ -488,15 +527,29 @@ function AgreementPreview({
             </p>
 
 
-            <p>
-              कटाई की अवधि:{" "}
-              <span className="agreement-filled-value">
-                {cuttingPeriod}
-              </span>{" "}
-              (साल से लेकर फल काटने तक का समय तय
-              हुआ है)
-            </p>
+            {/* =================================
+                CUTTING PERIOD — ONLY ONCE
+            ================================= */}
 
+            <div className="cutting-period-note">
+
+              <strong>
+                कटाई की अवधि
+              </strong>
+
+              <span>
+                {cuttingPeriod}
+              </span>
+
+              <p>
+                इस अवधि के दौरान बागान की कटाई एवं
+                फल लेने का अधिकार क्रेता के पास रहेगा।
+              </p>
+
+            </div>
+
+
+            {/* NEXT CLAUSE */}
 
             <p>
               जब बागान काटने का समय आएगा, तो उस वक्त
@@ -508,6 +561,8 @@ function AgreementPreview({
             </p>
 
 
+            {/* FINAL DECLARATION */}
+
             <p>
               यह समझौता दोनों पक्षों की पूर्णसहमति
               से, बिना किसी दबाव, जबरदस्ती या लालच के
@@ -515,7 +570,9 @@ function AgreementPreview({
             </p>
 
 
-            {/* TERMS */}
+            {/* =================================
+                TERMS
+            ================================= */}
 
             <section className="agreement-terms-section">
 
@@ -538,7 +595,9 @@ function AgreementPreview({
             </section>
 
 
-            {/* WITNESSES */}
+            {/* =================================
+                WITNESSES
+            ================================= */}
 
             <section className="agreement-witness-section">
 
@@ -574,7 +633,9 @@ function AgreementPreview({
             </section>
 
 
-            {/* SIGNATURES */}
+            {/* =================================
+                SIGNATURES
+            ================================= */}
 
             <section className="agreement-signature-section">
 
@@ -632,7 +693,9 @@ function AgreementPreview({
           </div>
 
 
-          {/* DOCUMENT FOOTER */}
+          {/* =================================
+              DOCUMENT FOOTER
+          ================================= */}
 
           <footer className="agreement-document-footer">
 
@@ -794,9 +857,11 @@ function AgreementPreview({
                     onClick={handleConfirmSubmit}
                   >
                     Confirm & Submit
+
                     <span>
                       →
                     </span>
+
                   </button>
 
                 </div>
@@ -959,14 +1024,14 @@ function AgreementPreview({
             <div className="agreement-success-actions">
 
               <button
-  type="button"
-  className="success-secondary-button"
-  onClick={() => {
-    onViewAgreement?.(agreement);
-  }}
->
-  View Agreement
-</button>
+                type="button"
+                className="success-secondary-button"
+                onClick={() => {
+                  onViewAgreement?.(agreement);
+                }}
+              >
+                View Agreement
+              </button>
 
 
               <button
