@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 import "./AgreementPreview.css";
+import { QRCodeCanvas } from "qrcode.react";
 
 function AgreementPreview({
   agreement,
@@ -119,9 +122,12 @@ function AgreementPreview({
       : "OTH";
 
 
-  const previewAgreementId =
-    agreement.agreement_id ||
-    `${agreementCode}-${purchaseYear}-XXXXXX`;
+ const currentYear =
+  new Date().getFullYear();
+
+const previewAgreementId =
+  agreement.agreement_id ||
+  `${agreementCode}-${currentYear}-XXXXXX`;
 
 
   /* =========================================
@@ -211,6 +217,97 @@ function AgreementPreview({
   /* =========================================
      FINAL DONE
   ========================================= */
+
+  const handleDownloadPDF = async () => {
+  try {
+    const pdfElement =
+      document.querySelector(".agreement-a4-page");
+
+    if (!pdfElement) {
+      console.error("Agreement document not found.");
+      return;
+    }
+
+    const canvas = await html2canvas(pdfElement, {
+      scale: 2,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+      logging: false,
+    });
+
+    const pdf = new jsPDF({
+      orientation: "portrait",
+      unit: "mm",
+      format: "a4",
+    });
+
+    const pageWidth =
+      pdf.internal.pageSize.getWidth();
+
+    const pageHeight =
+      pdf.internal.pageSize.getHeight();
+
+    const margin = 5;
+
+    const maxWidth =
+      pageWidth - margin * 2;
+
+    const maxHeight =
+      pageHeight - margin * 2;
+
+    const scaleX =
+      maxWidth / canvas.width;
+
+    const scaleY =
+      maxHeight / canvas.height;
+
+    const scale =
+      Math.min(scaleX, scaleY);
+
+    const finalWidth =
+      canvas.width * scale;
+
+    const finalHeight =
+      canvas.height * scale;
+
+    const x =
+      (pageWidth - finalWidth) / 2;
+
+    const y =
+      (pageHeight - finalHeight) / 2;
+
+    const image =
+      canvas.toDataURL(
+        "image/jpeg",
+        0.95
+      );
+
+    pdf.addImage(
+      image,
+      "JPEG",
+      x,
+      y,
+      finalWidth,
+      finalHeight
+    );
+
+    const safeId =
+      String(previewAgreementId).replace(
+        /[^a-zA-Z0-9-_]/g,
+        "-"
+      );
+
+    pdf.save(
+      `SAMS-${safeId}.pdf`
+    );
+
+  } catch (error) {
+    console.error(
+      "PDF download failed:",
+      error
+    );
+  }
+};
 
   const handleDone = () => {
 
@@ -717,17 +814,28 @@ function AgreementPreview({
             </div>
 
 
-            <div className="agreement-qr-placeholder">
+           <div className="agreement-preview-qr">
 
-              <div>
-                QR
-              </div>
+  <QRCodeCanvas
+    value={`SAMS-VERIFY:${previewAgreementId}`}
+    size={90}
+    bgColor="#ffffff"
+    fgColor="#111827"
+    level="H"
+    includeMargin={true}
+  />
 
-              <span>
-                Verification
-              </span>
+  <div className="agreement-preview-qr-label">
+    <strong>
+      SAMS
+    </strong>
 
-            </div>
+    <span>
+      Agreement Verification
+    </span>
+  </div>
+
+</div>
 
           </footer>
 
@@ -1035,18 +1143,12 @@ function AgreementPreview({
 
 
               <button
-                type="button"
-                className="success-primary-button"
-                onClick={() => {
-                  console.log(
-                    "Download PDF:",
-                    agreement
-                  );
-                }}
-              >
-                Download PDF
-              </button>
-
+                  type="button"
+                  className="success-primary-button"
+                  onClick={handleDownloadPDF}
+                >
+                  Download PDF
+                </button>
             </div>
 
 

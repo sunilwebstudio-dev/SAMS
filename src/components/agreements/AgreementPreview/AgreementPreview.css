@@ -2245,3 +2245,46 @@
   }
 
 }
+/* =========================================
+   PREVIEW QR CODE
+========================================= */
+
+.agreement-preview-qr {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  padding: 8px 10px;
+
+  border: 1px solid #cbd5e1;
+  border-radius: 8px;
+
+  background: #ffffff;
+}
+
+.agreement-preview-qr canvas {
+  display: block;
+
+  width: 90px !important;
+  height: 90px !important;
+}
+
+.agreement-preview-qr-label {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.agreement-preview-qr-label strong {
+  color: #111827;
+
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.agreement-preview-qr-label span {
+  color: #64748b;
+
+  font-size: 9px;
+  font-weight: 700;
+}
