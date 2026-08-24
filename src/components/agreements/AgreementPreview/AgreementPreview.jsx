@@ -1,26 +1,24 @@
 import { useState } from "react";
 import jsPDF from "jspdf";
 import html2canvas from "html2canvas";
-import "./AgreementPreview.css";
 import { QRCodeCanvas } from "qrcode.react";
+
+import "./AgreementPreview.css";
 
 function AgreementPreview({
   agreement,
   buyerName = "",
   onEdit,
+  onContinue,
   onSubmit,
   onViewAgreement,
   submitting = false,
 }) {
-  const [showSubmitConfirm, setShowSubmitConfirm] =
-    useState(false);
-
   const [showSuccess, setShowSuccess] =
     useState(false);
 
   const [isCreating, setIsCreating] =
     useState(false);
-
 
   /* =========================================
      SAFETY CHECK
@@ -29,7 +27,6 @@ function AgreementPreview({
   if (!agreement) {
     return null;
   }
-
 
   /* =========================================
      BASIC VALUES
@@ -75,12 +72,8 @@ function AgreementPreview({
         ).toLocaleString("en-IN")
       : "____________________";
 
-
   /* =========================================
      CUTTING PERIOD
-     
-     Automatic:
-     Purchase Year → Ending Year
   ========================================= */
 
   const cuttingPeriod =
@@ -92,6 +85,9 @@ function AgreementPreview({
         : "____________________"
     );
 
+  /* =========================================
+     WITNESSES
+  ========================================= */
 
   const witness1 =
     agreement.witnesses?.witness_1 ||
@@ -104,7 +100,6 @@ function AgreementPreview({
   const witness3 =
     agreement.witnesses?.witness_3 ||
     "____________________";
-
 
   /* =========================================
      AGREEMENT CODE
@@ -121,17 +116,23 @@ function AgreementPreview({
       ? "FRM"
       : "OTH";
 
+  /* =========================================
+     CURRENT CREATION YEAR
+  ========================================= */
 
- const currentYear =
-  new Date().getFullYear();
-
-const previewAgreementId =
-  agreement.agreement_id ||
-  `${agreementCode}-${currentYear}-XXXXXX`;
-
+  const currentYear =
+    new Date().getFullYear();
 
   /* =========================================
-     TYPE
+     AGREEMENT ID
+  ========================================= */
+
+  const previewAgreementId =
+    agreement.agreement_id ||
+    `${agreementCode}-${currentYear}-XXXXXX`;
+
+  /* =========================================
+     AGREEMENT TYPE
   ========================================= */
 
   const agreementType =
@@ -145,7 +146,6 @@ const previewAgreementId =
       ? "Farm Agreement"
       : "Other Agreement";
 
-
   /* =========================================
      MODE
   ========================================= */
@@ -154,7 +154,6 @@ const previewAgreementId =
     agreement.agreement_mode ||
     "New Agreement";
 
-
   /* =========================================
      STATUS
   ========================================= */
@@ -162,7 +161,6 @@ const previewAgreementId =
   const agreementStatus =
     agreement.status ||
     "Pending";
-
 
   /* =========================================
      SYSTEM INFORMATION
@@ -184,143 +182,165 @@ const previewAgreementId =
     agreement.address ||
     "Will be available from buyer profile";
 
-
   /* =========================================
-     CONFIRM SUBMISSION
+     CONTINUE TO VIDEO CONSENT
+     
+     IMPORTANT:
+     Preview page does NOT submit agreement.
+     It only moves to Video Consent page.
   ========================================= */
 
-  const handleConfirmSubmit = () => {
-
-    if (isCreating || submitting) {
+  const handleContinue = () => {
+    if (
+      submitting ||
+      isCreating
+    ) {
       return;
     }
 
-    setIsCreating(true);
+    if (typeof onContinue === "function") {
+      onContinue();
+      return;
+    }
 
-    /*
-      Prototype processing animation.
-      Later this can be replaced by backend API.
-    */
-
-    setTimeout(() => {
-
-      setIsCreating(false);
-
-      setShowSubmitConfirm(false);
-
-      setShowSuccess(true);
-
-    }, 1800);
+    console.warn(
+      "AgreementPreview: onContinue prop is not provided."
+    );
   };
 
+  /* =========================================
+     DOWNLOAD PDF
+  ========================================= */
+
+  const handleDownloadPDF =
+    async () => {
+      try {
+        const pdfElement =
+          document.querySelector(
+            ".agreement-a4-page"
+          );
+
+        if (!pdfElement) {
+          console.error(
+            "Agreement document not found."
+          );
+          return;
+        }
+
+        const canvas =
+          await html2canvas(
+            pdfElement,
+            {
+              scale: 2,
+              useCORS: true,
+              backgroundColor:
+                "#ffffff",
+              logging: false,
+            }
+          );
+
+        const pdf =
+          new jsPDF({
+            orientation:
+              "portrait",
+            unit: "mm",
+            format: "a4",
+          });
+
+        const pageWidth =
+          pdf.internal.pageSize.getWidth();
+
+        const pageHeight =
+          pdf.internal.pageSize.getHeight();
+
+        const margin = 5;
+
+        const maxWidth =
+          pageWidth -
+          margin * 2;
+
+        const maxHeight =
+          pageHeight -
+          margin * 2;
+
+        const scaleX =
+          maxWidth /
+          canvas.width;
+
+        const scaleY =
+          maxHeight /
+          canvas.height;
+
+        const scale =
+          Math.min(
+            scaleX,
+            scaleY
+          );
+
+        const finalWidth =
+          canvas.width *
+          scale;
+
+        const finalHeight =
+          canvas.height *
+          scale;
+
+        const x =
+          (pageWidth -
+            finalWidth) /
+          2;
+
+        const y =
+          (pageHeight -
+            finalHeight) /
+          2;
+
+        const image =
+          canvas.toDataURL(
+            "image/jpeg",
+            0.95
+          );
+
+        pdf.addImage(
+          image,
+          "JPEG",
+          x,
+          y,
+          finalWidth,
+          finalHeight
+        );
+
+        const safeId =
+          String(
+            previewAgreementId
+          ).replace(
+            /[^a-zA-Z0-9-_]/g,
+            "-"
+          );
+
+        pdf.save(
+          `SAMS-${safeId}.pdf`
+        );
+
+      } catch (error) {
+        console.error(
+          "PDF download failed:",
+          error
+        );
+      }
+    };
 
   /* =========================================
      FINAL DONE
+     
+     This is only used by existing success
+     screen if/when final submit flow calls it.
   ========================================= */
 
-  const handleDownloadPDF = async () => {
-  try {
-    const pdfElement =
-      document.querySelector(".agreement-a4-page");
-
-    if (!pdfElement) {
-      console.error("Agreement document not found.");
-      return;
-    }
-
-    const canvas = await html2canvas(pdfElement, {
-      scale: 2,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-      logging: false,
-    });
-
-    const pdf = new jsPDF({
-      orientation: "portrait",
-      unit: "mm",
-      format: "a4",
-    });
-
-    const pageWidth =
-      pdf.internal.pageSize.getWidth();
-
-    const pageHeight =
-      pdf.internal.pageSize.getHeight();
-
-    const margin = 5;
-
-    const maxWidth =
-      pageWidth - margin * 2;
-
-    const maxHeight =
-      pageHeight - margin * 2;
-
-    const scaleX =
-      maxWidth / canvas.width;
-
-    const scaleY =
-      maxHeight / canvas.height;
-
-    const scale =
-      Math.min(scaleX, scaleY);
-
-    const finalWidth =
-      canvas.width * scale;
-
-    const finalHeight =
-      canvas.height * scale;
-
-    const x =
-      (pageWidth - finalWidth) / 2;
-
-    const y =
-      (pageHeight - finalHeight) / 2;
-
-    const image =
-      canvas.toDataURL(
-        "image/jpeg",
-        0.95
-      );
-
-    pdf.addImage(
-      image,
-      "JPEG",
-      x,
-      y,
-      finalWidth,
-      finalHeight
-    );
-
-    const safeId =
-      String(previewAgreementId).replace(
-        /[^a-zA-Z0-9-_]/g,
-        "-"
-      );
-
-    pdf.save(
-      `SAMS-${safeId}.pdf`
-    );
-
-  } catch (error) {
-    console.error(
-      "PDF download failed:",
-      error
-    );
-  }
-};
-
   const handleDone = () => {
-
     setShowSuccess(false);
-
-    /*
-      Parent clears the old draft and
-      opens a fresh agreement form.
-    */
-
     onSubmit?.();
   };
-
 
   /* =========================================
      MAIN RETURN
@@ -328,7 +348,6 @@ const previewAgreementId =
 
   return (
     <div className="agreement-preview-page">
-
 
       {/* =====================================
           PREVIEW HEADER
@@ -347,14 +366,15 @@ const previewAgreementId =
           </h2>
 
           <p>
-            Check the agreement carefully before
-            submitting it.
+            Review the complete agreement carefully
+            before continuing to seller consent.
           </p>
 
         </div>
 
-
         <div className="agreement-preview-actions">
+
+          {/* EDIT */}
 
           <button
             type="button"
@@ -368,31 +388,26 @@ const previewAgreementId =
             ← Edit
           </button>
 
+          {/* CONTINUE */}
 
           <button
             type="button"
             className="preview-submit-button"
-            onClick={() =>
-              setShowSubmitConfirm(true)
-            }
+            onClick={handleContinue}
             disabled={
               submitting ||
               isCreating
             }
           >
-
-            Submit Agreement
-
+            Continue
             <span>
               →
             </span>
-
           </button>
 
         </div>
 
       </div>
-
 
       {/* =====================================
           A4 DOCUMENT
@@ -402,10 +417,7 @@ const previewAgreementId =
 
         <article className="agreement-a4-page">
 
-
-          {/* =================================
-              DOCUMENT TITLE
-          ================================= */}
+          {/* DOCUMENT TITLE */}
 
           <header className="agreement-document-header">
 
@@ -414,7 +426,6 @@ const previewAgreementId =
             </h1>
 
           </header>
-
 
           {/* =================================
               TWO COLUMN INFORMATION
@@ -436,7 +447,6 @@ const previewAgreementId =
 
               </div>
 
-
               <div className="agreement-meta-row">
 
                 <span>
@@ -449,7 +459,6 @@ const previewAgreementId =
 
               </div>
 
-
               <div className="agreement-meta-row">
 
                 <span>
@@ -457,13 +466,14 @@ const previewAgreementId =
                 </span>
 
                 <strong
-                  className={`agreement-meta-status ${agreementStatus.toLowerCase()}`}
+                  className={`agreement-meta-status ${String(
+                    agreementStatus
+                  ).toLowerCase()}`}
                 >
                   {agreementStatus}
                 </strong>
 
               </div>
-
 
               <div className="agreement-meta-row">
 
@@ -479,7 +489,6 @@ const previewAgreementId =
 
             </div>
 
-
             <div className="agreement-meta-column">
 
               <div className="agreement-meta-row">
@@ -494,7 +503,6 @@ const previewAgreementId =
 
               </div>
 
-
               <div className="agreement-meta-row">
 
                 <span>
@@ -507,7 +515,6 @@ const previewAgreementId =
 
               </div>
 
-
               <div className="agreement-meta-row">
 
                 <span>
@@ -519,7 +526,6 @@ const previewAgreementId =
                 </strong>
 
               </div>
-
 
               <div className="agreement-meta-row">
 
@@ -537,15 +543,11 @@ const previewAgreementId =
 
           </section>
 
-
           {/* =================================
               DOCUMENT BODY
           ================================= */}
 
           <div className="agreement-document-body">
-
-
-            {/* DATE */}
 
             <p>
               आज दिनांक:{" "}
@@ -554,11 +556,8 @@ const previewAgreementId =
               </span>
             </p>
 
-
-            {/* SELLER / BUYER */}
-
             <p>
-              मैं, श्री{" "}
+              मैं, श्री{"      "}
               <span className="agreement-filled-value">
                 {sellerName}
               </span>
@@ -572,16 +571,13 @@ const previewAgreementId =
               रहा हूँ।
             </p>
 
-
-            {/* AGREEMENT PERIOD */}
-
             <p>
               इस बागान में मौजूद सभी छोटे-बड़े पेड़,
               फल-फूल का अधिकार वर्ष{" "}
               <span className="agreement-filled-value">
                 {purchaseYear}
               </span>
-              से लेकर वर्ष{" "}
+              से लेकर वर्ष{"         "}
               <span className="agreement-filled-value">
                 {endingYear}
               </span>
@@ -596,9 +592,6 @@ const previewAgreementId =
               के पास रहेगा।
             </p>
 
-
-            {/* RESPONSIBILITY */}
-
             <p>
               अगर इस बीच किसी तरह का विवाद, परेशानी
               या बागान को लेकर कोई तीसरा व्यक्ति दावा
@@ -606,15 +599,11 @@ const previewAgreementId =
               होगी।
             </p>
 
-
             <p>
               उस स्थिति में हुए किसी भी नुकसान की
               भरपाई मैं स्वयं या मेरा परिवार मिलकर
               करेगा।
             </p>
-
-
-            {/* TOTAL PRICE */}
 
             <p>
               बागान की कुल कीमत:{" "}
@@ -623,10 +612,7 @@ const previewAgreementId =
               </span>
             </p>
 
-
-            {/* =================================
-                CUTTING PERIOD — ONLY ONCE
-            ================================= */}
+            {/* CUTTING PERIOD */}
 
             <div className="cutting-period-note">
 
@@ -645,9 +631,6 @@ const previewAgreementId =
 
             </div>
 
-
-            {/* NEXT CLAUSE */}
-
             <p>
               जब बागान काटने का समय आएगा, तो उस वक्त
               किसी प्रकार का झगड़ा या विवाद नहीं होगा।
@@ -657,19 +640,13 @@ const previewAgreementId =
               होगी।
             </p>
 
-
-            {/* FINAL DECLARATION */}
-
             <p>
               यह समझौता दोनों पक्षों की पूर्णसहमति
               से, बिना किसी दबाव, जबरदस्ती या लालच के
               किया गया है।
             </p>
 
-
-            {/* =================================
-                TERMS
-            ================================= */}
+            {/* TERMS */}
 
             <section className="agreement-terms-section">
 
@@ -691,10 +668,7 @@ const previewAgreementId =
 
             </section>
 
-
-            {/* =================================
-                WITNESSES
-            ================================= */}
+            {/* WITNESSES */}
 
             <section className="agreement-witness-section">
 
@@ -729,10 +703,7 @@ const previewAgreementId =
 
             </section>
 
-
-            {/* =================================
-                SIGNATURES
-            ================================= */}
+            {/* SIGNATURES */}
 
             <section className="agreement-signature-section">
 
@@ -759,7 +730,6 @@ const previewAgreementId =
                 </p>
 
               </div>
-
 
               <div className="agreement-signature-box">
 
@@ -789,9 +759,8 @@ const previewAgreementId =
 
           </div>
 
-
           {/* =================================
-              DOCUMENT FOOTER
+              FOOTER
           ================================= */}
 
           <footer className="agreement-document-footer">
@@ -813,29 +782,32 @@ const previewAgreementId =
 
             </div>
 
+            <div className="agreement-preview-qr">
 
-           <div className="agreement-preview-qr">
+              <QRCodeCanvas
+                value={
+                  `SAMS-VERIFY:${previewAgreementId}`
+                }
+                size={90}
+                bgColor="#ffffff"
+                fgColor="#111827"
+                level="H"
+                includeMargin={true}
+              />
 
-  <QRCodeCanvas
-    value={`SAMS-VERIFY:${previewAgreementId}`}
-    size={90}
-    bgColor="#ffffff"
-    fgColor="#111827"
-    level="H"
-    includeMargin={true}
-  />
+              <div className="agreement-preview-qr-label">
 
-  <div className="agreement-preview-qr-label">
-    <strong>
-      SAMS
-    </strong>
+                <strong>
+                  SAMS
+                </strong>
 
-    <span>
-      Agreement Verification
-    </span>
-  </div>
+                <span>
+                  Agreement Verification
+                </span>
 
-</div>
+              </div>
+
+            </div>
 
           </footer>
 
@@ -843,184 +815,53 @@ const previewAgreementId =
 
       </div>
 
-
       {/* =====================================
-          CONFIRMATION MODAL
+          CREATING AGREEMENT
+          
+          Kept for existing parent flow.
+          It will be used after Video Consent.
       ===================================== */}
 
-      {showSubmitConfirm && (
+      {isCreating && (
 
-        <div
-          className="agreement-submit-overlay"
-          onClick={() => {
+        <div className="agreement-creating-overlay">
 
-            if (!isCreating) {
-              setShowSubmitConfirm(false);
-            }
+          <div className="agreement-creating-card">
 
-          }}
-        >
+            <div className="creating-animation">
 
-          <div
-            className="agreement-submit-modal"
-            onClick={(event) =>
-              event.stopPropagation()
-            }
-          >
+              <div className="creating-ring ring-one" />
 
-            {!isCreating ? (
+              <div className="creating-ring ring-two" />
 
-              <>
-
-                <div className="agreement-submit-icon">
-                  ?
-                </div>
-
-
-                <h3>
-                  Submit Agreement?
-                </h3>
-
-
-                <p>
-                  Please review the agreement once
-                  before submitting. After submission,
-                  this agreement will be processed
-                  by SAMS.
-                </p>
-
-
-                <div className="agreement-submit-summary">
-
-                  <div>
-
-                    <span>
-                      Agreement
-                    </span>
-
-                    <strong>
-                      {previewAgreementId}
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <span>
-                      Type
-                    </span>
-
-                    <strong>
-                      {agreementType}
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <span>
-                      Seller
-                    </span>
-
-                    <strong>
-                      {sellerName}
-                    </strong>
-
-                  </div>
-
-
-                  <div>
-
-                    <span>
-                      Buyer
-                    </span>
-
-                    <strong>
-                      {buyer}
-                    </strong>
-
-                  </div>
-
-                </div>
-
-
-                <div className="agreement-submit-modal-actions">
-
-                  <button
-                    type="button"
-                    className="agreement-modal-edit"
-                    onClick={() =>
-                      setShowSubmitConfirm(false)
-                    }
-                  >
-                    ← Go Back & Edit
-                  </button>
-
-
-                  <button
-                    type="button"
-                    className="agreement-modal-confirm"
-                    onClick={handleConfirmSubmit}
-                  >
-                    Confirm & Submit
-
-                    <span>
-                      →
-                    </span>
-
-                  </button>
-
-                </div>
-
-              </>
-
-            ) : (
-
-              <div className="agreement-creating-state">
-
-                <div className="creating-spinner">
-
-                  <div className="creating-spinner-ring" />
-
-                  <span>
-                    ✓
-                  </span>
-
-                </div>
-
-
-                <span className="creating-label">
-                  SAMS
-                </span>
-
-
-                <h3>
-                  Creating Agreement
-                </h3>
-
-
-                <p>
-                  Please wait while we securely
-                  prepare your agreement.
-                </p>
-
-
-                <div className="creating-progress">
-
-                  <span />
-
-                </div>
-
-
-                <small>
-                  Verifying agreement information...
-                </small>
-
+              <div className="creating-check">
+                ✓
               </div>
 
-            )}
+            </div>
+
+            <span className="creating-label">
+              SAMS
+            </span>
+
+            <h3>
+              Creating Agreement
+            </h3>
+
+            <p>
+              Your agreement is being securely
+              prepared.
+            </p>
+
+            <div className="creating-progress">
+
+              <span />
+
+            </div>
+
+            <small>
+              Please wait...
+            </small>
 
           </div>
 
@@ -1028,9 +869,11 @@ const previewAgreementId =
 
       )}
 
-
       {/* =====================================
           SUCCESS SCREEN
+          
+          Kept for compatibility with the
+          existing final submission flow.
       ===================================== */}
 
       {showSuccess && (
@@ -1043,27 +886,22 @@ const previewAgreementId =
               ✓
             </div>
 
-
             <span className="agreement-success-label">
               AGREEMENT CREATED
             </span>
 
-
             <h2>
               Agreement Created Successfully
             </h2>
-
 
             <p>
               Your agreement has been prepared
               successfully.
             </p>
 
-
             <div className="agreement-success-details">
 
               <div>
-
                 <span>
                   Agreement ID
                 </span>
@@ -1071,12 +909,9 @@ const previewAgreementId =
                 <strong>
                   {previewAgreementId}
                 </strong>
-
               </div>
 
-
               <div>
-
                 <span>
                   Agreement Type
                 </span>
@@ -1084,12 +919,9 @@ const previewAgreementId =
                 <strong>
                   {agreementType}
                 </strong>
-
               </div>
 
-
               <div>
-
                 <span>
                   Seller
                 </span>
@@ -1097,12 +929,9 @@ const previewAgreementId =
                 <strong>
                   {sellerName}
                 </strong>
-
               </div>
 
-
               <div>
-
                 <span>
                   Buyer
                 </span>
@@ -1110,12 +939,9 @@ const previewAgreementId =
                 <strong>
                   {buyer}
                 </strong>
-
               </div>
 
-
               <div>
-
                 <span>
                   Status
                 </span>
@@ -1123,11 +949,9 @@ const previewAgreementId =
                 <strong className="success-status">
                   Active
                 </strong>
-
               </div>
 
             </div>
-
 
             <div className="agreement-success-actions">
 
@@ -1135,22 +959,25 @@ const previewAgreementId =
                 type="button"
                 className="success-secondary-button"
                 onClick={() => {
-                  onViewAgreement?.(agreement);
+                  onViewAgreement?.(
+                    agreement
+                  );
                 }}
               >
                 View Agreement
               </button>
 
-
               <button
-                  type="button"
-                  className="success-primary-button"
-                  onClick={handleDownloadPDF}
-                >
-                  Download PDF
-                </button>
-            </div>
+                type="button"
+                className="success-primary-button"
+                onClick={
+                  handleDownloadPDF
+                }
+              >
+                Download PDF
+              </button>
 
+            </div>
 
             <button
               type="button"
