@@ -4,236 +4,462 @@ import "./AgreementSuccess.css";
 function AgreementSuccess({
   agreement,
   onDownload,
-  onPreview,
   onDone,
 }) {
   const [action, setAction] = useState(null);
 
   const agreementId =
     agreement?.agreement_id ||
-    "Agreement ID";
+    agreement?.sams_agreement_id ||
+    "SAMS-XXXXXX";
 
-  const runAction = async (type, callback) => {
+  const agreementType =
+    agreement?.agreement_type === "SUP"
+      ? "Supari Agreement"
+      : agreement?.agreement_type === "MON"
+      ? "Money Agreement"
+      : agreement?.agreement_type === "LND"
+      ? "Land Agreement"
+      : agreement?.agreement_type === "FRM"
+      ? "Farm Agreement"
+      : "Other Agreement";
+
+  const buyerName =
+    agreement?.buyer_name ||
+    "Buyer";
+
+  const sellerName =
+    agreement?.seller_name ||
+    "Seller";
+
+
+  /* =========================================
+     DOWNLOAD PDF
+  ========================================= */
+
+  const handleDownload = async () => {
     if (action) return;
 
-    setAction(type);
+    setAction("download");
 
+    /*
+     * Premium PDF preparation animation.
+     */
     await new Promise((resolve) =>
-      setTimeout(resolve, 1100)
+      setTimeout(resolve, 1200)
     );
 
-    callback?.();
+    try {
+      await onDownload?.(agreement);
+    } catch (error) {
+      console.error(
+        "PDF download failed:",
+        error
+      );
+    }
 
     setAction(null);
   };
 
+
+  /* =========================================
+     DONE
+  ========================================= */
+
+  const handleDone = async () => {
+    if (action) return;
+
+    setAction("done");
+
+    /*
+     * Short premium completion animation.
+     */
+    await new Promise((resolve) =>
+      setTimeout(resolve, 900)
+    );
+
+    onDone?.();
+
+    setAction(null);
+  };
+
+
   return (
     <div className="agreement-success-page">
 
-      <div className="success-glow glow-one" />
-      <div className="success-glow glow-two" />
+      {/* =====================================
+          BACKGROUND
+      ===================================== */}
 
-      <div className="agreement-success-card">
+      <div className="success-bg-orb success-bg-orb-one" />
+      <div className="success-bg-orb success-bg-orb-two" />
 
-        {/* SUCCESS ORBIT */}
+
+      {/* =====================================
+          MAIN CARD
+      ===================================== */}
+
+      <main className="agreement-success-card">
+
+
+        {/* ===================================
+            SUCCESS ORBIT
+        =================================== */}
 
         <div className="success-orbit-system">
 
-          <div className="success-orbit orbit-a" />
-          <div className="success-orbit orbit-b" />
+          <div className="success-orbit-ring ring-one" />
 
-          <div className="success-orbit-dot dot-a" />
-          <div className="success-orbit-dot dot-b" />
+          <div className="success-orbit-ring ring-two" />
+
+          <div className="success-orbit-ring ring-three" />
+
+          <span className="success-orbit-particle particle-one" />
+
+          <span className="success-orbit-particle particle-two" />
+
+          <span className="success-orbit-particle particle-three" />
 
           <div className="success-core">
-            <span>✓</span>
+
+            <span className="success-check">
+              ✓
+            </span>
+
           </div>
 
         </div>
 
 
-        {/* SUCCESS TEXT */}
+        {/* ===================================
+            SUCCESS TEXT
+        =================================== */}
 
-        <span className="success-eyebrow">
-          SAMS • AGREEMENT SECURED
-        </span>
+        <div className="success-heading">
 
-        <h1>
-          Agreement Created Successfully
-        </h1>
-
-        <p className="success-description">
-          आपका agreement successfully create
-          और securely saved हो गया है।
-        </p>
-
-
-        {/* AGREEMENT ID */}
-
-        <div className="success-agreement-id">
-
-          <span>
-            Agreement ID
+          <span className="success-eyebrow">
+            SAMS • AGREEMENT SECURED
           </span>
 
-          <strong>
-            {agreementId}
-          </strong>
+          <h1>
+            Agreement Created Successfully
+          </h1>
+
+          <p>
+            Your agreement has been successfully
+            created and securely processed.
+          </p>
 
         </div>
 
 
-        {/* ACTIONS */}
+        {/* ===================================
+            AGREEMENT INFORMATION
+        =================================== */}
+
+        <div className="success-agreement-info">
+
+          <div className="success-info-item">
+
+            <span>
+              Agreement ID
+            </span>
+
+            <strong>
+              {agreementId}
+            </strong>
+
+          </div>
+
+
+          <div className="success-info-divider" />
+
+
+          <div className="success-info-item">
+
+            <span>
+              Agreement Type
+            </span>
+
+            <strong>
+              {agreementType}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        {/* ===================================
+            PEOPLE
+        =================================== */}
+
+        <div className="success-parties">
+
+          <div className="success-party">
+
+            <span>
+              Buyer
+            </span>
+
+            <strong>
+              {buyerName}
+            </strong>
+
+          </div>
+
+
+          <div className="success-party-divider" />
+
+
+          <div className="success-party">
+
+            <span>
+              Seller
+            </span>
+
+            <strong>
+              {sellerName}
+            </strong>
+
+          </div>
+
+        </div>
+
+
+        {/* ===================================
+            ACTIONS
+        =================================== */}
 
         <div className="success-actions">
 
-          {/* DOWNLOAD */}
+
+          {/* =================================
+              DOWNLOAD PDF
+          ================================= */}
 
           <button
             type="button"
-            className="success-action download-action"
+            className="success-action-button download-button"
+            onClick={handleDownload}
             disabled={Boolean(action)}
-            onClick={() =>
-              runAction(
-                "download",
-                onDownload
-              )
-            }
           >
 
             <span className="success-action-icon">
-              {action === "download"
-                ? "◌"
-                : "↓"}
+
+              {action === "download" ? (
+                <span className="success-small-spinner" />
+              ) : (
+                "↓"
+              )}
+
             </span>
 
-            <span className="success-action-content">
+
+            <span className="success-action-text">
 
               <strong>
+
                 {action === "download"
                   ? "Preparing PDF..."
                   : "Download PDF"}
+
               </strong>
 
               <small>
+
                 {action === "download"
-                  ? "Securing document"
-                  : "Save agreement as PDF"}
+                  ? "Securing your agreement"
+                  : "Download the final agreement"}
+
               </small>
 
             </span>
+
 
             {action === "download" && (
-              <span className="action-loader" />
+
+              <span className="success-action-progress">
+
+                <span />
+
+              </span>
+
             )}
 
           </button>
 
 
-          {/* PREVIEW */}
+          {/* =================================
+              DONE
+          ================================= */}
 
           <button
             type="button"
-            className="success-action"
+            className="success-action-button done-button"
+            onClick={handleDone}
             disabled={Boolean(action)}
-            onClick={() =>
-              runAction(
-                "preview",
-                onPreview
-              )
-            }
           >
 
             <span className="success-action-icon">
-              {action === "preview"
-                ? "◌"
-                : "◉"}
+
+              {action === "done" ? (
+                <span className="success-small-spinner light" />
+              ) : (
+                "✓"
+              )}
+
             </span>
 
-            <span className="success-action-content">
+
+            <span className="success-action-text">
 
               <strong>
-                {action === "preview"
-                  ? "Opening Agreement..."
-                  : "Preview Agreement"}
-              </strong>
 
-              <small>
-                {action === "preview"
-                  ? "Preparing document view"
-                  : "View final agreement"}
-              </small>
-
-            </span>
-
-            {action === "preview" && (
-              <span className="action-loader" />
-            )}
-
-          </button>
-
-
-          {/* DONE */}
-
-          <button
-            type="button"
-            className="success-action done-action"
-            disabled={Boolean(action)}
-            onClick={() =>
-              runAction(
-                "done",
-                onDone
-              )
-            }
-          >
-
-            <span className="success-action-icon">
-              {action === "done"
-                ? "◌"
-                : "✓"}
-            </span>
-
-            <span className="success-action-content">
-
-              <strong>
                 {action === "done"
-                  ? "Saving..."
+                  ? "Finishing..."
                   : "Done"}
+
               </strong>
 
               <small>
+
                 {action === "done"
-                  ? "Finishing agreement"
-                  : "Create another agreement"}
+                  ? "Preparing a fresh agreement"
+                  : "Finish and create another agreement"}
+
               </small>
 
             </span>
-
-            {action === "done" && (
-              <span className="action-loader" />
-            )}
 
           </button>
 
         </div>
 
 
-        {/* SECURITY */}
+        {/* ===================================
+            SECURITY NOTE
+        =================================== */}
 
         <div className="success-security">
 
-          <span>
+          <span className="security-icon">
             🔒
           </span>
 
           <p>
-            Your agreement has been securely
+            This agreement has been securely
             processed by SAMS.
           </p>
 
         </div>
 
-      </div>
+      </main>
+
+
+      {/* =====================================
+          DOWNLOAD PROCESSING OVERLAY
+      ===================================== */}
+
+      {action === "download" && (
+
+        <div className="success-action-overlay">
+
+          <div className="success-processing-card">
+
+            <div className="processing-document-orbit">
+
+              <div className="processing-orbit orbit-one" />
+
+              <div className="processing-orbit orbit-two" />
+
+              <div className="processing-document">
+
+                <span className="document-line line-one" />
+                <span className="document-line line-two" />
+                <span className="document-line line-three" />
+
+                <span className="document-download-arrow">
+                  ↓
+                </span>
+
+              </div>
+
+            </div>
+
+
+            <span className="processing-eyebrow">
+              SAMS • SECURE DOCUMENT
+            </span>
+
+            <h2>
+              Preparing PDF
+            </h2>
+
+            <p>
+              Your final agreement is being
+              securely prepared for download.
+            </p>
+
+
+            <div className="processing-progress">
+
+              <span />
+
+            </div>
+
+          </div>
+
+        </div>
+
+      )}
+
+
+      {/* =====================================
+          DONE PROCESSING OVERLAY
+      ===================================== */}
+
+      {action === "done" && (
+
+        <div className="success-action-overlay">
+
+          <div className="success-processing-card done-processing-card">
+
+            <div className="done-animation">
+
+              <div className="done-circle">
+
+                <span>
+                  ✓
+                </span>
+
+              </div>
+
+              <div className="done-ripple ripple-one" />
+
+              <div className="done-ripple ripple-two" />
+
+            </div>
+
+
+            <span className="processing-eyebrow">
+              SAMS • COMPLETE
+            </span>
+
+            <h2>
+              Agreement Saved
+            </h2>
+
+            <p>
+              The agreement is complete.
+              Preparing a fresh agreement form.
+            </p>
+
+          </div>
+
+        </div>
+
+      )}
 
     </div>
   );
